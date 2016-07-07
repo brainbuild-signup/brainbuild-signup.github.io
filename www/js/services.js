@@ -19,6 +19,33 @@ angular.module('starter.services', [])
       { text: "SAT", checked: false }
     ]
   };
+
+  var defaultEvent = {
+    'summary': 'Brainbuild Even',
+    'location': '800 Howard St., San Francisco, CA 94103',
+    'description': 'A chance to hear more about Google\'s developer products.',
+    'start': {
+      'dateTime': '2015-05-28T09:00:00-07:00',
+      'timeZone': 'America/Los_Angeles'
+    },
+    'end': {
+      'dateTime': '2015-05-28T17:00:00-07:00',
+      'timeZone': 'America/Los_Angeles'
+    },
+    'recurrence': [
+      'RRULE:FREQ=DAILY;COUNT=2'
+    ],
+    'attendees': [
+      {'email': 'bbprimetime'}
+    ],
+    'reminders': {
+      'useDefault': false,
+      'overrides': [
+        {'method': 'email', 'minutes': 24 * 60},
+        {'method': 'popup', 'minutes': 10}
+      ]
+    }
+  };
   
   if(localStorage.workouts){
     var workouts = JSON.parse(localStorage.workouts);
@@ -62,7 +89,7 @@ angular.module('starter.services', [])
     },
     summary: "Breakfast",
     recurrence: [
-      "RRULE:FREQ=WEEKLY;UNTIL=20160701T170000Z;BYDAY=SU,MO,TU,WE,TH,FR,SA"
+      "RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA"
     ]
   };
 
@@ -80,7 +107,7 @@ angular.module('starter.services', [])
     },
     summary: "Lunch",
     recurrence: [
-      "RRULE:FREQ=WEEKLY;UNTIL=20160701T170000Z;BYDAY=SU,MO,TU,WE,TH,FR,SA"
+      "RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA"
     ]
   };
 
@@ -98,7 +125,7 @@ angular.module('starter.services', [])
     },
     summary: "Dinner",
     recurrence: [
-      "RRULE:FREQ=WEEKLY;UNTIL=20160701T170000Z;BYDAY=SU,MO,TU,WE,TH,FR,SA"
+      "RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA"
     ]
   };
 

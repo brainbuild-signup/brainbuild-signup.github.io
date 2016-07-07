@@ -27,6 +27,10 @@ angular.module('starter.controllers', [])
     doAuth();
   });
 
+  // auth.show({
+  //   socialBigButtons: true
+  // });
+
   doAuth();
 })
 

@@ -2,3 +2,47 @@
 #repeat-day {
 	display: inline;
 }
+
+/*
+
+Auth0 Login
+#FF3800 = Primary Color
+
+*/
+
+
+.a0-avatar-guest {
+	height: 220px !important;
+	content: url('./img/brainbuild_name.png') !important;
+}
+
+.a0-next {
+	background-color: #FF3800 !important;
+}
+
+
+.a0-db-actions, 
+.a0-separator, 
+.a0-emailPassword,
+.a0-forgot-pass,
+.bottom-content
+{
+	display: none !important;
+}
+
+.a0-icon-container {
+	padding-bottom: 20px;
+	text-align: center;
+}
+
+#a0-lock.a0-theme-default .a0-panel .a0-top-header h1:after{
+	content:' with Google:';
+};
+
+/*.a0-googleplus {
+	height: 160px !important;
+}*/
+
+.a0-zocial {
+    content: "yes";
+}
