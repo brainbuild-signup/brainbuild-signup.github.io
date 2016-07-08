@@ -13,6 +13,12 @@ angular.module('brainbuild.routes', [])
 		templateUrl: "templates/welcome.html",
 		controller: 'WelcomeCtrl'
 	})
+
+	.state('wait',{
+		url: "/wait",
+		templateUrl: "templates/wait.html",
+		controller: "WaitCtrl"
+	})
 	
 	// if none of the above states are matched, use this as the fallback
 	$urlRouterProvider.otherwise('/login');

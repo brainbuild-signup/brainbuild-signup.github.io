@@ -34,12 +34,14 @@ angular.module('brainbuild.controllers', [])
   doAuth();
 })
 
-.controller('WelcomeCtrl', function($scope, $state){
+.controller('WelcomeCtrl', function($scope, $state, GoogleEvents){
   var person = JSON.parse(localStorage.getItem('profile'));
   var token = person['identities'][0]['access_token'];
   var header = new Headers();
   header.append("Access-Control-Allow-Origin", "*");
   
+  console.log(GoogleEvents);
+
   listCalendars();
 
   // calendar list retrieval
@@ -95,6 +97,7 @@ angular.module('brainbuild.controllers', [])
     }
     else {
       sentCals++;
+      console.log(sentCals);
       fetch('https://www.googleapis.com/calendar/v3/calendars/'+calendarId+'/acl?access_token='+token, {
         method: 'GET',
         headers: header,
@@ -105,9 +108,8 @@ angular.module('brainbuild.controllers', [])
         if (res.status === 200) {
               res.json()
                   .then(function(data) {
-                      console.log(calendarId);
-                      console.log(data);
-                      returnedCals;
+                      checkACL(calendarId, data);
+                      returnedCals++;
                       if(returnedCals == sentCals){
                         console.log(returnedCals);
                       }
@@ -119,9 +121,9 @@ angular.module('brainbuild.controllers', [])
               res.json()
                   .then(function(data) {
                       console.warn(calendarId);
-                      // if (data.error.code === 401){
-                      //   $state.go('login');
-                      // }
+                      if (data.error.code === 401){
+                        $state.go('login');
+                      }
                   })
                   .catch(function(parseErr) {
                       console.warn(calendarId);
@@ -135,7 +137,27 @@ angular.module('brainbuild.controllers', [])
     }
   }
 
+  var ours = [];
+  var ourEmail = "user:brainbuildlabs@gmail.com";
+
+  function checkACL(calendarId, data){
+    console.log(calendarId);
+    for(var i = 0; i < data.items.length; i++){
+      if(data.items[i].id == ourEmail){
+        ours.push(calendarId);
+      }
+    }
+    if(ours.length > 0){
+      $state.go('wait');
+    }
+  }
+
 })
+
+.controller('WaitCtrl', function ($scope, $state){
+
+})
+
 
 .controller('GenerateCtrl', function($scope, $state){
   var person = JSON.parse(localStorage.getItem('profile'));
