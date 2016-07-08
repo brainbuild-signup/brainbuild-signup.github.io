@@ -8,6 +8,8 @@
 Auth0 Login
 #FF3800 = Primary Color
 
+https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png
+
 */
 
 
@@ -46,3 +48,10 @@ Auth0 Login
 .a0-zocial {
     content: "yes";
 }
+
+/*Calendar Color: #4986E7  (white text)
+Practices: #4986E7  (same as default calendar)
+Snacks: #FFB878 
+Meals: #DC2127 
+Classes: #7AE7BF 
+Sleep: #E1E1E1 */
