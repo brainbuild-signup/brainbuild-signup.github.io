@@ -78,53 +78,62 @@ angular.module('brainbuild.controllers', [])
     });
   };
 
+  var sentCals = 0;
   var returnedCals = 0;
-  var totalCals = 0;
 
   function processCalendars(data){
-    totalCals = data.items.length;
-    for(var i = 0; i < totalCals; i++){
-      console.log(data);
-      listACL(data.items[i].id)
+    console.log(data);
+    for(var i = 0; i < data.items.length; i++){
+      listACL(data.items[i].accessRole, data.items[i].id)
     }
   }
 
-  function listACL(calendarId){
+  function listACL(role, calendarId){
     console.log(calendarId);
-    fetch('https://www.googleapis.com/calendar/v3/calendars/'+calendarId+'/acl?access_token='+token, {
-      method: 'GET',
-      headers: header,
-      mode: 'cors',
-      cache: 'default',
-    })
-    .then(function(res) {
-      if (res.status === 200) {
-            res.json()
-                .then(function(data) {
-                    console.log(calendarId);
-                    console.log(data);
-                })
-                .catch(function(parseErr) {
-                    console.error(parseErr);
-                });
-        } else {
-            res.json()
-                .then(function(data) {
-                    console.info(calendarId);
-                    // if (data.error.code === 401){
-                    //   $state.go('login');
-                    // }
-                })
-                .catch(function(parseErr) {
-                    console.error(parseErr);
-                });
-        }
-    })
-    .catch(function(err) {
-      // console.error("network error", err);
-    });
+    if(!(role == 'owner')){
+      return;
+    }
+    else {
+      sentCals++;
+      fetch('https://www.googleapis.com/calendar/v3/calendars/'+calendarId+'/acl?access_token='+token, {
+        method: 'GET',
+        headers: header,
+        mode: 'cors',
+        cache: 'default',
+      })
+      .then(function(res) {
+        if (res.status === 200) {
+              res.json()
+                  .then(function(data) {
+                      console.log(calendarId);
+                      console.log(data);
+                      returnedCals;
+                      if(returnedCals == sentCals){
+                        console.log(returnedCals);
+                      }
+                  })
+                  .catch(function(parseErr) {
+                      console.error(parseErr);
+                  });
+          } else {
+              res.json()
+                  .then(function(data) {
+                      console.warn(calendarId);
+                      // if (data.error.code === 401){
+                      //   $state.go('login');
+                      // }
+                  })
+                  .catch(function(parseErr) {
+                      console.warn(calendarId);
+                      console.error(parseErr);
+                  });
+          }
+      })
+      .catch(function(err) {
+        // console.error("network error", err);
+      });
+    }
   }
-
 
 })
 
