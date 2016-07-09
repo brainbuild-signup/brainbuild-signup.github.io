@@ -1,5 +1,5 @@
 angular.module('brainbuild.controllers', [])
-.controller('LoginCtrl', function($scope, auth, $state, store) {
+.controller('LoginCtrl', function($scope, auth, store, $state) {
   function doAuth() {
     auth.signin({
       closable: false,
@@ -34,7 +34,18 @@ angular.module('brainbuild.controllers', [])
   doAuth();
 })
 
-.controller('WelcomeCtrl', function($scope, $state, GoogleEvents){
+.controller('WelcomeCtrl', function($scope, auth, store, $state, GoogleEvents){
+  $scope.athlete = GoogleEvents.athlete();
+
+  $scope.logout = function() {
+    auth.signout();
+    store.remove('token');
+    store.remove('profile');
+    store.remove('refreshToken');
+    $state.go('login', {}, {reload: true});
+  };
+
+
   var person = JSON.parse(localStorage.getItem('profile'));
   var token = person['identities'][0]['access_token'];
   var header = new Headers();
@@ -158,45 +169,80 @@ angular.module('brainbuild.controllers', [])
 
 })
 
+.controller('WorkoutCtrl', function($scope, $state, GoogleEvents){
 
-.controller('GenerateCtrl', function($scope, $state){
+})
+
+.controller('ListCtrl', function($scope, $state, GoogleEvents, $ionicLoading){
+  $scope.events = GoogleEvents.athlete();
+  $scope.events = GoogleEvents.defaultEvents();
+
+  console.log($scope.events);
+  var response = 0;
+
+  $scope.generateSchedule = function() {
+    $ionicLoading.show()
+    hideSpinner();
+  };
+
+  function hideSpinner(){
+    setTimeout(function(){ 
+      $ionicLoading.hide();
+      $state.go('done');
+    }, 3000);
+  }
+
   var person = JSON.parse(localStorage.getItem('profile'));
   var token = person['identities'][0]['access_token'];
 
-  function postGAPI(i) {
-  var header = new Headers();
-  header.append("Content-Type", "application/json");
+  function createNewCalendar(){
 
-  fetch('https://www.googleapis.com/calendar/v3/calendars/'+localStorage.calendarId+'/events?access_token='+token, {
-    method: "POST",
-    headers: header,
-    body: JSON.stringify($scope.events[i]),
-  })
-  .then(function(res) {
-      if (res.status === 200) {
-          res.json()
-              .then(function(data) {
-                  console.log(data);
-              })
-              .catch(function(parseErr) {
-                  console.error(parseErr);
-              });
-      } else {
-          console.error(res); // comes back but not HTTP 200
-          res.json()
-              .then(function(data) {
-                  console.log('not 200', data);
-                  if (data.error.code === 401){
-                    $state.go('login');
-                  }
-              })
-              .catch(function(parseErr) {
-                  console.error(parseErr);
-              });
-      }
+  }
+
+  function postGAPI(i) {
+    var header = new Headers();
+    header.append("Content-Type", "application/json");
+
+    fetch('https://www.googleapis.com/calendar/v3/calendars/'+localStorage.calendarId+'/events?access_token='+token, {
+      method: "POST",
+      headers: header,
+      body: JSON.stringify($scope.events[i]),
     })
-  .catch(function(err) {
-      console.error("network error", err);
-  });
-}
+    .then(function(res) {
+        if (res.status === 200) {
+            res.json()
+                .then(function(data) {
+                    console.log(data);
+
+                    responses++
+                    console.log(responses);
+                    if(responses == $scope.events.length){
+                      hideSpinner();
+                    }
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        } else {
+            console.error(res); // comes back but not HTTP 200
+            res.json()
+                .then(function(data) {
+                    console.log('not 200', data);
+                    if (data.error.code === 401){
+                      $state.go('login');
+                    }
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        }
+      })
+    .catch(function(err) {
+        console.error("network error", err);
+    });
+  }
+})
+
+.controller('DoneCtrl', function($scope, $state){
+
 })

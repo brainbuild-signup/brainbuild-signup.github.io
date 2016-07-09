@@ -1,5 +1,63 @@
-<ion-view view-title="Welcome" hide-back-button="true">
-	<ion-content>
-		<h1>Master</h1>
-	</ion-content>
+<ion-view title="Intro" hide-nav-bar="true" id="page21" class=" ">
+    <ion-content padding="true" class="manual-ios-statusbar-padding" scroll="false">
+        <div class="spacer" style="width: 300px; height: 4px;"></div>
+        <div class="item item-body " id="onboardingIntro-list-item-container3">
+            <div>
+                <div>
+                    <div class="bold center title  title-margin">Welcome to Brainbuild</div>
+
+                    <div class="center">
+                        Get started below with our quick questionnaire
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form id="onboardingIntro-form12" class="list ">
+            <div class="spacer" style="width: 300px; height: 17px;"></div>
+            <label class="item item-input " id="onboardingIntro-input18">
+                <span class="input-label">Full Name</span>
+                <input type="text" ng-model="athlete.fullName" placeholder="Your Name" id="full-name">
+            </label>
+        </form>
+        <form id="onboardingIntro-form9" class="list ">
+            <label class="item item-select " id="onboardingIntro-select5">
+                <span class="input-label">School</span>
+                <select ng-model="athlete.school">
+                    <option>Duke University</option>
+                    <option>Columbia University</option>
+                    <option>UC San Diego</option>
+                    <option>Cornell University</option>
+                    <option>Emory University</option>
+                    <option>San Jose State University</option>
+                </select>
+            </label>
+        </form>
+        <form id="onboardingIntro-form14" class="list ">
+            <label class="item item-select " id="onboardingIntro-select6">
+                <span class="input-label">Sport</span>
+                <select>
+                    <option>Baseball</option>
+                    <option>Field Hockey</option>
+                    <option>Football</option>
+                </select>
+            </label>
+        </form>
+        <form id="onboardingIntro-form15" class="list ">
+            <label class="item item-select " id="onboardingIntro-select8">
+                <span class="input-label">Time Zone</span>
+                <select>
+                    <option>Pacific Time Zone</option>
+                    <option>Mountain Time Zone</option>
+                    <option>Central Time Zone</option>
+                    <option>Eastern Time Zone</option>
+                    <option>Alaskan Time Zone</option>
+                    <option>Hawaiian Time Zone</option>
+                </select>
+            </label>
+        </form>
+        <div id="onboardingIntro-button-bar7" class=" button-bar ">
+            <a id="onboardingIntro-button55" ng-click="logout()" class="button button-assertive  button-block">Logout</a>
+            <a ui-sref="workout" id="onboardingIntro-button58" class=" button button-assertive  button-block ">Next</a>
+        </div>
+    </ion-content>
 </ion-view>
