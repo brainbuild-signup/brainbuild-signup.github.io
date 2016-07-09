@@ -1,6 +1,13 @@
 angular.module('brainbuild.services', [])
 
 .factory('GoogleEvents', function(){
+  var athlete = {
+    fullName: "Bo Jackson",
+    school: "San Jose State University",
+    sport: "Baseball",
+    timeZone: "Pacific Time Zone"
+  };
+
   var calendarId = "jomvtmlvotsh0i384c197easps@group.calendar.google.com";
   var title = "Taylor Tanita - UCSD Women's Basketball (Brainbuild)";
   var timeZone = "America/Los_Angeles";
@@ -11,7 +18,7 @@ angular.module('brainbuild.services', [])
 
   function createDefaultEvents(calendarId, title, timeZone, repeat){
     var today = new Date();    
-    var ourEmail = "brainbuildlabs@gmail.com"
+    var ourEmail = "bbprimtetime2016@gmail.com"
 
     var breakfast = {
      "kind": "calendar#event",
@@ -184,7 +191,14 @@ angular.module('brainbuild.services', [])
      }
     }
 
-    return [breakfast, lunch, snack, dinner];
+    return {
+      athlete: function(){
+        return athlete;
+      },
+      defaultEvents: function(){
+        return [breakfast, lunch, snack, dinner];
+      }
+    }
   }
 
   var preEvent = {
