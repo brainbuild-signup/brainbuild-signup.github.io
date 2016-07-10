@@ -174,8 +174,17 @@ angular.module('brainbuild.controllers', [])
 .controller('WorkoutCtrl', function($scope, $state, GoogleEvents){
   // get the Time Zone
   $scope.athlete = GoogleEvents.athlete();
+  $scope.workout = GoogleEvents.defaultWorkout();
 
   // create default event
+  console.log($scope.workout);
+
+  function setDateTime(dateTime, when){
+    // if(when === "end"){
+    //   dateTime.setTime((dateTime.geTime() + 3600));
+    // }
+    console.log(dateTime);
+  }
 
   $scope.backWorkout = function(){
     //discard event
@@ -195,8 +204,9 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('ListCtrl', function($scope, $state, GoogleEvents, $ionicLoading){
-  $scope.events = GoogleEvents.athlete();
+  $scope.athlete = GoogleEvents.athlete();
   $scope.events = GoogleEvents.defaultEvents();
+  $scope.workout = GoogleEvents.defaultWorkout();
 
   console.log($scope.events);
   var response = 0;
@@ -216,15 +226,16 @@ angular.module('brainbuild.controllers', [])
   var person = JSON.parse(localStorage.getItem('profile'));
   var token = person['identities'][0]['access_token'];
 
+  var calendarId = $scope.athlete.email;
   function createNewCalendar(){
-
+    
   }
 
   function postGAPI(i) {
     var header = new Headers();
     header.append("Content-Type", "application/json");
 
-    fetch('https://www.googleapis.com/calendar/v3/calendars/'+localStorage.calendarId+'/events?access_token='+token, {
+    fetch('https://www.googleapis.com/calendar/v3/calendars/'+calendarId+'/events?access_token='+token, {
       method: "POST",
       headers: header,
       body: JSON.stringify($scope.events[i]),

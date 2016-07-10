@@ -17,6 +17,32 @@ angular.module('brainbuild.services', [])
 
   var title = athlete.fullName+" - "+athlete.school+" "+athlete.sport+" (Brainbuild)";
 
+  var events = [];
+
+  // date parsing
+  today.setUTCMinutes(0,0,0);
+  var hourUTC = 3600000;
+  var hourLater = new Date(today.getTime()+hourUTC);
+
+  // meal defaults
+  var breakfastTime = new Date("1993-06-17T09:00:00");
+  var lunchTime = new Date("1993-06-17T12:00:00");
+  var snackTime = new Date("1993-06-17T12:00:00");
+  var dinnerTime = new Date("1993-06-17T12:00:00");
+
+  // And their date objects
+  var breakfastStart = new Date(today.toISOString().substring(0,11)+breakfastTime.toISOString().substring(12));
+  var breakfastEnd = new Date ();
+
+  var lunchStart = new Date();
+  var lunchEnd = new Date();
+
+  var snackStart = new Date();
+  var snackEnd = new Date();
+
+  var dinnerStart = new Date();
+  var dinnerEnd = new Date();
+
   var workoutDefault = {
    "kind": "calendar#event",
    "etag": "\"2932415987422000\"",
@@ -25,7 +51,7 @@ angular.module('brainbuild.services', [])
    "htmlLink": "https://www.google.com/calendar/event?eid=aXZwZzNxZ2lpcTRyZHJtc2R2MjhoMnI5ajhfMjAxNjA2MTNUMTMzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
    "created": today,
    "updated": today,
-   "summary": "Lift",
+   "summary": "",
    "colorId": "9",
    "creator": {
     "email": "brainbuildlabs@gmail.com"
@@ -40,7 +66,7 @@ angular.module('brainbuild.services', [])
     "timeZone": timeZone
    },
    "end": {
-    "dateTime": today,
+    "dateTime": hourLater,
     "timeZone": timeZone
    },
    "recurrence": [
@@ -77,11 +103,11 @@ angular.module('brainbuild.services', [])
       "self": true
      },
      "start": {
-      "dateTime": "2016-06-18T09:00:00",
+      "dateTime": breakfastStart,
       "timeZone": timeZone
      },
      "end": {
-      "dateTime": "2016-06-18T10:00:00",
+      "dateTime": breakfastEnd,
       "timeZone": timeZone
      },
      "recurrence": [
@@ -120,12 +146,12 @@ angular.module('brainbuild.services', [])
       "self": true
      },
      "start": {
-      "dateTime": "2016-06-13T12:00:00",
-      "timeZone": "America/Los_Angeles"
+      "dateTime": lunchStart,
+      "timeZone": timeZone
      },
      "end": {
-      "dateTime": "2016-06-13T13:00:00",
-      "timeZone": "America/Los_Angeles"
+      "dateTime": lunchEnd,
+      "timeZone": timeZone
      },
      "recurrence": [
       repeat
@@ -163,11 +189,11 @@ angular.module('brainbuild.services', [])
       "self": true
      },
      "start": {
-      "dateTime": "2016-06-13T15:30:00",
+      "dateTime": snackStart,
       "timeZone": timeZone
      },
      "end": {
-      "dateTime": "2016-06-13T16:30:00",
+      "dateTime": snackEnd,
       "timeZone": timeZone
      },
      "recurrence": [
@@ -206,11 +232,11 @@ angular.module('brainbuild.services', [])
       "self": true
      },
      "start": {
-      "dateTime": "2016-06-13T18:30:00-07:00",
+      "dateTime": dinnerStart,
       "timeZone": timeZone
      },
      "end": {
-      "dateTime": "2016-06-13T20:00:00-07:00",
+      "dateTime": dinnerEnd,
       "timeZone": timeZone
      },
      "recurrence": [
@@ -235,6 +261,9 @@ angular.module('brainbuild.services', [])
       },
       defaultEvents: function(){
         return [breakfast, lunch, snack, dinner];
+      },
+      defaultWorkout: function(){
+        return workoutDefault;
       }
     }
   }

@@ -14,19 +14,19 @@
         </div>
         <form id="onboardingWorkouts-form16" class="list ">
             <div class="spacer" style="width: 300px; height: 17px;"></div>
-            <label class="item item-input " id="onboardingWorkouts-input19">
+            <label class="item item-input ">
                 <span class="input-label">Title</span>
-                <input type="text" placeholder="">
+                <input type="text" ng-model="workout.summary" placeholder="i.e. Practice, Workout">
             </label>
         </form>
         <form id="onboardingWorkouts-form17" class="list ">
-            <label class="item item-input " id="onboardingWorkouts-input10">
+            <label class="item item-input">
                 <span class="input-label">Start time</span>
-                <input type="time" placeholder="">
+                <input type="time" ng-model="workout.start.dateTime" placeholder="">
             </label>
-            <label class="item item-input " id="onboardingWorkouts-input25">
+            <label class="item item-input">
                 <span class="input-label">End time</span>
-                <input type="time" placeholder="">
+                <input type="time" ng-model="workout.end.dateTime" placeholder="">
             </label>
             <h3 id="onboardingWorkouts-heading5" style="color:#FF3800;text-align:center;" class=" ">Repeats</h3>
         </form>
