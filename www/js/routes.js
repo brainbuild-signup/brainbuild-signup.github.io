@@ -28,7 +28,7 @@ angular.module('brainbuild.routes', [])
 
 	.state('class', {
 		url: "/class",
-		templateUrl: "templates/workout.html",
+		templateUrl: "templates/class.html",
 		controller: "ClassCtrl"
 	})
 

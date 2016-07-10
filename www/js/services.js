@@ -1,23 +1,61 @@
 angular.module('brainbuild.services', [])
 
 .factory('GoogleEvents', function(){
-  var athlete = {
-    fullName: "Bo Jackson",
-    school: "San Jose State University",
-    sport: "Baseball",
-    timeZone: "Pacific Time Zone"
-  };
-
+  var today = new Date();
   var calendarId = "jomvtmlvotsh0i384c197easps@group.calendar.google.com";
-  var title = "Taylor Tanita - UCSD Women's Basketball (Brainbuild)";
   var timeZone = "America/Los_Angeles";
   // TODO: parse such that FREQ=DAILY; replaced with FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA
   var repeat = "RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA";
 
+  var athlete = {
+    fullName: "",
+    school: "San Jose State University",
+    sport: "Baseball",
+    timeZone: "Pacific Time Zone",
+    email: "exercisetime2016@gmail.com"
+  };
+
+  var title = athlete.fullName+" - "+athlete.school+" "+athlete.sport+" (Brainbuild)";
+
+  var workoutDefault = {
+   "kind": "calendar#event",
+   "etag": "\"2932415987422000\"",
+   "id": "ivpg3qgiiq4rdrmsdv28h2r9j8",
+   "status": "confirmed",
+   "htmlLink": "https://www.google.com/calendar/event?eid=aXZwZzNxZ2lpcTRyZHJtc2R2MjhoMnI5ajhfMjAxNjA2MTNUMTMzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+   "created": today,
+   "updated": today,
+   "summary": "Lift",
+   "colorId": "9",
+   "creator": {
+    "email": "brainbuildlabs@gmail.com"
+   },
+   "organizer": {
+    "email": calendarId,
+    "displayName": title,
+    "self": true
+   },
+   "start": {
+    "dateTime": today,
+    "timeZone": timeZone
+   },
+   "end": {
+    "dateTime": today,
+    "timeZone": timeZone
+   },
+   "recurrence": [
+    repeat
+   ],
+   "iCalUID": "ivpg3qgiiq4rdrmsdv28h2r9j8@google.com",
+   "sequence": 1,
+   "reminders": {
+    "useDefault": true
+   }
+  };
+
   var defaultEvents = createDefaultEvents(calendarId, title, timeZone, repeat);
 
-  function createDefaultEvents(calendarId, title, timeZone, repeat){
-    var today = new Date();    
+  function createDefaultEvents(calendarId, title, timeZone, repeat){    
     var ourEmail = "bbprimtetime2016@gmail.com"
 
     var breakfast = {
@@ -569,42 +607,6 @@ angular.module('brainbuild.services', [])
       "minutes": 10
      }
     ]
-   }
-  },
-  {
-
-   "kind": "calendar#event",
-   "etag": "\"2932415987422000\"",
-   "id": "ivpg3qgiiq4rdrmsdv28h2r9j8",
-   "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=aXZwZzNxZ2lpcTRyZHJtc2R2MjhoMnI5ajhfMjAxNjA2MTNUMTMzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-   "created": "2016-06-17T22:08:18.000Z",
-   "updated": "2016-06-17T23:59:53.711Z",
-   "summary": "Lift/Run - Workout",
-   "colorId": "9",
-   "creator": {
-    "email": "brainbuildlabs@gmail.com"
-   },
-   "organizer": {
-    "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
-    "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
-    "self": true
-   },
-   "start": {
-    "dateTime": "2016-06-13T06:30:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "end": {
-    "dateTime": "2016-06-13T07:30:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "recurrence": [
-    "RRULE:FREQ=WEEKLY;BYDAY=MO,WE,FR"
-   ],
-   "iCalUID": "ivpg3qgiiq4rdrmsdv28h2r9j8@google.com",
-   "sequence": 1,
-   "reminders": {
-    "useDefault": true
    }
   },
   {

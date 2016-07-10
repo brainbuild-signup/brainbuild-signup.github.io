@@ -36,6 +36,16 @@ angular.module('brainbuild.controllers', [])
 
 .controller('WelcomeCtrl', function($scope, auth, store, $state, GoogleEvents){
   $scope.athlete = GoogleEvents.athlete();
+  // auth0 Profile
+  var person = JSON.parse(localStorage.getItem('profile'));
+  // GAPI
+  var token = person['identities'][0]['access_token'];
+  var header = new Headers();
+  header.append("Access-Control-Allow-Origin", "*");
+  // Info from auth0
+  $scope.athlete.fullName = person.name;
+  $scope.athlete.email = person.email;
+  $scope.athlete.picture = person.picture;
 
   $scope.logout = function() {
     auth.signout();
@@ -44,14 +54,6 @@ angular.module('brainbuild.controllers', [])
     store.remove('refreshToken');
     $state.go('login', {}, {reload: true});
   };
-
-
-  var person = JSON.parse(localStorage.getItem('profile'));
-  var token = person['identities'][0]['access_token'];
-  var header = new Headers();
-  header.append("Access-Control-Allow-Origin", "*");
-  
-  console.log(GoogleEvents);
 
   listCalendars();
 
@@ -170,7 +172,26 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('WorkoutCtrl', function($scope, $state, GoogleEvents){
+  // get the Time Zone
+  $scope.athlete = GoogleEvents.athlete();
 
+  // create default event
+
+  $scope.backWorkout = function(){
+    //discard event
+    $state.go('list');
+  }
+
+  $scope.addWorkout = function(){
+    //add event to stack
+    $state.go('list');
+  }
+})
+
+.controller('ClassCtrl', function($scope, $state, GoogleEvents){
+  $scope.addClass = function(){
+    $state.go('list');
+  }
 })
 
 .controller('ListCtrl', function($scope, $state, GoogleEvents, $ionicLoading){

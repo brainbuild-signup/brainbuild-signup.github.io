@@ -1,10 +1,10 @@
-<ion-view title="Edit Events" hide-nav-bar="true" hide-back-button="true" id="page7" class=" ">
+<ion-view title="Edit Schedule" hide-nav-bar="true" hide-back-button="true" id="page7" class=" ">
     <ion-content padding="true" class="manual-ios-statusbar-padding">
         <div class="list card " id="editEvents-card7">
             <div class="item item-body">
                 <div>
                     <div>
-                        <div class="bold center title  title-margin">Edit Events</div>
+                        <div class="bold center title  title-margin">Edit Schedule</div>
 
                         <div class="center">
                             Make sure you add all your recurring workouts and class events for this semester.
@@ -18,85 +18,37 @@
                 <div>
                     <div>
                         <div>
-                            <div class="bold center title  title-margin">Swim Practice</div>
-                            <div>
-                                <i class="icon ion-android-calendar" style="margin-right: 5px"></i>Start Date: August 1, 2016
+                            <div class="bold center title  title-margin">Lift</div>
+                            <div class="center">
+                                <i class="icon ion-android-time" style="margin-right: 4px"></i>12:00 PM - 1:00 PM
                             </div>
-                            <div>
-                                <i class="icon ion-android-calendar" style="margin-right: 5px"></i>End Date: December 1, 2016
-                            </div>
-                            <div>
-                                <i class="icon ion-android-time" style="margin-right: 4px"></i>6:00 AM - 8:00 AM
-                            </div>
-                            <div>
-                                <i class="icon ion-refresh" style="margin-right: 3px"></i>Repeats weekly: M-F
+                            <div class="center">
+                                <i class="icon ion-refresh" style="margin-right: 3px"></i>Repeats weekly: MON,TUE,WED,THU,FRI
                             </div>
                         </div>
                     </div>
                 </div>
                 <div id="editEvents-button-bar9" class=" button-bar ">
-                    <button id="editEvents-button15" class=" button button-dark  button-block button-outline icon ion-edit "></button>
+                    <!-- <button id="editEvents-button15" class=" button button-dark  button-block button-outline icon ion-edit "></button> -->
                     <button id="editEvents-button16" class=" button button-dark  button-block button-outline icon ion-android-delete "></button>
-                </div>
-            </div>
-        </div>
-        <div class="list card " id="editEvents-card9">
-            <div class="item item-body">
-                <div>
-                    <div>
-                        <div>
-                            <div class="bold center title  title-margin">Lift</div>
-                            <div>
-                                <i class="icon ion-android-calendar" style="margin-right: 5px"></i>Start Date: August 1, 2016
-                            </div>
-                            <div>
-                                <i class="icon ion-android-calendar" style="margin-right: 5px"></i>End Date: December 1, 2016
-                            </div>
-                            <div>
-                                <i class="icon ion-android-time" style="margin-right: 4px"></i>2:30 PM - 4:30 PM
-                            </div>
-                            <div>
-                                <i class="icon ion-refresh" style="margin-right: 3px"></i>Repeats weekly: M-F
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="editEvents-button-bar4" class=" button-bar ">
-                    <button id="editEvents-button25" class=" button button-dark  button-block button-outline icon ion-edit "></button>
-                    <button id="editEvents-button27" class=" button button-dark  button-block button-outline icon ion-android-delete "></button>
-                </div>
-            </div>
-        </div>
-        <div class="list card " id="editEvents-card11">
-            <div class="item item-body">
-                <div>
-                    <div>
-                        <div>
-                            <div class="bold center title  title-margin">Math 111</div>
-                            <div>
-                                <i class="icon ion-android-calendar" style="margin-right: 5px"></i>Start Date: August 1, 2016
-                            </div>
-                            <div>
-                                <i class="icon ion-android-calendar" style="margin-right: 5px"></i>End Date: December 1, 2016
-                            </div>
-                            <div>
-                                <i class="icon ion-android-time" style="margin-right: 4px"></i>2:30 PM - 4:30 PM
-                            </div>
-                            <div>
-                                <i class="icon ion-refresh" style="margin-right: 3px"></i>Repeats weekly: Tue, Thu
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="editEvents-button-bar10" class=" button-bar ">
-                    <button id="editEvents-button17" class=" button button-dark  button-block button-outline icon ion-edit "></button>
-                    <button id="editEvents-button18" class=" button button-dark  button-block button-outline icon ion-android-delete "></button>
                 </div>
             </div>
         </div>
         <a ui-sref="workout" id="editEvents-button10" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Workout</a>
         <a ui-sref="class" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Class</a>
+        <a ui-sref="welcome" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Edit Profile</a>
         <a ng-click="generateSchedule()" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block ">Generate Schedule</a>
         <div class="spacer" style="width: 277.313px; height: 12px;"></div>
+        <!-- <div class="item item-body"> -->
+            <div>
+                <div>
+                    <div class="bold center title  title-margin">Something Wrong?</div>
+
+                    <div class="center">
+                        Alas, we're in beta. Email us at <a href="mailto:brainbuildlabs@gmail.com?Subject=Problems%20with%20Brainbuild" target="_top">brainbuildlabs@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+        <!-- </div> -->
     </ion-content>
 </ion-view>
