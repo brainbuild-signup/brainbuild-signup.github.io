@@ -175,24 +175,11 @@ angular.module('brainbuild.controllers', [])
   // get the Time Zone
   $scope.athlete = GoogleEvents.athlete();
   $scope.workout = GoogleEvents.defaultWorkout();
-
-  // create default event
-  console.log($scope.workout);
-
-  function setDateTime(dateTime, when){
-    // if(when === "end"){
-    //   dateTime.setTime((dateTime.geTime() + 3600));
-    // }
-    console.log(dateTime);
-  }
-
-  $scope.backWorkout = function(){
-    //discard event
-    $state.go('list');
-  }
+  $scope.workouts = GoogleEvents.workouts();
 
   $scope.addWorkout = function(){
     //add event to stack
+    $scope.workouts.push(angular.copy($scope.workout)); 
     $state.go('list');
   }
 })
@@ -205,31 +192,88 @@ angular.module('brainbuild.controllers', [])
 
 .controller('ListCtrl', function($scope, $state, GoogleEvents, $ionicLoading){
   $scope.athlete = GoogleEvents.athlete();
-  $scope.events = GoogleEvents.defaultEvents();
+  $scope.meals = GoogleEvents.defaultMeals();
   $scope.workout = GoogleEvents.defaultWorkout();
+  $scope.workouts = GoogleEvents.workouts();
 
-  console.log($scope.events);
   var response = 0;
+  var person = JSON.parse(localStorage.getItem('profile'));
+  var token = person['identities'][0]['access_token'];
+  var calendarId = $scope.athlete.email;
 
   $scope.generateSchedule = function() {
-    $ionicLoading.show()
-    hideSpinner();
+    openTheFloodGates();
   };
 
-  function hideSpinner(){
+  function openTheFloodGates(){
+    $ionicLoading.show()
+    closeTheFloodGates();
+  }
+
+  function closeTheFloodGates(){
     setTimeout(function(){ 
       $ionicLoading.hide();
       $state.go('done');
     }, 3000);
   }
+  
+  function insertCalendar(){
+    var brainbuild = {
+      summary: $scope.athlete.fullName+" - "+$scope.athlete.school+" "+$scope.athlete.sport+" (Brainbuild)"
+    };
 
-  var person = JSON.parse(localStorage.getItem('profile'));
-  var token = person['identities'][0]['access_token'];
+    var header = new Headers();
+    header.append("Content-Type", "application/json");
 
-  var calendarId = $scope.athlete.email;
-  function createNewCalendar(){
-    
+    fetch('https://www.googleapis.com/calendar/v3/calendars?access_token='+token, {
+      method: "POST",
+      headers: header,
+      body: JSON.stringify(brainbuild),
+    })
+    .then(function(res) {
+        if (res.status === 200) {
+            res.json()
+                .then(function(data) {
+                    console.log(data);
+                    calendarId = data.id;
+                    postEvents();
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        } 
+        else {
+            console.error(res); // comes back but not HTTP 200
+            res.json()
+                .then(function(data) {
+                    console.log('not 200', data);
+                    if (data.error.code === 401){
+                      $state.go('login');
+                    }
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        }
+      })
+    .catch(function(err) {
+        console.error('network error');
+    })
   }
+
+  function postEvents(){
+    for(var i = 0; i < $scope.workouts.length; i++){
+      $scope.workouts[i].organizer.email = calendarId;
+    }
+    $scope.events = $scope.events.concat($scope.workouts);
+    $scope.events = $scope.events.concat($scope.snacks);
+    console.log($scope.events); 
+
+    for(i = 0; i < $scope.events.length; i++){
+      postGAPI(i);
+    }
+  }
+
 
   function postGAPI(i) {
     var header = new Headers();

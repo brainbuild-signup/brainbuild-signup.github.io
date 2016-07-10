@@ -2,22 +2,21 @@ angular.module('brainbuild.services', [])
 
 .factory('GoogleEvents', function(){
   var today = new Date();
-  var calendarId = "jomvtmlvotsh0i384c197easps@group.calendar.google.com";
   var timeZone = "America/Los_Angeles";
-  // TODO: parse such that FREQ=DAILY; replaced with FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA
   var repeat = "RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA";
 
   var athlete = {
-    fullName: "",
+    fullName: "Bo Jackson",
     school: "San Jose State University",
     sport: "Baseball",
     timeZone: "Pacific Time Zone",
     email: "exercisetime2016@gmail.com"
   };
 
+  // Default data
   var title = athlete.fullName+" - "+athlete.school+" "+athlete.sport+" (Brainbuild)";
-
-  var events = [];
+  var calendarId = "jomvtmlvotsh0i384c197easps@group.calendar.google.com";
+  var ourEmail = "bbprimtetime2016@gmail.com";
 
   // date parsing
   today.setUTCMinutes(0,0,0);
@@ -27,28 +26,30 @@ angular.module('brainbuild.services', [])
   // meal defaults
   var breakfastTime = new Date("1993-06-17T09:00:00");
   var lunchTime = new Date("1993-06-17T12:00:00");
-  var snackTime = new Date("1993-06-17T12:00:00");
-  var dinnerTime = new Date("1993-06-17T12:00:00");
+  var snackTime = new Date("1993-06-17T15:30:00");
+  var dinnerTime = new Date("1993-06-17T18:30:00");
 
   // And their date objects
-  var breakfastStart = new Date(today.toISOString().substring(0,11)+breakfastTime.toISOString().substring(12));
-  var breakfastEnd = new Date ();
+  var breakfastStart = new Date(today.toISOString().substring(0,11)+breakfastTime.toISOString().substring(11));
+  var breakfastEnd = new Date(breakfastStart.getTime()+hourUTC);
 
-  var lunchStart = new Date();
-  var lunchEnd = new Date();
+  var lunchStart = new Date(today.toISOString().substring(0,11)+lunchTime.toISOString().substring(11));
+  var lunchEnd = new Date(lunchStart.getTime()+hourUTC);
 
-  var snackStart = new Date();
-  var snackEnd = new Date();
+  var snackStart = new Date(today.toISOString().substring(0,11)+snackTime.toISOString().substring(11));
+  var snackEnd = new Date(snackStart.getTime()+hourUTC);
 
-  var dinnerStart = new Date();
-  var dinnerEnd = new Date();
+  var dinnerStart = new Date(today.toISOString().substring(0,11)+dinnerTime.toISOString().substring(11));
+  var dinnerEnd = new Date(dinnerStart.getTime()+(1.5*hourUTC));
 
+  // arrays to hold events
+  var workouts = [];
+  var classes = [];
+
+  // Events
   var workoutDefault = {
    "kind": "calendar#event",
-   "etag": "\"2932415987422000\"",
-   "id": "ivpg3qgiiq4rdrmsdv28h2r9j8",
    "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=aXZwZzNxZ2lpcTRyZHJtc2R2MjhoMnI5ajhfMjAxNjA2MTNUMTMzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
    "created": today,
    "updated": today,
    "summary": "",
@@ -57,7 +58,7 @@ angular.module('brainbuild.services', [])
     "email": "brainbuildlabs@gmail.com"
    },
    "organizer": {
-    "email": calendarId,
+    "email": athlete.email,
     "displayName": title,
     "self": true
    },
@@ -79,192 +80,189 @@ angular.module('brainbuild.services', [])
    }
   };
 
-  var defaultEvents = createDefaultEvents(calendarId, title, timeZone, repeat);
-
-  function createDefaultEvents(calendarId, title, timeZone, repeat){    
-    var ourEmail = "bbprimtetime2016@gmail.com"
-
-    var breakfast = {
-     "kind": "calendar#event",
-     "etag": "\"2932407619732000\"",
-     "id": "2ug1mu2hsq2vo45jsqq71iovrk",
-     "status": "confirmed",
-     "htmlLink": "https://www.google.com/calendar/event?eid=MnVnMW11MmhzcTJ2bzQ1anNxcTcxaW92cmtfMjAxNjA2MThUMTYwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-     "created": today,
-     "updated": today,
-     "summary": "Have a great breakfast",
-     "colorId": "11",
-     "creator": {
-      "email": ourEmail
-     },
-     "organizer": {
-      "email": calendarId,
-      "displayName": title,
-      "self": true
-     },
-     "start": {
-      "dateTime": breakfastStart,
-      "timeZone": timeZone
-     },
-     "end": {
-      "dateTime": breakfastEnd,
-      "timeZone": timeZone
-     },
-     "recurrence": [
-      repeat
-     ],
-     "iCalUID": "2ug1mu2hsq2vo45jsqq71iovrk@google.com",
-     "sequence": 1,
-     "reminders": {
-      "useDefault": false,
-      "overrides": [
-       {
-        "method": "popup",
-        "minutes": 10
-       }
-      ]
+  var breakfast = {
+   "kind": "calendar#event",
+   "etag": "\"2932407619732000\"",
+   "id": "2ug1mu2hsq2vo45jsqq71iovrk",
+   "status": "confirmed",
+   "htmlLink": "https://www.google.com/calendar/event?eid=MnVnMW11MmhzcTJ2bzQ1anNxcTcxaW92cmtfMjAxNjA2MThUMTYwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+   "created": today,
+   "updated": today,
+   "summary": "Have a great breakfast",
+   "colorId": "11",
+   "creator": {
+    "email": ourEmail
+   },
+   "organizer": {
+    "email": calendarId,
+    "displayName": title,
+    "self": true
+   },
+   "start": {
+    "dateTime": breakfastStart,
+    "timeZone": timeZone
+   },
+   "end": {
+    "dateTime": breakfastEnd,
+    "timeZone": timeZone
+   },
+   "recurrence": [
+    repeat
+   ],
+   "iCalUID": "2ug1mu2hsq2vo45jsqq71iovrk@google.com",
+   "sequence": 1,
+   "reminders": {
+    "useDefault": false,
+    "overrides": [
+     {
+      "method": "popup",
+      "minutes": 10
      }
-    };
+    ]
+   }
+  };
 
-    var lunch = {
+  var lunch = {
 
-     "kind": "calendar#event",
-     "etag": "\"2932406872986000\"",
-     "id": "q2htgj934bcntmnkmmqdmbfdac",
-     "status": "confirmed",
-     "htmlLink": "https://www.google.com/calendar/event?eid=cTJodGdqOTM0YmNudG1ua21tcWRtYmZkYWNfMjAxNjA2MTNUMTkwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-     "created": today,
-     "updated": today,
-     "summary": "Best time to grab lunch",
-     "colorId": "11",
-     "creator": {
-      "email": ourEmail
-     },
-     "organizer": {
-      "email": calendarId,
-      "displayName": title,
-      "self": true
-     },
-     "start": {
-      "dateTime": lunchStart,
-      "timeZone": timeZone
-     },
-     "end": {
-      "dateTime": lunchEnd,
-      "timeZone": timeZone
-     },
-     "recurrence": [
-      repeat
-     ],
-     "iCalUID": "q2htgj934bcntmnkmmqdmbfdac@google.com",
-     "sequence": 0,
-     "reminders": {
-      "useDefault": false,
-      "overrides": [
-       {
-        "method": "popup",
-        "minutes": 10
-       }
-      ]
+   "kind": "calendar#event",
+   "etag": "\"2932406872986000\"",
+   "id": "q2htgj934bcntmnkmmqdmbfdac",
+   "status": "confirmed",
+   "htmlLink": "https://www.google.com/calendar/event?eid=cTJodGdqOTM0YmNudG1ua21tcWRtYmZkYWNfMjAxNjA2MTNUMTkwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+   "created": today,
+   "updated": today,
+   "summary": "Best time to grab lunch",
+   "colorId": "11",
+   "creator": {
+    "email": ourEmail
+   },
+   "organizer": {
+    "email": calendarId,
+    "displayName": title,
+    "self": true
+   },
+   "start": {
+    "dateTime": lunchStart,
+    "timeZone": timeZone
+   },
+   "end": {
+    "dateTime": lunchEnd,
+    "timeZone": timeZone
+   },
+   "recurrence": [
+    repeat
+   ],
+   "iCalUID": "q2htgj934bcntmnkmmqdmbfdac@google.com",
+   "sequence": 0,
+   "reminders": {
+    "useDefault": false,
+    "overrides": [
+     {
+      "method": "popup",
+      "minutes": 10
      }
-    };
+    ]
+   }
+  };
 
-    var snack = {
+  var snack = {
 
-     "kind": "calendar#event",
-     "etag": "\"2932408249055000\"",
-     "id": "kf01k5mc6iknoh0q655nbjia9o",
-     "status": "confirmed",
-     "htmlLink": "https://www.google.com/calendar/event?eid=a2YwMWs1bWM2aWtub2gwcTY1NW5iamlhOW9fMjAxNjA2MTNUMjIzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-     "created": today,
-     "updated": today,
-     "summary": "Snack if you feel hungry",
-     "colorId": "6",
-     "creator": {
-      "email": ourEmail
-     },
-     "organizer": {
-      "email": calendarId,
-      "displayName": title,
-      "self": true
-     },
-     "start": {
-      "dateTime": snackStart,
-      "timeZone": timeZone
-     },
-     "end": {
-      "dateTime": snackEnd,
-      "timeZone": timeZone
-     },
-     "recurrence": [
-      repeat
-     ],
-     "iCalUID": "kf01k5mc6iknoh0q655nbjia9o@google.com",
-     "sequence": 2,
-     "reminders": {
-      "useDefault": false,
-      "overrides": [
-       {
-        "method": "popup",
-        "minutes": 10
-       }
-      ]
+   "kind": "calendar#event",
+   "etag": "\"2932408249055000\"",
+   "id": "kf01k5mc6iknoh0q655nbjia9o",
+   "status": "confirmed",
+   "htmlLink": "https://www.google.com/calendar/event?eid=a2YwMWs1bWM2aWtub2gwcTY1NW5iamlhOW9fMjAxNjA2MTNUMjIzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+   "created": today,
+   "updated": today,
+   "summary": "Snack if you feel hungry",
+   "colorId": "6",
+   "creator": {
+    "email": ourEmail
+   },
+   "organizer": {
+    "email": calendarId,
+    "displayName": title,
+    "self": true
+   },
+   "start": {
+    "dateTime": snackStart,
+    "timeZone": timeZone
+   },
+   "end": {
+    "dateTime": snackEnd,
+    "timeZone": timeZone
+   },
+   "recurrence": [
+    repeat
+   ],
+   "iCalUID": "kf01k5mc6iknoh0q655nbjia9o@google.com",
+   "sequence": 2,
+   "reminders": {
+    "useDefault": false,
+    "overrides": [
+     {
+      "method": "popup",
+      "minutes": 10
      }
-    };
+    ]
+   }
+  };
 
-    var dinner = {
+  var dinner = {
 
-     "kind": "calendar#event",
-     "etag": "\"2932407057849000\"",
-     "id": "n6hgb056o0bccvtrgvf8k6esvk",
-     "status": "confirmed",
-     "htmlLink": "https://www.google.com/calendar/event?eid=bjZoZ2IwNTZvMGJjY3Z0cmd2ZjhrNmVzdmtfMjAxNjA2MTRUMDEzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-     "created": today,
-     "updated": today,  
-     "summary": "Time to eat dinner",
-     "colorId": "11",
-     "creator": {
-      "email": ourEmail
-     },
-     "organizer": {
-      "email": calendarId,
-      "displayName": title,
-      "self": true
-     },
-     "start": {
-      "dateTime": dinnerStart,
-      "timeZone": timeZone
-     },
-     "end": {
-      "dateTime": dinnerEnd,
-      "timeZone": timeZone
-     },
-     "recurrence": [
-      repeat
-     ],
-     "iCalUID": "n6hgb056o0bccvtrgvf8k6esvk@google.com",
-     "sequence": 1,
-     "reminders": {
-      "useDefault": false,
-      "overrides": [
-       {
-        "method": "popup",
-        "minutes": 10
-       }
-      ]
+   "kind": "calendar#event",
+   "etag": "\"2932407057849000\"",
+   "id": "n6hgb056o0bccvtrgvf8k6esvk",
+   "status": "confirmed",
+   "htmlLink": "https://www.google.com/calendar/event?eid=bjZoZ2IwNTZvMGJjY3Z0cmd2ZjhrNmVzdmtfMjAxNjA2MTRUMDEzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+   "created": today,
+   "updated": today,  
+   "summary": "Time to eat dinner",
+   "colorId": "11",
+   "creator": {
+    "email": ourEmail
+   },
+   "organizer": {
+    "email": calendarId,
+    "displayName": title,
+    "self": true
+   },
+   "start": {
+    "dateTime": dinnerStart,
+    "timeZone": timeZone
+   },
+   "end": {
+    "dateTime": dinnerEnd,
+    "timeZone": timeZone
+   },
+   "recurrence": [
+    repeat
+   ],
+   "iCalUID": "n6hgb056o0bccvtrgvf8k6esvk@google.com",
+   "sequence": 1,
+   "reminders": {
+    "useDefault": false,
+    "overrides": [
+     {
+      "method": "popup",
+      "minutes": 10
      }
-    }
+    ]
+   }
+  }
 
-    return {
-      athlete: function(){
-        return athlete;
-      },
-      defaultEvents: function(){
-        return [breakfast, lunch, snack, dinner];
-      },
-      defaultWorkout: function(){
-        return workoutDefault;
-      }
+  return {
+    athlete: function(){
+      return athlete;
+    },
+    defaultMeals: function(){
+      return [breakfast, lunch, snack, dinner];
+    },
+    defaultWorkout: function(){
+      return workoutDefault;
+    },
+    workouts: function(){
+      return workouts;
     }
   }
 
@@ -301,452 +299,451 @@ angular.module('brainbuild.services', [])
     "backgroundColor": "#4986e7",
     "foregroundColor": "#FFFFFF"
   }
-  var items = [
-  {
 
-   "kind": "calendar#event",
-   "etag": "\"2932403150755000\"",
-   "id": "g2ce3277956itmlpep0vfgmk64",
-   "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=ZzJjZTMyNzc5NTZpdG1scGVwMHZmZ21rNjRfMjAxNjA2MTNUMTIzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-   "created": "2016-06-17T22:12:55.000Z",
-   "updated": "2016-06-17T22:12:55.414Z",
-   "summary": "Grab a snack & hydrate",
-   "colorId": "6",
-   "creator": {
-    "email": "brainbuildlabs@gmail.com"
-   },
-   "organizer": {
-    "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
-    "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
-    "self": true
-   },
-   "start": {
-    "dateTime": "2016-06-13T05:30:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "end": {
-    "dateTime": "2016-06-13T06:30:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "recurrence": [
-    "RRULE:FREQ=WEEKLY;BYDAY=MO,WE,FR"
-   ],
-   "iCalUID": "g2ce3277956itmlpep0vfgmk64@google.com",
-   "sequence": 0,
-   "reminders": {
-    "useDefault": false,
-    "overrides": [
-     {
-      "method": "popup",
-      "minutes": 10
+  var otherEvents = [
+    {
+
+     "kind": "calendar#event",
+     "etag": "\"2932403150755000\"",
+     "id": "g2ce3277956itmlpep0vfgmk64",
+     "status": "confirmed",
+     "htmlLink": "https://www.google.com/calendar/event?eid=ZzJjZTMyNzc5NTZpdG1scGVwMHZmZ21rNjRfMjAxNjA2MTNUMTIzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+     "created": "2016-06-17T22:12:55.000Z",
+     "updated": "2016-06-17T22:12:55.414Z",
+     "summary": "Grab a snack & hydrate",
+     "colorId": "6",
+     "creator": {
+      "email": "brainbuildlabs@gmail.com"
+     },
+     "organizer": {
+      "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
+      "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
+      "self": true
+     },
+     "start": {
+      "dateTime": "2016-06-13T05:30:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "end": {
+      "dateTime": "2016-06-13T06:30:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "recurrence": [
+      "RRULE:FREQ=WEEKLY;BYDAY=MO,WE,FR"
+     ],
+     "iCalUID": "g2ce3277956itmlpep0vfgmk64@google.com",
+     "sequence": 0,
+     "reminders": {
+      "useDefault": false,
+      "overrides": [
+       {
+        "method": "popup",
+        "minutes": 10
+       }
+      ]
      }
-    ]
-   }
-  },
-  {
+    },
+    {
 
-   "kind": "calendar#event",
-   "etag": "\"2932404013448000\"",
-   "id": "99n1mj8qhfqh40k1rp9c0b47dk",
-   "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=OTluMW1qOHFoZnFoNDBrMXJwOWMwYjQ3ZGtfMjAxNjA2MTNUMTQzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-   "created": "2016-06-17T22:19:59.000Z",
-   "updated": "2016-06-17T22:20:13.943Z",
-   "summary": "Eat properly to recover",
-   "colorId": "6",
-   "creator": {
-    "email": "brainbuildlabs@gmail.com"
-   },
-   "organizer": {
-    "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
-    "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
-    "self": true
-   },
-   "start": {
-    "dateTime": "2016-06-13T07:30:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "end": {
-    "dateTime": "2016-06-13T08:30:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "recurrence": [
-    "RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
-   ],
-   "iCalUID": "99n1mj8qhfqh40k1rp9c0b47dk@google.com",
-   "sequence": 1,
-   "reminders": {
-    "useDefault": false,
-    "overrides": [
-     {
-      "method": "popup",
-      "minutes": 10
+     "kind": "calendar#event",
+     "etag": "\"2932404013448000\"",
+     "id": "99n1mj8qhfqh40k1rp9c0b47dk",
+     "status": "confirmed",
+     "htmlLink": "https://www.google.com/calendar/event?eid=OTluMW1qOHFoZnFoNDBrMXJwOWMwYjQ3ZGtfMjAxNjA2MTNUMTQzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+     "created": "2016-06-17T22:19:59.000Z",
+     "updated": "2016-06-17T22:20:13.943Z",
+     "summary": "Eat properly to recover",
+     "colorId": "6",
+     "creator": {
+      "email": "brainbuildlabs@gmail.com"
+     },
+     "organizer": {
+      "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
+      "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
+      "self": true
+     },
+     "start": {
+      "dateTime": "2016-06-13T07:30:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "end": {
+      "dateTime": "2016-06-13T08:30:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "recurrence": [
+      "RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+     ],
+     "iCalUID": "99n1mj8qhfqh40k1rp9c0b47dk@google.com",
+     "sequence": 1,
+     "reminders": {
+      "useDefault": false,
+      "overrides": [
+       {
+        "method": "popup",
+        "minutes": 10
+       }
+      ]
      }
-    ]
-   }
-  },
-  {
+    },
+    {
 
-   "kind": "calendar#event",
-   "etag": "\"2932404104617000\"",
-   "id": "snjjn8ei4gcj0rrls5io9t5jac",
-   "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=c25qam44ZWk0Z2NqMHJybHM1aW85dDVqYWNfMjAxNjA2MTRUMTMwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-   "created": "2016-06-17T22:20:32.000Z",
-   "updated": "2016-06-17T22:20:52.340Z",
-   "summary": "Grab a snack & hydrate",
-   "colorId": "6",
-   "creator": {
-    "email": "brainbuildlabs@gmail.com"
-   },
-   "organizer": {
-    "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
-    "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
-    "self": true
-   },
-   "start": {
-    "dateTime": "2016-06-14T06:00:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "end": {
-    "dateTime": "2016-06-14T07:00:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "recurrence": [
-    "RRULE:FREQ=WEEKLY;BYDAY=TU,TH"
-   ],
-   "iCalUID": "snjjn8ei4gcj0rrls5io9t5jac@google.com",
-   "sequence": 3,
-   "reminders": {
-    "useDefault": false,
-    "overrides": [
-     {
-      "method": "popup",
-      "minutes": 10
+     "kind": "calendar#event",
+     "etag": "\"2932404104617000\"",
+     "id": "snjjn8ei4gcj0rrls5io9t5jac",
+     "status": "confirmed",
+     "htmlLink": "https://www.google.com/calendar/event?eid=c25qam44ZWk0Z2NqMHJybHM1aW85dDVqYWNfMjAxNjA2MTRUMTMwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+     "created": "2016-06-17T22:20:32.000Z",
+     "updated": "2016-06-17T22:20:52.340Z",
+     "summary": "Grab a snack & hydrate",
+     "colorId": "6",
+     "creator": {
+      "email": "brainbuildlabs@gmail.com"
+     },
+     "organizer": {
+      "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
+      "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
+      "self": true
+     },
+     "start": {
+      "dateTime": "2016-06-14T06:00:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "end": {
+      "dateTime": "2016-06-14T07:00:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "recurrence": [
+      "RRULE:FREQ=WEEKLY;BYDAY=TU,TH"
+     ],
+     "iCalUID": "snjjn8ei4gcj0rrls5io9t5jac@google.com",
+     "sequence": 3,
+     "reminders": {
+      "useDefault": false,
+      "overrides": [
+       {
+        "method": "popup",
+        "minutes": 10
+       }
+      ]
      }
-    ]
-   }
-  },
-  {
+    },
+    {
 
-   "kind": "calendar#event",
-   "etag": "\"2932406941844000\"",
-   "id": "90ok5po1qdgbi3bc39ugisp7ks",
-   "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=OTBvazVwbzFxZGdiaTNiYzM5dWdpc3A3a3NfMjAxNjA2MThUMjAwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-   "created": "2016-06-17T22:44:30.000Z",
-   "updated": "2016-06-17T22:44:30.949Z",
-   "summary": "Eat properly to recover",
-   "colorId": "6",
-   "creator": {
-    "email": "brainbuildlabs@gmail.com"
-   },
-   "organizer": {
-    "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
-    "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
-    "self": true
-   },
-   "start": {
-    "dateTime": "2016-06-18T13:00:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "end": {
-    "dateTime": "2016-06-18T14:00:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "recurrence": [
-    "RRULE:FREQ=WEEKLY;BYDAY=SA"
-   ],
-   "iCalUID": "90ok5po1qdgbi3bc39ugisp7ks@google.com",
-   "sequence": 0,
-   "reminders": {
-    "useDefault": false,
-    "overrides": [
-     {
-      "method": "popup",
-      "minutes": 10
+     "kind": "calendar#event",
+     "etag": "\"2932406941844000\"",
+     "id": "90ok5po1qdgbi3bc39ugisp7ks",
+     "status": "confirmed",
+     "htmlLink": "https://www.google.com/calendar/event?eid=OTBvazVwbzFxZGdiaTNiYzM5dWdpc3A3a3NfMjAxNjA2MThUMjAwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+     "created": "2016-06-17T22:44:30.000Z",
+     "updated": "2016-06-17T22:44:30.949Z",
+     "summary": "Eat properly to recover",
+     "colorId": "6",
+     "creator": {
+      "email": "brainbuildlabs@gmail.com"
+     },
+     "organizer": {
+      "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
+      "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
+      "self": true
+     },
+     "start": {
+      "dateTime": "2016-06-18T13:00:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "end": {
+      "dateTime": "2016-06-18T14:00:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "recurrence": [
+      "RRULE:FREQ=WEEKLY;BYDAY=SA"
+     ],
+     "iCalUID": "90ok5po1qdgbi3bc39ugisp7ks@google.com",
+     "sequence": 0,
+     "reminders": {
+      "useDefault": false,
+      "overrides": [
+       {
+        "method": "popup",
+        "minutes": 10
+       }
+      ]
      }
-    ]
-   }
-  },
-  {
+    },
+    {
 
-   "kind": "calendar#event",
-   "etag": "\"2932407143629000\"",
-   "id": "hu68m97ntphdhjn7t4trp8jgo0",
-   "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=aHU2OG05N250cGhkaGpuN3Q0dHJwOGpnbzBfMjAxNjA2MTVUMDIwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-   "created": "2016-06-17T22:45:59.000Z",
-   "updated": "2016-06-17T22:46:11.848Z",
-   "summary": "Recover with dinner",
-   "colorId": "11",
-   "creator": {
-    "email": "brainbuildlabs@gmail.com"
-   },
-   "organizer": {
-    "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
-    "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
-    "self": true
-   },
-   "start": {
-    "dateTime": "2016-06-14T19:00:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "end": {
-    "dateTime": "2016-06-14T20:00:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "recurrence": [
-    "RRULE:FREQ=WEEKLY;BYDAY=TU,TH"
-   ],
-   "iCalUID": "hu68m97ntphdhjn7t4trp8jgo0@google.com",
-   "sequence": 1,
-   "reminders": {
-    "useDefault": false,
-    "overrides": [
-     {
-      "method": "popup",
-      "minutes": 10
+     "kind": "calendar#event",
+     "etag": "\"2932407143629000\"",
+     "id": "hu68m97ntphdhjn7t4trp8jgo0",
+     "status": "confirmed",
+     "htmlLink": "https://www.google.com/calendar/event?eid=aHU2OG05N250cGhkaGpuN3Q0dHJwOGpnbzBfMjAxNjA2MTVUMDIwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+     "created": "2016-06-17T22:45:59.000Z",
+     "updated": "2016-06-17T22:46:11.848Z",
+     "summary": "Recover with dinner",
+     "colorId": "11",
+     "creator": {
+      "email": "brainbuildlabs@gmail.com"
+     },
+     "organizer": {
+      "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
+      "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
+      "self": true
+     },
+     "start": {
+      "dateTime": "2016-06-14T19:00:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "end": {
+      "dateTime": "2016-06-14T20:00:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "recurrence": [
+      "RRULE:FREQ=WEEKLY;BYDAY=TU,TH"
+     ],
+     "iCalUID": "hu68m97ntphdhjn7t4trp8jgo0@google.com",
+     "sequence": 1,
+     "reminders": {
+      "useDefault": false,
+      "overrides": [
+       {
+        "method": "popup",
+        "minutes": 10
+       }
+      ]
      }
-    ]
-   }
-  },
-  {
+    },
+    {
 
-   "kind": "calendar#event",
-   "etag": "\"2932407380757000\"",
-   "id": "m1ih90r1l2e662o52sjjgafdo8",
-   "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=bTFpaDkwcjFsMmU2NjJvNTJzampnYWZkbzhfMjAxNjA2MTRUMjMzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-   "created": "2016-06-17T22:48:10.000Z",
-   "updated": "2016-06-17T22:48:10.416Z",
-   "summary": "Grab a snack & hydrate",
-   "colorId": "6",
-   "creator": {
-    "email": "brainbuildlabs@gmail.com"
-   },
-   "organizer": {
-    "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
-    "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
-    "self": true
-   },
-   "start": {
-    "dateTime": "2016-06-14T16:30:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "end": {
-    "dateTime": "2016-06-14T17:30:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "recurrence": [
-    "RRULE:FREQ=WEEKLY;BYDAY=TU,TH"
-   ],
-   "iCalUID": "m1ih90r1l2e662o52sjjgafdo8@google.com",
-   "sequence": 0,
-   "reminders": {
-    "useDefault": false,
-    "overrides": [
-     {
-      "method": "popup",
-      "minutes": 10
+     "kind": "calendar#event",
+     "etag": "\"2932407380757000\"",
+     "id": "m1ih90r1l2e662o52sjjgafdo8",
+     "status": "confirmed",
+     "htmlLink": "https://www.google.com/calendar/event?eid=bTFpaDkwcjFsMmU2NjJvNTJzampnYWZkbzhfMjAxNjA2MTRUMjMzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+     "created": "2016-06-17T22:48:10.000Z",
+     "updated": "2016-06-17T22:48:10.416Z",
+     "summary": "Grab a snack & hydrate",
+     "colorId": "6",
+     "creator": {
+      "email": "brainbuildlabs@gmail.com"
+     },
+     "organizer": {
+      "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
+      "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
+      "self": true
+     },
+     "start": {
+      "dateTime": "2016-06-14T16:30:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "end": {
+      "dateTime": "2016-06-14T17:30:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "recurrence": [
+      "RRULE:FREQ=WEEKLY;BYDAY=TU,TH"
+     ],
+     "iCalUID": "m1ih90r1l2e662o52sjjgafdo8@google.com",
+     "sequence": 0,
+     "reminders": {
+      "useDefault": false,
+      "overrides": [
+       {
+        "method": "popup",
+        "minutes": 10
+       }
+      ]
      }
-    ]
-   }
-  },
-  {
+    },
+    {
 
-   "kind": "calendar#event",
-   "etag": "\"2932414478693000\"",
-   "id": "sijj9cbimc09dqvjrefv495fm4",
-   "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=c2lqajljYmltYzA5ZHF2anJlZnY0OTVmbTRfMjAxNjA2MTNUMDQwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-   "created": "2016-06-17T23:47:01.000Z",
-   "updated": "2016-06-17T23:47:19.420Z",
-   "summary": "Sleep soon, you deserve it",
-   "colorId": "8",
-   "creator": {
-    "email": "brainbuildlabs@gmail.com"
-   },
-   "organizer": {
-    "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
-    "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
-    "self": true
-   },
-   "start": {
-    "dateTime": "2016-06-12T21:00:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "end": {
-    "dateTime": "2016-06-12T22:00:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "recurrence": [
-    "RRULE:FREQ=WEEKLY;BYDAY=SU,TU,TH"
-   ],
-   "iCalUID": "sijj9cbimc09dqvjrefv495fm4@google.com",
-   "sequence": 1,
-   "reminders": {
-    "useDefault": false,
-    "overrides": [
-     {
-      "method": "popup",
-      "minutes": 10
+     "kind": "calendar#event",
+     "etag": "\"2932414478693000\"",
+     "id": "sijj9cbimc09dqvjrefv495fm4",
+     "status": "confirmed",
+     "htmlLink": "https://www.google.com/calendar/event?eid=c2lqajljYmltYzA5ZHF2anJlZnY0OTVmbTRfMjAxNjA2MTNUMDQwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+     "created": "2016-06-17T23:47:01.000Z",
+     "updated": "2016-06-17T23:47:19.420Z",
+     "summary": "Sleep soon, you deserve it",
+     "colorId": "8",
+     "creator": {
+      "email": "brainbuildlabs@gmail.com"
+     },
+     "organizer": {
+      "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
+      "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
+      "self": true
+     },
+     "start": {
+      "dateTime": "2016-06-12T21:00:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "end": {
+      "dateTime": "2016-06-12T22:00:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "recurrence": [
+      "RRULE:FREQ=WEEKLY;BYDAY=SU,TU,TH"
+     ],
+     "iCalUID": "sijj9cbimc09dqvjrefv495fm4@google.com",
+     "sequence": 1,
+     "reminders": {
+      "useDefault": false,
+      "overrides": [
+       {
+        "method": "popup",
+        "minutes": 10
+       }
+      ]
      }
-    ]
-   }
-  },
-  {
+    },
+    {
 
-   "kind": "calendar#event",
-   "etag": "\"2932414545316000\"",
-   "id": "2gu22md5it3tumpqborjts5i0c",
-   "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=Mmd1MjJtZDVpdDN0dW1wcWJvcmp0czVpMGNfMjAxNjA2MTRUMDQzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-   "created": "2016-06-17T23:47:40.000Z",
-   "updated": "2016-06-17T23:47:52.685Z",
-   "summary": "Sleep soon, you deserve it",
-   "colorId": "8",
-   "creator": {
-    "email": "brainbuildlabs@gmail.com"
-   },
-   "organizer": {
-    "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
-    "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
-    "self": true
-   },
-   "start": {
-    "dateTime": "2016-06-13T21:30:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "end": {
-    "dateTime": "2016-06-13T22:30:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "recurrence": [
-    "RRULE:FREQ=WEEKLY;BYDAY=MO,WE"
-   ],
-   "iCalUID": "2gu22md5it3tumpqborjts5i0c@google.com",
-   "sequence": 1,
-   "reminders": {
-    "useDefault": false,
-    "overrides": [
-     {
-      "method": "popup",
-      "minutes": 10
+     "kind": "calendar#event",
+     "etag": "\"2932414545316000\"",
+     "id": "2gu22md5it3tumpqborjts5i0c",
+     "status": "confirmed",
+     "htmlLink": "https://www.google.com/calendar/event?eid=Mmd1MjJtZDVpdDN0dW1wcWJvcmp0czVpMGNfMjAxNjA2MTRUMDQzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+     "created": "2016-06-17T23:47:40.000Z",
+     "updated": "2016-06-17T23:47:52.685Z",
+     "summary": "Sleep soon, you deserve it",
+     "colorId": "8",
+     "creator": {
+      "email": "brainbuildlabs@gmail.com"
+     },
+     "organizer": {
+      "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
+      "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
+      "self": true
+     },
+     "start": {
+      "dateTime": "2016-06-13T21:30:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "end": {
+      "dateTime": "2016-06-13T22:30:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "recurrence": [
+      "RRULE:FREQ=WEEKLY;BYDAY=MO,WE"
+     ],
+     "iCalUID": "2gu22md5it3tumpqborjts5i0c@google.com",
+     "sequence": 1,
+     "reminders": {
+      "useDefault": false,
+      "overrides": [
+       {
+        "method": "popup",
+        "minutes": 10
+       }
+      ]
      }
-    ]
-   }
-  },
-  {
+    },
+    {
 
-   "kind": "calendar#event",
-   "etag": "\"2932416006186000\"",
-   "id": "5a8nv6npms6qojp675d7i496hg",
-   "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=NWE4bnY2bnBtczZxb2pwNjc1ZDdpNDk2aGdfMjAxNjA2MTRUMTQwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-   "created": "2016-06-17T22:09:05.000Z",
-   "updated": "2016-06-18T00:00:03.093Z",
-   "summary": "Run - Workout",
-   "colorId": "9",
-   "creator": {
-    "email": "brainbuildlabs@gmail.com"
-   },
-   "organizer": {
-    "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
-    "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
-    "self": true
-   },
-   "start": {
-    "dateTime": "2016-06-14T07:00:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "end": {
-    "dateTime": "2016-06-14T07:30:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "recurrence": [
-    "RRULE:FREQ=WEEKLY;BYDAY=TU,TH"
-   ],
-   "iCalUID": "5a8nv6npms6qojp675d7i496hg@google.com",
-   "sequence": 1,
-   "reminders": {
-    "useDefault": true
-   }
-  },
-  {
+     "kind": "calendar#event",
+     "etag": "\"2932416006186000\"",
+     "id": "5a8nv6npms6qojp675d7i496hg",
+     "status": "confirmed",
+     "htmlLink": "https://www.google.com/calendar/event?eid=NWE4bnY2bnBtczZxb2pwNjc1ZDdpNDk2aGdfMjAxNjA2MTRUMTQwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+     "created": "2016-06-17T22:09:05.000Z",
+     "updated": "2016-06-18T00:00:03.093Z",
+     "summary": "Run - Workout",
+     "colorId": "9",
+     "creator": {
+      "email": "brainbuildlabs@gmail.com"
+     },
+     "organizer": {
+      "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
+      "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
+      "self": true
+     },
+     "start": {
+      "dateTime": "2016-06-14T07:00:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "end": {
+      "dateTime": "2016-06-14T07:30:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "recurrence": [
+      "RRULE:FREQ=WEEKLY;BYDAY=TU,TH"
+     ],
+     "iCalUID": "5a8nv6npms6qojp675d7i496hg@google.com",
+     "sequence": 1,
+     "reminders": {
+      "useDefault": true
+     }
+    },
+    {
 
-   "kind": "calendar#event",
-   "etag": "\"2932416026818000\"",
-   "id": "rd1gg9nbfacu5njc7be62d4tu0",
-   "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=cmQxZ2c5bmJmYWN1NW5qYzdiZTYyZDR0dTBfMjAxNjA2MTVUMDAzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-   "created": "2016-06-17T22:09:56.000Z",
-   "updated": "2016-06-18T00:00:13.409Z",
-   "summary": "Basketball Drills - Practice",
-   "colorId": "9",
-   "creator": {
-    "email": "brainbuildlabs@gmail.com"
-   },
-   "organizer": {
-    "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
-    "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
-    "self": true
-   },
-   "start": {
-    "dateTime": "2016-06-14T17:30:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "end": {
-    "dateTime": "2016-06-14T19:00:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "recurrence": [
-    "RRULE:FREQ=WEEKLY;BYDAY=TU,TH"
-   ],
-   "iCalUID": "rd1gg9nbfacu5njc7be62d4tu0@google.com",
-   "sequence": 1,
-   "reminders": {
-    "useDefault": true
-   }
-  },
-  {
+     "kind": "calendar#event",
+     "etag": "\"2932416026818000\"",
+     "id": "rd1gg9nbfacu5njc7be62d4tu0",
+     "status": "confirmed",
+     "htmlLink": "https://www.google.com/calendar/event?eid=cmQxZ2c5bmJmYWN1NW5qYzdiZTYyZDR0dTBfMjAxNjA2MTVUMDAzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+     "created": "2016-06-17T22:09:56.000Z",
+     "updated": "2016-06-18T00:00:13.409Z",
+     "summary": "Basketball Drills - Practice",
+     "colorId": "9",
+     "creator": {
+      "email": "brainbuildlabs@gmail.com"
+     },
+     "organizer": {
+      "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
+      "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
+      "self": true
+     },
+     "start": {
+      "dateTime": "2016-06-14T17:30:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "end": {
+      "dateTime": "2016-06-14T19:00:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "recurrence": [
+      "RRULE:FREQ=WEEKLY;BYDAY=TU,TH"
+     ],
+     "iCalUID": "rd1gg9nbfacu5njc7be62d4tu0@google.com",
+     "sequence": 1,
+     "reminders": {
+      "useDefault": true
+     }
+    },
+    {
 
-   "kind": "calendar#event",
-   "etag": "\"2932416053862000\"",
-   "id": "dql21sph24crmj2ece0etd3548",
-   "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=ZHFsMjFzcGgyNGNybWoyZWNlMGV0ZDM1NDhfMjAxNjA2MThUMTgwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
-   "created": "2016-06-17T22:10:41.000Z",
-   "updated": "2016-06-18T00:00:26.931Z",
-   "summary": "Shooting Practice",
-   "colorId": "9",
-   "creator": {
-    "email": "brainbuildlabs@gmail.com"
-   },
-   "organizer": {
-    "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
-    "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
-    "self": true
-   },
-   "start": {
-    "dateTime": "2016-06-18T11:00:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "end": {
-    "dateTime": "2016-06-18T13:00:00-07:00",
-    "timeZone": "America/Los_Angeles"
-   },
-   "recurrence": [
-    "RRULE:FREQ=WEEKLY;BYDAY=SA"
-   ],
-   "iCalUID": "dql21sph24crmj2ece0etd3548@google.com",
-   "sequence": 1,
-   "reminders": {
-    "useDefault": true
-   }
-  }
- ]
-
- return defaultEvents;
+     "kind": "calendar#event",
+     "etag": "\"2932416053862000\"",
+     "id": "dql21sph24crmj2ece0etd3548",
+     "status": "confirmed",
+     "htmlLink": "https://www.google.com/calendar/event?eid=ZHFsMjFzcGgyNGNybWoyZWNlMGV0ZDM1NDhfMjAxNjA2MThUMTgwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
+     "created": "2016-06-17T22:10:41.000Z",
+     "updated": "2016-06-18T00:00:26.931Z",
+     "summary": "Shooting Practice",
+     "colorId": "9",
+     "creator": {
+      "email": "brainbuildlabs@gmail.com"
+     },
+     "organizer": {
+      "email": "jomvtmlvotsh0i384c197easps@group.calendar.google.com",
+      "displayName": "Taylor Tanita - UCSD Women's Basketball (Brainbuild)",
+      "self": true
+     },
+     "start": {
+      "dateTime": "2016-06-18T11:00:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "end": {
+      "dateTime": "2016-06-18T13:00:00-07:00",
+      "timeZone": "America/Los_Angeles"
+     },
+     "recurrence": [
+      "RRULE:FREQ=WEEKLY;BYDAY=SA"
+     ],
+     "iCalUID": "dql21sph24crmj2ece0etd3548@google.com",
+     "sequence": 1,
+     "reminders": {
+      "useDefault": true
+     }
+    }
+   ]
 })
