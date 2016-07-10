@@ -1,5 +1,5 @@
 angular.module('brainbuild.controllers', [])
-.controller('LoginCtrl', function($scope, auth, store, $state) {
+.controller('LoginCtrl', function($scope, auth, store, $state, $ionicLoading) {
   function doAuth() {
     auth.signin({
       closable: false,
@@ -30,6 +30,10 @@ angular.module('brainbuild.controllers', [])
   // auth.show({
   //   socialBigButtons: true
   // });
+
+  if($ionicLoading){
+    $ionicLoading.hide();
+  }
 
   doAuth();
 })
@@ -191,14 +195,23 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('ListCtrl', function($scope, $state, GoogleEvents, $ionicLoading){
+  // scope variables
   $scope.athlete = GoogleEvents.athlete();
   $scope.meals = GoogleEvents.defaultMeals();
   $scope.workout = GoogleEvents.defaultWorkout();
   $scope.workouts = GoogleEvents.workouts();
+  $scope.classes = GoogleEvents.classes();
+  $scope.events = [];
 
-  var response = 0;
+  // other variables
+  var responses = 0;
   var person = JSON.parse(localStorage.getItem('profile'));
   var token = person['identities'][0]['access_token'];
+  var header = new Headers();
+  header.append("Content-Type", "application/json");
+  var brainbuild = {
+    summary: $scope.athlete.fullName+" - "+$scope.athlete.school+" "+$scope.athlete.sport+" (Brainbuild)"
+  };
   var calendarId = $scope.athlete.email;
 
   $scope.generateSchedule = function() {
@@ -207,7 +220,22 @@ angular.module('brainbuild.controllers', [])
 
   function openTheFloodGates(){
     $ionicLoading.show()
-    closeTheFloodGates();
+
+    // update meals, place all events in one array
+    allGoRhythm();
+
+    // store events array locally
+    // localStorage.events = $scope.meals;
+
+    insertCalendar();
+  }
+
+  function allGoRhythm(){
+    // create meals from workouts based on the days they occur
+    // update the repeat of the default meals
+
+    // concat all these into $scope.events
+    $scope.events = $scope.meals
   }
 
   function closeTheFloodGates(){
@@ -218,13 +246,6 @@ angular.module('brainbuild.controllers', [])
   }
   
   function insertCalendar(){
-    var brainbuild = {
-      summary: $scope.athlete.fullName+" - "+$scope.athlete.school+" "+$scope.athlete.sport+" (Brainbuild)"
-    };
-
-    var header = new Headers();
-    header.append("Content-Type", "application/json");
-
     fetch('https://www.googleapis.com/calendar/v3/calendars?access_token='+token, {
       method: "POST",
       headers: header,
@@ -236,6 +257,7 @@ angular.module('brainbuild.controllers', [])
                 .then(function(data) {
                     console.log(data);
                     calendarId = data.id;
+                    console.log(calendarId);
                     postEvents();
                 })
                 .catch(function(parseErr) {
@@ -262,27 +284,28 @@ angular.module('brainbuild.controllers', [])
   }
 
   function postEvents(){
-    for(var i = 0; i < $scope.workouts.length; i++){
-      $scope.workouts[i].organizer.email = calendarId;
-    }
-    $scope.events = $scope.events.concat($scope.workouts);
-    $scope.events = $scope.events.concat($scope.snacks);
-    console.log($scope.events); 
+    // for(var i = 0; i < $scope.workouts.length; i++){
+    //   $scope.workouts[i].organizer.email = calendarId;
+    // }
+    // $scope.events = $scope.events.concat($scope.workouts);
+    // $scope.events = $scope.events.concat($scope.snacks);
+    // console.log($scope.events); 
+
+    // closeTheFloodGates();
 
     for(i = 0; i < $scope.events.length; i++){
-      postGAPI(i);
+      postGAPI($scope.events[i]);
     }
+
+    // closeTheFloodGates();
   }
 
 
-  function postGAPI(i) {
-    var header = new Headers();
-    header.append("Content-Type", "application/json");
-
+  function postGAPI(event) {
     fetch('https://www.googleapis.com/calendar/v3/calendars/'+calendarId+'/events?access_token='+token, {
       method: "POST",
       headers: header,
-      body: JSON.stringify($scope.events[i]),
+      body: JSON.stringify(event),
     })
     .then(function(res) {
         if (res.status === 200) {
@@ -290,11 +313,11 @@ angular.module('brainbuild.controllers', [])
                 .then(function(data) {
                     console.log(data);
 
-                    responses++
-                    console.log(responses);
-                    if(responses == $scope.events.length){
-                      hideSpinner();
-                    }
+                    // responses++
+                    // console.log(responses);
+                    // if(responses == $scope.events.length){
+                      // closeTheFloodGates();
+                    // }
                 })
                 .catch(function(parseErr) {
                     console.error(parseErr);

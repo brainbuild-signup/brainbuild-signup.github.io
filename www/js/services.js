@@ -30,16 +30,16 @@ angular.module('brainbuild.services', [])
   var dinnerTime = new Date("1993-06-17T18:30:00");
 
   // And their date objects
-  var breakfastStart = new Date(today.toISOString().substring(0,11)+breakfastTime.toISOString().substring(11));
+  var breakfastStart = new Date(today.toISOString().substring(0,11)+breakfastTime.toISOString().substring(11,19));
   var breakfastEnd = new Date(breakfastStart.getTime()+hourUTC);
 
-  var lunchStart = new Date(today.toISOString().substring(0,11)+lunchTime.toISOString().substring(11));
+  var lunchStart = new Date(today.toISOString().substring(0,11)+lunchTime.toISOString().substring(11,19));
   var lunchEnd = new Date(lunchStart.getTime()+hourUTC);
 
-  var snackStart = new Date(today.toISOString().substring(0,11)+snackTime.toISOString().substring(11));
+  var snackStart = new Date(today.toISOString().substring(0,11)+snackTime.toISOString().substring(11,19));
   var snackEnd = new Date(snackStart.getTime()+hourUTC);
 
-  var dinnerStart = new Date(today.toISOString().substring(0,11)+dinnerTime.toISOString().substring(11));
+  var dinnerStart = new Date(today.toISOString().substring(0,11)+dinnerTime.toISOString().substring(11,19));
   var dinnerEnd = new Date(dinnerStart.getTime()+(1.5*hourUTC));
 
   // arrays to hold events
@@ -251,9 +251,19 @@ angular.module('brainbuild.services', [])
    }
   }
 
+  // if(localStorage.events){
+  //   var events = localStorage.events;
+  // }
+  // else{
+
+  // }
+
   return {
     athlete: function(){
       return athlete;
+    },
+    classes: function(){
+      return classes;
     },
     defaultMeals: function(){
       return [breakfast, lunch, snack, dinner];
