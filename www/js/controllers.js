@@ -101,20 +101,17 @@ angular.module('brainbuild.controllers', [])
   var returnedCals = 0;
 
   function processCalendars(data){
-    console.log(data);
     for(var i = 0; i < data.items.length; i++){
       listACL(data.items[i].accessRole, data.items[i].id)
     }
   }
 
   function listACL(role, calendarId){
-    console.log(calendarId);
     if(!(role == 'owner')){
       return;
     }
     else {
       sentCals++;
-      console.log(sentCals);
       fetch('https://www.googleapis.com/calendar/v3/calendars/'+calendarId+'/acl?access_token='+token, {
         method: 'GET',
         headers: header,
@@ -158,17 +155,16 @@ angular.module('brainbuild.controllers', [])
   var ourEmail = "user:brainbuildlabs@gmail.com";
 
   function checkACL(calendarId, data){
-    console.log(calendarId);
     for(var i = 0; i < data.items.length; i++){
       if(data.items[i].id == ourEmail){
         ours.push(calendarId);
       }
     }
     if(ours.length > 0){
-      $state.go('wait');
+      console.log("state.go('wait')");
+      // $state.go('wait');
     }
   }
-
 })
 
 .controller('WaitCtrl', function ($scope, $state){
@@ -221,7 +217,7 @@ angular.module('brainbuild.controllers', [])
   function openTheFloodGates(){
     $ionicLoading.show()
 
-    // update meals, place all events in one array
+    // update meals (all based on Z)
     allGoRhythm();
 
     // store events array locally
@@ -316,7 +312,7 @@ angular.module('brainbuild.controllers', [])
                     // responses++
                     // console.log(responses);
                     // if(responses == $scope.events.length){
-                      // closeTheFloodGates();
+                    closeTheFloodGates();
                     // }
                 })
                 .catch(function(parseErr) {
