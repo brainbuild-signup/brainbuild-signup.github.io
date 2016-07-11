@@ -12,11 +12,11 @@ angular.module('brainbuild.controllers', [])
       store.set('profile', profile);
       store.set('token', idToken);
       store.set('refreshToken', refreshToken);
-      if(localStorage.workouts){
+      if(localStorage.calendarId){
         $state.go('welcome');
       }
       else {
-        $state.go('welcome');
+        $state.go('list');
       }
     }, function(error) {
       console.log("There was an error logging in", error);
@@ -60,6 +60,8 @@ angular.module('brainbuild.controllers', [])
   };
 
   $scope.addProfile = function() {
+    console.log($scope.athlete.timeZone);
+
     switch($scope.athlete.timeZone){
       case "Pacific Time Zone":
         $scope.athlete.tzOffset = 7*hourUTC;
@@ -82,7 +84,7 @@ angular.module('brainbuild.controllers', [])
     };
     console.log($scope.athlete.tzOffset);
 
-    $state.go('workout');
+    $state.go('list');
   }
 
   listCalendars();
@@ -110,7 +112,11 @@ angular.module('brainbuild.controllers', [])
                 .then(function(data) {
                     console.log('not 200', data);
                     if (data.error.code === 401){
-                      $state.go('login');
+                      auth.signout();
+                      store.remove('token');
+                      store.remove('profile');
+                      store.remove('refreshToken');
+                      $state.go('login', {}, {reload: true});
                     }
                 })
                 .catch(function(parseErr) {
@@ -162,7 +168,11 @@ angular.module('brainbuild.controllers', [])
                   .then(function(data) {
                       console.warn(calendarId);
                       if (data.error.code === 401){
-                        $state.go('login');
+                        auth.signout();
+                        store.remove('token');
+                        store.remove('profile');
+                        store.remove('refreshToken');
+                        $state.go('login', {}, {reload: true});
                       }
                   })
                   .catch(function(parseErr) {
@@ -249,7 +259,24 @@ angular.module('brainbuild.controllers', [])
     // store events array locally
     // localStorage.events = $scope.meals;
 
+    // delete previoues calendar (if there is one)
+    if(localStorage.calendarId){
+      console.log(localStorage.calendarId);
+      deleteCalendar();
+    }
+
+    // post to new calendar to GCal
     insertCalendar();
+
+    // close spinner
+    closeTheFloodGates();
+  }
+
+  function closeTheFloodGates(){
+    setTimeout(function(){ 
+      $ionicLoading.hide();
+      // $state.go('done');
+    }, 3000);
   }
 
   function allGoRhythm(){
@@ -257,16 +284,52 @@ angular.module('brainbuild.controllers', [])
     // update the repeat of the default meals
 
     // concat all these into $scope.events
-    $scope.events = $scope.meals
+    $scope.events = angular.copy($scope.meals);
+
+    // setTimeZone
+    // setTimeZone();
   }
 
-  function closeTheFloodGates(){
-    setTimeout(function(){ 
-      $ionicLoading.hide();
-      $state.go('done');
-    }, 3000);
+  function setTimeZone(){
+    for(i = 0; i < $scope.events.length; i++){
+      $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+$scope.athlete.tzOffset);
+      $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+$scope.athlete.tzOffset);
+    }
   }
   
+  function deleteCalendar(){
+    fetch('https://www.googleapis.com/calendar/v3/calendars/'+localStorage.getItem('calendarId')+'?access_token='+token, {
+      method: "DELETE",
+      // headers: header,
+      // body: JSON.stringify(brainbuild),
+    })
+    .then(function(res) {
+        if (res.status === 204) {
+          console.log(res);
+          localStorage.removeItem("calendarId");
+        } else {
+            console.error(res); // comes back but not HTTP 200
+            res.json()
+                .then(function(data) {
+                    console.log('not 204', data);
+                    if (data.error.code === 401){
+                      auth.signout();
+                      store.remove('token');
+                      store.remove('profile');
+                      store.remove('refreshToken');
+                      $state.go('login', {}, {reload: true});
+                    }
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        }
+      })
+    .catch(function(err) {
+        console.error('network error');
+    });
+  }
+
   function insertCalendar(){
     fetch('https://www.googleapis.com/calendar/v3/calendars?access_token='+token, {
       method: "POST",
@@ -279,6 +342,7 @@ angular.module('brainbuild.controllers', [])
                 .then(function(data) {
                     console.log(data);
                     calendarId = data.id;
+                    localStorage.calendarId = calendarId;
                     console.log(calendarId);
                     postEvents();
                 })
@@ -292,7 +356,11 @@ angular.module('brainbuild.controllers', [])
                 .then(function(data) {
                     console.log('not 200', data);
                     if (data.error.code === 401){
-                      $state.go('login');
+                      auth.signout();
+                      store.remove('token');
+                      store.remove('profile');
+                      store.remove('refreshToken');
+                      $state.go('login', {}, {reload: true});
                     }
                 })
                 .catch(function(parseErr) {
@@ -316,6 +384,13 @@ angular.module('brainbuild.controllers', [])
     // closeTheFloodGates();
 
     for(i = 0; i < $scope.events.length; i++){
+      $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+$scope.athlete.tzOffset);
+      $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+$scope.athlete.tzOffset);
+      var tzOffsetCurrent = ($scope.events[0].start.dateTime.getTimezoneOffset()/60)*hourUTC;
+      if(tzOffsetCurrent < 0){
+        $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()-(24*hourUTC));
+        $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()-(24*hourUTC));
+      }
       postGAPI($scope.events[i]);
     }
 
@@ -338,7 +413,7 @@ angular.module('brainbuild.controllers', [])
                     // responses++
                     // console.log(responses);
                     // if(responses == $scope.events.length){
-                    closeTheFloodGates();
+                    // closeTheFloodGates();
                     // }
                 })
                 .catch(function(parseErr) {
@@ -350,7 +425,11 @@ angular.module('brainbuild.controllers', [])
                 .then(function(data) {
                     console.log('not 200', data);
                     if (data.error.code === 401){
-                      $state.go('login');
+                      auth.signout();
+                      store.remove('token');
+                      store.remove('profile');
+                      store.remove('refreshToken');
+                      $state.go('login', {}, {reload: true});
                     }
                 })
                 .catch(function(parseErr) {

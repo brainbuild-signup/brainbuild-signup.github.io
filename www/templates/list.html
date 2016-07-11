@@ -1,19 +1,19 @@
-<ion-view title="Edit Schedule" hide-nav-bar="true" hide-back-button="true" id="page7" class=" ">
+<ion-view title="Edit" hide-nav-bar="true" hide-back-button="true" id="page7" class=" ">
     <ion-content padding="true" class="manual-ios-statusbar-padding">
         <div class="list card " id="editEvents-card7">
             <div class="item item-body">
                 <div>
                     <div>
-                        <div class="bold center title  title-margin">Edit Schedule</div>
+                        <div class="bold center title  title-margin">What's Good {{athlete.fullName}}?</div>
 
                         <div class="center">
-                            Make sure you add all your recurring workouts and class events for this semester.
+                            Make sure you add all your recurring {{athlete.sport}} workouts and {{athlete.school}} classes for this semester. 
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="list card " id="editEvents-card10">
+        <!-- <div class="list card " id="editEvents-card10">
             <div class="item item-body">
                 <div>
                     <div>
@@ -29,11 +29,10 @@
                     </div>
                 </div>
                 <div id="editEvents-button-bar9" class=" button-bar ">
-                    <!-- <button id="editEvents-button15" class=" button button-dark  button-block button-outline icon ion-edit "></button> -->
                     <button id="editEvents-button16" class=" button button-dark  button-block button-outline icon ion-android-delete "></button>
                 </div>
             </div>
-        </div>
+        </div> -->
         <a ui-sref="workout" id="editEvents-button10" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Workout</a>
         <a ui-sref="class" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Class</a>
         <a ui-sref="welcome" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Edit Profile</a>

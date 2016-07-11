@@ -1,4 +1,4 @@
-<ion-view title="Intro" hide-nav-bar="true" id="page21" class=" ">
+<ion-view title="Welcome" hide-nav-bar="true" id="page21" class=" ">
     <ion-content padding="true" class="manual-ios-statusbar-padding">
         <div class="spacer" style="width: 300px; height: 4px;"></div>
         <div class="item item-body " id="onboardingIntro-list-item-container3">
@@ -35,7 +35,7 @@
         <form id="onboardingIntro-form14" class="list ">
             <label class="item item-select " id="onboardingIntro-select6">
                 <span class="input-label">Sport</span>
-                <select>
+                <select ng-model="athlete.sport">
                     <option>Baseball</option>
                     <option>Field Hockey</option>
                     <option>Football</option>
@@ -45,7 +45,7 @@
         <form id="onboardingIntro-form15" class="list ">
             <label class="item item-select " id="onboardingIntro-select8">
                 <span class="input-label">Time Zone</span>
-                <select>
+                <select ng-model="athlete.timeZone">
                     <option>Pacific Time Zone</option>
                     <option>Mountain Time Zone</option>
                     <option>Central Time Zone</option>
