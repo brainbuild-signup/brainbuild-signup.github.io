@@ -3,14 +3,23 @@ angular.module('brainbuild.services', [])
 .factory('GoogleEvents', function(){
   var today = new Date();
   var timeZone = "America/Los_Angeles";
-  var repeat = "RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA";
+  var repeatAllFalse = "RRULE:FREQ=WEEKLY;BYDAY=";
+  var repeatAllTrue = "RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA";
+  var allFalse = "[ { text: 'SUN', checked: false }, { text: 'MON', checked: false }, { text: 'TUE', checked: false }, { text: 'WED', checked: false }, { text: 'THU', checked: false }, { text: 'FRI', checked: false }, { text: 'SAT', checked: false } ]";
+  var allTrue = "[ { text: 'SUN', checked: true }, { text: 'MON', checked: true }, { text: 'TUE', checked: true }, { text: 'WED', checked: true }, { text: 'THU', checked: true }, { text: 'FRI', checked: true }, { text: 'SAT', checked: true } ]";
+
+  // date parsing
+  today.setUTCMinutes(0,0,0);
+  var hourUTC = 3600000;
+  var hourLater = new Date(today.getTime()+hourUTC);
 
   var athlete = {
     fullName: "Bo Jackson",
     school: "San Jose State University",
     sport: "Baseball",
     timeZone: "Pacific Time Zone",
-    email: "exercisetime2016@gmail.com"
+    email: "exercisetime2016@gmail.com",
+    tzOffset: 7*hourUTC
   };
 
   // Default data
@@ -18,10 +27,6 @@ angular.module('brainbuild.services', [])
   var calendarId = "jomvtmlvotsh0i384c197easps@group.calendar.google.com";
   var ourEmail = "bbprimtetime2016@gmail.com";
 
-  // date parsing
-  today.setUTCMinutes(0,0,0);
-  var hourUTC = 3600000;
-  var hourLater = new Date(today.getTime()+hourUTC);
 
   // meal defaults
   var breakfastTime = new Date("1993-06-17T09:00:00");
@@ -48,6 +53,7 @@ angular.module('brainbuild.services', [])
 
   // Events
   var workoutDefault = {
+
    "kind": "calendar#event",
    "status": "confirmed",
    "created": today,
@@ -55,7 +61,7 @@ angular.module('brainbuild.services', [])
    "summary": "",
    "colorId": "9",
    "creator": {
-    "email": "brainbuildlabs@gmail.com"
+    "email": ourEmail
    },
    "organizer": {
     "email": athlete.email,
@@ -71,21 +77,20 @@ angular.module('brainbuild.services', [])
     "timeZone": timeZone
    },
    "recurrence": [
-    repeat
+    repeatAllFalse
    ],
-   "iCalUID": "ivpg3qgiiq4rdrmsdv28h2r9j8@google.com",
    "sequence": 1,
    "reminders": {
     "useDefault": true
-   }
+   },
+   "description": allFalse,
+
   };
 
   var breakfast = {
+
    "kind": "calendar#event",
-   "etag": "\"2932407619732000\"",
-   "id": "2ug1mu2hsq2vo45jsqq71iovrk",
    "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=MnVnMW11MmhzcTJ2bzQ1anNxcTcxaW92cmtfMjAxNjA2MThUMTYwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
    "created": today,
    "updated": today,
    "summary": "Have a great breakfast",
@@ -107,9 +112,8 @@ angular.module('brainbuild.services', [])
     "timeZone": timeZone
    },
    "recurrence": [
-    repeat
+    repeatAllTrue
    ],
-   "iCalUID": "2ug1mu2hsq2vo45jsqq71iovrk@google.com",
    "sequence": 1,
    "reminders": {
     "useDefault": false,
@@ -119,16 +123,15 @@ angular.module('brainbuild.services', [])
       "minutes": 10
      }
     ]
-   }
+   },
+   "description": allTrue,
+
   };
 
   var lunch = {
 
    "kind": "calendar#event",
-   "etag": "\"2932406872986000\"",
-   "id": "q2htgj934bcntmnkmmqdmbfdac",
    "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=cTJodGdqOTM0YmNudG1ua21tcWRtYmZkYWNfMjAxNjA2MTNUMTkwMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
    "created": today,
    "updated": today,
    "summary": "Best time to grab lunch",
@@ -150,9 +153,8 @@ angular.module('brainbuild.services', [])
     "timeZone": timeZone
    },
    "recurrence": [
-    repeat
+    repeatAllTrue
    ],
-   "iCalUID": "q2htgj934bcntmnkmmqdmbfdac@google.com",
    "sequence": 0,
    "reminders": {
     "useDefault": false,
@@ -162,16 +164,15 @@ angular.module('brainbuild.services', [])
       "minutes": 10
      }
     ]
-   }
+   },
+   "description": allTrue,
+
   };
 
   var snack = {
 
    "kind": "calendar#event",
-   "etag": "\"2932408249055000\"",
-   "id": "kf01k5mc6iknoh0q655nbjia9o",
    "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=a2YwMWs1bWM2aWtub2gwcTY1NW5iamlhOW9fMjAxNjA2MTNUMjIzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
    "created": today,
    "updated": today,
    "summary": "Snack if you feel hungry",
@@ -193,9 +194,8 @@ angular.module('brainbuild.services', [])
     "timeZone": timeZone
    },
    "recurrence": [
-    repeat
+    repeatAllTrue
    ],
-   "iCalUID": "kf01k5mc6iknoh0q655nbjia9o@google.com",
    "sequence": 2,
    "reminders": {
     "useDefault": false,
@@ -205,16 +205,15 @@ angular.module('brainbuild.services', [])
       "minutes": 10
      }
     ]
-   }
+   },
+   "description": allTrue,
+
   };
 
   var dinner = {
 
    "kind": "calendar#event",
-   "etag": "\"2932407057849000\"",
-   "id": "n6hgb056o0bccvtrgvf8k6esvk",
    "status": "confirmed",
-   "htmlLink": "https://www.google.com/calendar/event?eid=bjZoZ2IwNTZvMGJjY3Z0cmd2ZjhrNmVzdmtfMjAxNjA2MTRUMDEzMDAwWiBqb212dG1sdm90c2gwaTM4NGMxOTdlYXNwc0Bn",
    "created": today,
    "updated": today,  
    "summary": "Time to eat dinner",
@@ -236,9 +235,8 @@ angular.module('brainbuild.services', [])
     "timeZone": timeZone
    },
    "recurrence": [
-    repeat
+    repeatAllTrue
    ],
-   "iCalUID": "n6hgb056o0bccvtrgvf8k6esvk@google.com",
    "sequence": 1,
    "reminders": {
     "useDefault": false,
@@ -248,7 +246,9 @@ angular.module('brainbuild.services', [])
       "minutes": 10
      }
     ]
-   }
+   },
+   "description": allTrue,
+
   }
 
   // if(localStorage.events){

@@ -59,6 +59,32 @@ angular.module('brainbuild.controllers', [])
     $state.go('login', {}, {reload: true});
   };
 
+  $scope.addProfile = function() {
+    switch($scope.athlete.timeZone){
+      case "Pacific Time Zone":
+        $scope.athlete.tzOffset = 7*hourUTC;
+        break;
+      case "Mountain Time Zone":
+        $scope.athlete.tzOffset = 6*hourUTC;
+        break;
+      case "Central Time Zone":
+        $scope.athlete.tzOffset = 5*hourUTC;
+        break;
+      case "Eastern Time Zone":
+        $scope.athlete.tzOffset = 4*hourUTC;
+        break;
+      case "Alaskan Time Zone":
+        $scope.athlete.tzOffset = 8*hourUTC;
+        break;
+      case "Hawaiian Time Zone":
+        $scope.athlete.tzOffset = 10*hourUTC;
+        break;
+    };
+    console.log($scope.athlete.tzOffset);
+
+    $state.go('workout');
+  }
+
   listCalendars();
 
   // calendar list retrieval
