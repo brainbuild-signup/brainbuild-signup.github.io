@@ -51,6 +51,11 @@ angular.module('brainbuild.controllers', [])
   $scope.athlete.email = person.email;
   $scope.athlete.picture = person.picture;
 
+  Smooch.updateUser({
+      givenName: person.name,
+      email: person.email
+  })
+
   $scope.logout = function() {
     auth.signout();
     store.remove('token');
