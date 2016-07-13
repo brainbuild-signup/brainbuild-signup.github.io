@@ -12,12 +12,7 @@ angular.module('brainbuild.controllers', [])
       store.set('profile', profile);
       store.set('token', idToken);
       store.set('refreshToken', refreshToken);
-      if(localStorage.calendarId){
-        $state.go('welcome');
-      }
-      else {
-        $state.go('list');
-      }
+      $state.go('welcome');
     }, function(error) {
       console.log("There was an error logging in", error);
     });
@@ -209,24 +204,28 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('WaitCtrl', function ($scope, $state){
-
 })
 
 .controller('WorkoutCtrl', function($scope, $state, GoogleEvents){
-  // get the Time Zone
   $scope.athlete = GoogleEvents.athlete();
   $scope.workout = GoogleEvents.defaultWorkout();
-  $scope.workouts = GoogleEvents.workouts();
+  $scope.events = GoogleEvents.events();
 
   $scope.addWorkout = function(){
     //add event to stack
-    $scope.workouts.push(angular.copy($scope.workout)); 
+    $scope.events.push(angular.copy($scope.workout)); 
     $state.go('list');
   }
 })
 
 .controller('ClassCtrl', function($scope, $state, GoogleEvents){
-  $scope.addClass = function(){
+  $scope.athlete = GoogleEvents.athlete();
+  $scope.class = GoogleEvents.defaultWorkout();
+  $scope.events = GoogleEvents.events();
+
+  $scope.addWorkout = function(){
+    //add event to stack
+    $scope.events.push(angular.copy($scope.class)); 
     $state.go('list');
   }
 })

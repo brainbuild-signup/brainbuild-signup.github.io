@@ -16,17 +16,17 @@
             <div class="spacer" style="width: 300px; height: 17px;"></div>
             <label class="item item-input " id="onboardingClasses-input26">
                 <span class="input-label">Title</span>
-                <input type="text" placeholder="">
+                <input type="text" ng-model="class.summary" placeholder="i.e. Math 121, Psych 101">
             </label>
         </form>
         <form id="onboardingClasses-form24" class="list ">
             <label class="item item-input " id="onboardingClasses-input27">
                 <span class="input-label">Start time</span>
-                <input type="time" placeholder="">
+                <input type="time" ng-model="class.start.dateTime" placeholder="">
             </label>
             <label class="item item-input " id="onboardingClasses-input28">
                 <span class="input-label">End time</span>
-                <input type="time" placeholder="">
+                <input type="time" ng-model="class.end.dateTime" placeholder="">
             </label>
             <h3 id="onboardingClasses-heading6" style="color:#FF3800;text-align:center;" class=" ">Repeats</h3>
         </form>
@@ -38,16 +38,6 @@
             <ion-toggle toggle-class="toggle-assertive" id="onboardingClasses-toggle27" class=" eventrepeats">THU</ion-toggle>
             <ion-toggle toggle-class="toggle-assertive" id="onboardingClasses-toggle28" class=" eventrepeats">FRI</ion-toggle>
             <ion-toggle toggle-class="toggle-assertive" id="onboardingClasses-toggle29" class=" eventrepeats">SAT</ion-toggle>
-        </form>
-        <form id="onboardingClasses-form26" class="list ">
-            <label class="item item-input " id="onboardingClasses-input29">
-                <span class="input-label">Start date</span>
-                <input type="date" placeholder="">
-            </label>
-            <label class="item item-input " id="onboardingClasses-input30">
-                <span class="input-label">End date</span>
-                <input type="date" placeholder="">
-            </label>
         </form>
         <div id="onboardingClasses-button-bar12" class=" button-bar ">
             <a ui-sref="list" id="onboardingClasses-button59" class=" button button-assertive  button-block ">Ignore</a>

@@ -13,6 +13,13 @@ angular.module('brainbuild.services', [])
   var title = athlete.fullName+" - "+athlete.school+" "+athlete.sport+" (Brainbuild)";
 
   // Events
+  if(localStorage.events){
+    var events = localStorage.events;
+  }
+  else {
+    var events = [];
+  }
+
   var workoutDefault = {
 
    "kind": "calendar#event",
@@ -211,13 +218,6 @@ angular.module('brainbuild.services', [])
    "description": allTrue,
 
   }
-
-  // if(localStorage.events){
-  //   var events = localStorage.events;
-  // }
-  // else{
-
-  // }
 
   return {
     athlete: function(){
