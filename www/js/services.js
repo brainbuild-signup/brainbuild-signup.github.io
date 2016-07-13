@@ -55,6 +55,41 @@ angular.module('brainbuild.services', [])
 
   };
 
+  var classDefault = {
+
+   "kind": "calendar#event",
+   "status": "confirmed",
+   "created": today,
+   "updated": today,
+   "summary": "",
+   "colorId": "2",
+   "creator": {
+    "email": ourEmail
+   },
+   "organizer": {
+    "email": athlete.email,
+    "displayName": title,
+    "self": true
+   },
+   "start": {
+    "dateTime": today,
+    "timeZone": timeZone
+   },
+   "end": {
+    "dateTime": hourLater,
+    "timeZone": timeZone
+   },
+   "recurrence": [
+    repeatAllFalse
+   ],
+   "sequence": 1,
+   "reminders": {
+    "useDefault": true
+   },
+   "description": allFalse,
+
+  };
+
   var breakfast = {
 
    "kind": "calendar#event",
@@ -92,6 +127,7 @@ angular.module('brainbuild.services', [])
      }
     ]
    },
+   // "description": allTrue,
    "description": allTrue,
 
   };
@@ -226,14 +262,17 @@ angular.module('brainbuild.services', [])
     classes: function(){
       return classes;
     },
+    defaultClass: function(){
+      return classDefault;
+    },
     defaultMeals: function(){
       return [breakfast, lunch, snack, dinner];
     },
     defaultWorkout: function(){
       return workoutDefault;
     },
-    workouts: function(){
-      return workouts;
+    events: function(){
+      return events;
     }
   }
 

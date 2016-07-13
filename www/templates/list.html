@@ -1,4 +1,4 @@
-<ion-view title="Edit" hide-nav-bar="true" hide-back-button="true" id="page7" class=" ">
+<ion-view title="Edit" hide-nav-bar="true" hide-back-button="true">
     <ion-content padding="true" class="manual-ios-statusbar-padding">
         <div class="list card " id="editEvents-card7">
             <div class="item item-body">
@@ -13,7 +13,28 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="list card " id="editEvents-card10">
+        <div class="list card" ng-repeat="event in events">
+            <div class="item item-body">
+                <div>
+                    <div>
+                        <div>
+                            <div class="bold center title  title-margin">{{event.summary}}</div>
+                            <div class="center">
+                                <i class="icon ion-android-time" style="margin-right: 4px"></i>{{event.start.dateTime | date: 'shortTime'}} - {{event.end.dateTime | date: 'shortTime'}}
+                            </div>
+                            <div class="center">
+                                <i class="icon ion-refresh" style="margin-right: 3px"></i>Repeats weekly: MON,TUE,WED,THU,FRI
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="editEvents-button-bar9" class=" button-bar ">
+                    <button id="editEvents-button16" class=" button button-dark  button-block button-outline icon ion-android-delete "></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="list card " id="editWorkoutEvents-card7" ng-repeat=" workout in events ">
             <div class="item item-body">
                 <div>
                     <div>
@@ -32,6 +53,9 @@
                     <button id="editEvents-button16" class=" button button-dark  button-block button-outline icon ion-android-delete "></button>
                 </div>
             </div>
+        </div> -->
+
+        <!-- <div class="list card " id="editEvents-card10">
         </div> -->
         <a ui-sref="workout" id="editEvents-button10" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Workout</a>
         <a ui-sref="class" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Class</a>

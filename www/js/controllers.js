@@ -213,19 +213,21 @@ angular.module('brainbuild.controllers', [])
 
   $scope.addWorkout = function(){
     //add event to stack
-    $scope.events.push(angular.copy($scope.workout)); 
+    $scope.events.push(angular.copy($scope.workout));
+    console.log($scope.events);
     $state.go('list');
   }
 })
 
 .controller('ClassCtrl', function($scope, $state, GoogleEvents){
   $scope.athlete = GoogleEvents.athlete();
-  $scope.class = GoogleEvents.defaultWorkout();
+  $scope.class = GoogleEvents.defaultClass();
   $scope.events = GoogleEvents.events();
 
-  $scope.addWorkout = function(){
+  $scope.addClass = function(){
     //add event to stack
     $scope.events.push(angular.copy($scope.class)); 
+    console.log($scope.events);
     $state.go('list');
   }
 })
@@ -235,9 +237,9 @@ angular.module('brainbuild.controllers', [])
   $scope.athlete = GoogleEvents.athlete();
   $scope.meals = GoogleEvents.defaultMeals();
   $scope.workout = GoogleEvents.defaultWorkout();
-  $scope.workouts = GoogleEvents.workouts();
-  $scope.classes = GoogleEvents.classes();
-  $scope.events = [];
+  $scope.events = GoogleEvents.events();
+
+  console.log($scope.events);
 
   // other variables
   var responses = 0;
@@ -270,6 +272,10 @@ angular.module('brainbuild.controllers', [])
     }
 
     // post to new calendar to GCal
+    brainbuild = {
+      summary: $scope.athlete.fullName+" - "+$scope.athlete.school+" "+$scope.athlete.sport+" (Brainbuild)"
+    };
+    console.log(brainbuild);
     insertCalendar();
 
     // close spinner
@@ -395,6 +401,7 @@ angular.module('brainbuild.controllers', [])
         $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()-(24*hourUTC));
         $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()-(24*hourUTC));
       }
+      $scope.events[i].description = $scope.events[i].description.toString();
       postGAPI($scope.events[i]);
     }
 

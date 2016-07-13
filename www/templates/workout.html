@@ -28,20 +28,21 @@
                 <span class="input-label">End time</span>
                 <input type="time" ng-model="workout.end.dateTime" placeholder="">
             </label>
-            <h3 id="onboardingWorkouts-heading5" style="color:#FF3800;text-align:center;" class=" ">Repeats</h3>
+            <h3 style="color:#FF3800;text-align:center;" class=" ">Repeats</h3>
         </form>
-        <form id="onboardingWorkouts-form21" class="list ">
-            <ion-toggle toggle-class="toggle-assertive" id="onboardingWorkouts-toggle16" class=" eventrepeats">SUN</ion-toggle>
-            <ion-toggle toggle-class="toggle-assertive" id="onboardingWorkouts-toggle17" class=" eventrepeats">MON</ion-toggle>
-            <ion-toggle toggle-class="toggle-assertive" id="onboardingWorkouts-toggle18" class=" eventrepeats">TUE</ion-toggle>
-            <ion-toggle toggle-class="toggle-assertive" id="onboardingWorkouts-toggle19" class=" eventrepeats">WED</ion-toggle>
-            <ion-toggle toggle-class="toggle-assertive" id="onboardingWorkouts-toggle20" class=" eventrepeats">THU</ion-toggle>
-            <ion-toggle toggle-class="toggle-assertive" id="onboardingWorkouts-toggle21" class=" eventrepeats">FRI</ion-toggle>
-            <ion-toggle toggle-class="toggle-assertive" id="onboardingWorkouts-toggle22" class=" eventrepeats">SAT</ion-toggle>
+        <form class="list ">
+            <ion-toggle ng-checked="workout.description[0]" toggle-class="toggle-assertive">SUN</ion-toggle>
+            <ion-toggle ng-checked="workout.description[1]" toggle-class="toggle-assertive">MON</ion-toggle>
+            <ion-toggle ng-checked="workout.description[2]" toggle-class="toggle-assertive">TUE</ion-toggle>
+            <ion-toggle ng-checked="workout.description[3]" toggle-class="toggle-assertive">WED</ion-toggle>
+            <ion-toggle ng-checked="workout.description[4]" toggle-class="toggle-assertive">THU</ion-toggle>
+            <ion-toggle ng-checked="workout.description[0]" toggle-class="toggle-assertive">FRI</ion-toggle>
+            <ion-toggle ng-checked="workout.description[0]" toggle-class="toggle-assertive">SAT</ion-toggle>
         </form>
-        <div id="onboardingWorkouts-button-bar8" class=" button-bar ">
-            <a ui-sref="list" id="onboardingWorkouts-button13" class=" button button-assertive  button-block ">Ignore</a>
-            <a ng-click="addWorkout()" id="onboardingWorkouts-button14" class=" button button-assertive  button-block ">Add Workout</a>
+
+        <div class="button-bar">
+            <a ui-sref="list" class="button button-assertive button-block">Ignore</a>
+            <a ng-click="addWorkout()" class="button button-assertive button-block">Add Workout</a>
         </div>
         <div class="spacer" style="width: 300px; height: 40px;"></div>
     </ion-content>
