@@ -1,73 +1,74 @@
 <ion-view title="Edit" hide-nav-bar="true" hide-back-button="true">
     <ion-content padding="true" class="manual-ios-statusbar-padding">
+
         <div class="list card " id="editEvents-card7">
             <div class="item item-body">
-                <div>
-                    <div>
-                        <div class="bold center title  title-margin">What's Good {{athlete.fullName}}?</div>
-
-                        <div class="center">
-                            Make sure you add all your recurring {{athlete.sport}} workouts and {{athlete.school}} classes for this semester. 
-                        </div>
-                    </div>
+                <div class="bold center title  title-margin">
+                    {{athlete.fullName}} - {{athlete.school}} {{athlete.sport}} (Brainbuild)
                 </div>
             </div>
         </div>
-        <div class="list card" ng-repeat="event in events">
+        <a ui-sref="welcome" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Edit Profile</a>
+        
+        <div class="list card" ng-repeat="wo in wos track by $index| orderBy: 'start.dateTime'">
             <div class="item item-body">
                 <div>
                     <div>
                         <div>
-                            <div class="bold center title  title-margin">{{event.summary}}</div>
-                            <div class="center">
-                                <i class="icon ion-android-time" style="margin-right: 4px"></i>{{event.start.dateTime | date: 'shortTime'}} - {{event.end.dateTime | date: 'shortTime'}}
                             </div>
+                            <div id="list-title" class="bold center title title-margin">{{wo.summary}}</div>
                             <div class="center">
-                                <i class="icon ion-refresh" style="margin-right: 3px"></i>Repeats weekly: 
-                                <div ng-show="event.description[0]" id="repeat-day">SUN </div>
-                                <div ng-show="event.description[1]" id="repeat-day">MON </div>
-                                <div ng-show="event.description[2]" id="repeat-day">TUE </div>
-                                <div ng-show="event.description[3]" id="repeat-day">WED </div>
-                                <div ng-show="event.description[4]" id="repeat-day">THU </div>
-                                <div ng-show="event.description[5]" id="repeat-day">FRI </div>
-                                <div ng-show="event.description[6]" id="repeat-day">SAT </div>
+                                <i class="icon ion-android-time" style="margin-right: 4px"></i>{{wo.start.dateTime | date: 'shortTime' : 'utc'}} - {{wo.end.dateTime | date: 'shortTime' : 'utc'}}
                             </div>
+                        <div class="button-bar" id="no-top-margin">
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="wo.description[0]" ng-click="wo.description[0]=!wo.description[0]" ng-class="wo.description[0]?'button-assertive':'button-light'">S</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="wo.description[1]" ng-click="wo.description[1]=!wo.description[1]" ng-class="wo.description[1]?'button-assertive':'button-light'">M</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="wo.description[2]" ng-click="wo.description[2]=!wo.description[2]" ng-class="wo.description[2]?'button-assertive':'button-light'">T</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="wo.description[3]" ng-click="wo.description[3]=!wo.description[3]" ng-class="wo.description[3]?'button-assertive':'button-light'">W</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="wo.description[4]" ng-click="wo.description[4]=!wo.description[4]" ng-class="wo.description[4]?'button-assertive':'button-light'">T</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="wo.description[5]" ng-click="wo.description[5]=!wo.description[5]" ng-class="wo.description[5]?'button-assertive':'button-light'">F</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="wo.description[6]" ng-click="wo.description[6]=!wo.description[6]" ng-class="wo.description[6]?'button-assertive':'button-light'">S</a>
                         </div>
                     </div>
                 </div>
                 <div class="button-bar">
-                    <button ng-click="deleteEvent(event.summary)" class="button button-dark  button-block button-outline icon ion-android-delete"></button>
+                    <button ng-click="deleteEvent('wos', wo.summary)" class="button button-dark  button-block button-outline icon ion-android-delete"></button>
                 </div>
             </div>
         </div>
+        <a ng-click="addNewWorkout()" id="editEvents-button10" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Workout</a>
 
-        <!-- <div class="list card " id="editWorkoutEvents-card7" ng-repeat=" workout in events ">
+        <div class="list card" ng-repeat="cl in cls track by $index| orderBy: 'start.dateTime'">
             <div class="item item-body">
                 <div>
                     <div>
                         <div>
-                            <div class="bold center title  title-margin">Lift</div>
-                            <div class="center">
-                                <i class="icon ion-android-time" style="margin-right: 4px"></i>12:00 PM - 1:00 PM
                             </div>
+                            <div class="bold center title title-margin">{{cl.summary}}</div>
                             <div class="center">
-                                <i class="icon ion-refresh" style="margin-right: 3px"></i>Repeats weekly: MON,TUE,WED,THU,FRI
+                                <i class="icon ion-android-time" style="margin-right: 4px"></i>{{cl.start.dateTime | date: 'shortTime' : 'utc'}} - {{cl.end.dateTime | date: 'shortTime' : 'utc'}}
                             </div>
+                        <div class="button-bar" id="no-top-margin">
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="cl.description[0]" ng-click="cl.description[0]=!cl.description[0]" ng-class="cl.description[0]?'button-assertive':'button-light'">S</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="cl.description[1]" ng-click="cl.description[1]=!cl.description[1]" ng-class="cl.description[1]?'button-assertive':'button-light'">M</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="cl.description[2]" ng-click="cl.description[2]=!cl.description[2]" ng-class="cl.description[2]?'button-assertive':'button-light'">T</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="cl.description[3]" ng-click="cl.description[3]=!cl.description[3]" ng-class="cl.description[3]?'button-assertive':'button-light'">W</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="cl.description[4]" ng-click="cl.description[4]=!cl.description[4]" ng-class="cl.description[4]?'button-assertive':'button-light'">T</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="cl.description[5]" ng-click="cl.description[5]=!cl.description[5]" ng-class="cl.description[5]?'button-assertive':'button-light'">F</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="cl.description[6]" ng-click="cl.description[6]=!cl.description[6]" ng-class="cl.description[6]?'button-assertive':'button-light'">S</a>
                         </div>
                     </div>
                 </div>
-                <div id="editEvents-button-bar9" class=" button-bar ">
-                    <button id="editEvents-button16" class=" button button-dark  button-block button-outline icon ion-android-delete "></button>
+                <div class="button-bar">
+                    <button ng-click="deleteEvent('cls', cl.summary)" class="button button-dark  button-block button-outline icon ion-android-delete"></button>
                 </div>
             </div>
-        </div> -->
+        </div>
 
-        <!-- <div class="list card " id="editEvents-card10">
-        </div> -->
-        <a ui-sref="workout" id="editEvents-button10" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Workout</a>
         <a ng-click="addNewClass()" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Class</a>
-        <a ui-sref="welcome" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Edit Profile</a>
+
         <a ng-click="generateSchedule()" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block ">Generate Schedule</a>
+
         <div class="spacer" style="width: 300px; height: 40px;"></div>
     </ion-content>
 </ion-view>

@@ -28,17 +28,17 @@
                 <span class="input-label">End time</span>
                 <input type="time" ng-model="workout.end.dateTime" placeholder="">
             </label>
-            <h3 style="color:#FF3800;text-align:center;" class=" ">Repeats</h3>
         </form>
-        <form class="list ">
-            <ion-toggle ng-model="workout.description[0]" toggle-class="toggle-assertive">SUN</ion-toggle>
-            <ion-toggle ng-model="workout.description[1]" toggle-class="toggle-assertive">MON</ion-toggle>
-            <ion-toggle ng-model="workout.description[2]" toggle-class="toggle-assertive">TUE</ion-toggle>
-            <ion-toggle ng-model="workout.description[3]" toggle-class="toggle-assertive">WED</ion-toggle>
-            <ion-toggle ng-model="workout.description[4]" toggle-class="toggle-assertive">THU</ion-toggle>
-            <ion-toggle ng-model="workout.description[5]" toggle-class="toggle-assertive">FRI</ion-toggle>
-            <ion-toggle ng-model="workout.description[6]" toggle-class="toggle-assertive">SAT</ion-toggle>
-        </form>
+        <h3 id="onboardingClasses-heading6" class="bold center title">Repeats</h3>
+        <div class="button-bar" id="no-top-margin">
+            <a id="day-of-week" class="button button-primary button-block" ng-model="workout.description[0]" ng-click="workout.description[0]=!workout.description[0]" ng-class="workout.description[0]?'button-assertive':'button-light'">S</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="workout.description[1]" ng-click="workout.description[1]=!workout.description[1]" ng-class="workout.description[1]?'button-assertive':'button-light'">M</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="workout.description[2]" ng-click="workout.description[2]=!workout.description[2]" ng-class="workout.description[2]?'button-assertive':'button-light'">T</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="workout.description[3]" ng-click="workout.description[3]=!workout.description[3]" ng-class="workout.description[3]?'button-assertive':'button-light'">W</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="workout.description[4]" ng-click="workout.description[4]=!workout.description[4]" ng-class="workout.description[4]?'button-assertive':'button-light'">T</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="workout.description[5]" ng-click="workout.description[5]=!workout.description[5]" ng-class="workout.description[5]?'button-assertive':'button-light'">F</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="workout.description[6]" ng-click="workout.description[6]=!workout.description[6]" ng-class="workout.description[6]?'button-assertive':'button-light'">S</a>
+        </div>
 
         <div class="button-bar">
             <a ui-sref="list" class="button button-assertive button-block">Ignore</a>

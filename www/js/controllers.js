@@ -42,7 +42,7 @@ angular.module('brainbuild.controllers', [])
   var header = new Headers();
   header.append("Access-Control-Allow-Origin", "*");
   // Info from auth0
-  $scope.athlete.fullName = person.name;
+  // $scope.athlete.fullName = person.name;
   $scope.athlete.email = person.email;
   $scope.athlete.picture = person.picture;
 
@@ -217,42 +217,60 @@ angular.module('brainbuild.controllers', [])
 
 .controller('WorkoutCtrl', function($scope, $state, GoogleEvents){
   $scope.athlete = GoogleEvents.athlete();
-  $scope.workout = GoogleEvents.defaultWorkout();
-  $scope.events = GoogleEvents.events();
+  $scope.wos = GoogleEvents.wos();
+  var template = GoogleEvents.defaultWorkout();
+  $scope.workout = angular.copy(template);
+
+  // add offset
+  var offset = (today.getTimezoneOffset()/60)*hourUTC;
+  $scope.workout.start.dateTime.setTime($scope.workout.start.dateTime.getTime()+offset);
+  $scope.workout.end.dateTime.setTime($scope.workout.end.dateTime.getTime()+offset);
 
   $scope.addWorkout = function(){
-    //add event to stack
-    $scope.events.push(angular.copy($scope.workout));
-    localStorage.events = JSON.stringify($scope.events);
+    // remove offset
+    $scope.workout.start.dateTime.setTime($scope.workout.start.dateTime.getTime()-offset);
+    $scope.workout.end.dateTime.setTime($scope.workout.end.dateTime.getTime()-offset);
+
+    // add UTC version to stack & save
+    $scope.wos.push(angular.copy($scope.workout)); 
+    localStorage.wos = JSON.stringify($scope.wos);
+
+    // reset template & offset
+    $scope.workout = angular.copy(template);
+    $scope.workout.start.dateTime.setTime($scope.workout.start.dateTime.getTime()+offset);
+    $scope.workout.end.dateTime.setTime($scope.workout.end.dateTime.getTime()+offset);
+
+    // go back
     $state.go('list');
   }
 })
 
 .controller('ClassCtrl', function($scope, $state, GoogleEvents){
   $scope.athlete = GoogleEvents.athlete();
-  $scope.events = GoogleEvents.events();
-  // $scope.class = GoogleEvents.defaultClass();
-  var ye = GoogleEvents.defaultClass();
-  var offset = (today.getTimezoneOffset()/60)*hourUTC
-  $scope.class = angular.copy(ye);
+  $scope.cls = GoogleEvents.cls();
+  var template = GoogleEvents.defaultClass();
+  $scope.class = angular.copy(template);
 
+  // add offset
+  var offset = (today.getTimezoneOffset()/60)*hourUTC;
   $scope.class.start.dateTime.setTime($scope.class.start.dateTime.getTime()+offset);
   $scope.class.end.dateTime.setTime($scope.class.end.dateTime.getTime()+offset);
 
   $scope.addClass = function(){
-    //add event to stack
-
+    // remove offset
     $scope.class.start.dateTime.setTime($scope.class.start.dateTime.getTime()-offset);
     $scope.class.end.dateTime.setTime($scope.class.end.dateTime.getTime()-offset);
 
-    $scope.events.push(angular.copy($scope.class)); 
-    
-    $scope.class = angular.copy(ye);
+    // add UTC version to stack & save
+    $scope.cls.push(angular.copy($scope.class)); 
+    localStorage.cls = JSON.stringify($scope.cls);
 
+    // reset template & offset
+    $scope.class = angular.copy(template);
     $scope.class.start.dateTime.setTime($scope.class.start.dateTime.getTime()+offset);
     $scope.class.end.dateTime.setTime($scope.class.end.dateTime.getTime()+offset);
 
-    localStorage.events = JSON.stringify($scope.events);
+    // go back
     $state.go('list');
   }
 })
@@ -260,8 +278,8 @@ angular.module('brainbuild.controllers', [])
 .controller('ListCtrl', function($scope, $state, GoogleEvents, $ionicLoading){
   // scope variables
   $scope.athlete = GoogleEvents.athlete();
-  $scope.meals = GoogleEvents.defaultMeals();
-  $scope.workout = GoogleEvents.defaultWorkout();
+  $scope.wos = GoogleEvents.wos();
+  $scope.cls = GoogleEvents.cls();
   $scope.events = GoogleEvents.events();
 
   console.log($scope.events);
@@ -277,14 +295,18 @@ angular.module('brainbuild.controllers', [])
   };
   var calendarId = $scope.athlete.email;
 
-  $scope.deleteEvent = function(summary){
-    for(var i = 0; i < $scope.events.length; i++){
-      if($scope.events[i].summary == summary){
-        $scope.events.splice(i,1);
-        localStorage.events = JSON.stringify($scope.events);
+  $scope.deleteEvent = function(type, summary){
+    for(var i = 0; i < $scope[type].length; i++){
+      if($scope[type][i].summary == summary){
+        $scope[type].splice(i,1);
+        localStorage[type] = JSON.stringify($scope[type]);
         return;
       }
     }
+  }
+
+  $scope.addNewWorkout = function(){
+    $state.go('workout')
   }
 
   $scope.addNewClass = function(){
@@ -305,26 +327,39 @@ angular.module('brainbuild.controllers', [])
     // localStorage.events = $scope.meals;
 
     // delete previoues calendar (if there is one)
-    if(localStorage.calendarId){
-      console.log(localStorage.calendarId);
-      deleteCalendar();
-    }
+    // if(localStorage.calendarId){
+    //   console.log(localStorage.calendarId);
+    //   deleteCalendar();
+    // }
 
     // post to new calendar to GCal
     brainbuild = {
       summary: $scope.athlete.fullName+" - "+$scope.athlete.school+" "+$scope.athlete.sport+" (Brainbuild)"
     };
     console.log(brainbuild);
-    insertCalendar();
+    // insertCalendar();
 
     // close spinner
     closeTheFloodGates();
+
+    for(i = 0; i < $scope.events.length; i++){
+      $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+$scope.athlete.tzOffset);
+      $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+$scope.athlete.tzOffset);
+      var tzOffsetCurrent = ($scope.events[0].start.dateTime.getTimezoneOffset()/60)*hourUTC;
+      if(tzOffsetCurrent < 0){
+        $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()-(24*hourUTC));
+        $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()-(24*hourUTC));
+      }
+      $scope.events[i].description = $scope.events[i].description.toString();
+      // postGAPI($scope.events[i]);
+    }
   }
 
   function closeTheFloodGates(){
     setTimeout(function(){ 
       $ionicLoading.hide();
       // $state.go('done');
+      $state.go('generate')
     }, 3000);
   }
 
@@ -337,13 +372,6 @@ angular.module('brainbuild.controllers', [])
 
     // setTimeZone
     // setTimeZone();
-  }
-
-  function setTimeZone(){
-    for(i = 0; i < $scope.events.length; i++){
-      $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+$scope.athlete.tzOffset);
-      $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+$scope.athlete.tzOffset);
-    }
   }
   
   function deleteCalendar(){
@@ -494,5 +522,34 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('DoneCtrl', function($scope, $state){
+})
 
+.controller('GenerateCtrl', function($scope, $state, GoogleEvents){
+  $scope.athlete = GoogleEvents.athlete();
+  $scope.events = GoogleEvents.events();
+  $scope.day = allFalse;
+  $scope.day[3] = true;
+  $scope.dayChosen = 3;
+
+  $scope.dayChange = function(i){
+    for(var j = 0; j < $scope.day.length; j++){
+      if(j==i){
+        $scope.day[j] = true;
+        $scope.dayChosen = i;
+      }
+      else{
+        $scope.day[j] = false;
+      }
+    }
+    console.log($scope.dayChosen);
+  }
+
+  $scope.dayFilter = function(event){
+    // console.log($scope.dayChosen);
+    return event.description[$scope.dayChosen];
+  }
+
+  $scope.brainbuild = {
+    summary: $scope.athlete.fullName+" - "+$scope.athlete.school+" "+$scope.athlete.sport+" (Brainbuild)"
+  };
 })

@@ -16,7 +16,11 @@
     border-color: #fff !important;
     border-width: 1px 1px 1px 1px;
     margin-top: 0 !important;
+    margin-bottom: 0 !important;
     border-radius: 15px 15px 15px 15px !important;
+}
+#list-title{
+	margin-top: 0 !important;
 }
 
 /*

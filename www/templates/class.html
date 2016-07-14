@@ -1,7 +1,7 @@
 <ion-view title="Classes" hide-nav-bar="true" id="top-of-page">
     <ion-content padding="true" class="manual-ios-statusbar-padding">
         <div class="spacer" style="width: 300px; height: 4px;"></div>
-        <div class="item item-body " id="onboardingClasses-list-item-container6">
+        <div class="item item-body">
             <div>
                 <div>
                     <div class="bold center title  title-margin">Add your semester classes</div>
@@ -28,8 +28,8 @@
                 <span class="input-label">End time</span>
                 <input type="time" ng-model="class.end.dateTime" placeholder="">
             </label>
-            <!-- <h3 id="onboardingClasses-heading6" style="color:#FF3800;text-align:center;" class=" ">Repeats</h3> -->
         </form>
+        <h3 id="onboardingClasses-heading6" class="bold center title">Repeats</h3>
         <div class="button-bar" id="no-top-margin">
             <a id="day-of-week" class="button button-primary button-block" ng-model="class.description[0]" ng-click="class.description[0]=!class.description[0]" ng-class="class.description[0]?'button-assertive':'button-light'">S</a>
             <a id="day-of-week" class="button button-primary button-block" ng-model="class.description[1]" ng-click="class.description[1]=!class.description[1]" ng-class="class.description[1]?'button-assertive':'button-light'">M</a>
@@ -39,16 +39,6 @@
             <a id="day-of-week" class="button button-primary button-block" ng-model="class.description[5]" ng-click="class.description[5]=!class.description[5]" ng-class="class.description[5]?'button-assertive':'button-light'">F</a>
             <a id="day-of-week" class="button button-primary button-block" ng-model="class.description[6]" ng-click="class.description[6]=!class.description[6]" ng-class="class.description[6]?'button-assertive':'button-light'">S</a>
         </div>
-
-        <!-- <form id="onboardingClasses-form25" class="list ">
-            <ion-toggle ng-model="class.description[0]" toggle-class="toggle-assertive">SUN</ion-toggle>
-            <ion-toggle ng-model="class.description[1]" toggle-class="toggle-assertive">MON</ion-toggle>
-            <ion-toggle ng-model="class.description[2]" toggle-class="toggle-assertive">TUE</ion-toggle>
-            <ion-toggle ng-model="class.description[3]" toggle-class="toggle-assertive">WED</ion-toggle>
-            <ion-toggle ng-model="class.description[4]" toggle-class="toggle-assertive">THU</ion-toggle>
-            <ion-toggle ng-model="class.description[5]" toggle-class="toggle-assertive">FRI</ion-toggle>
-            <ion-toggle ng-model="class.description[6]" toggle-class="toggle-assertive">SAT</ion-toggle>
-        </form> -->
         <div id="onboardingClasses-button-bar12" class=" button-bar ">
             <a ui-sref="list" id="onboardingClasses-button59" class=" button button-assertive  button-block ">Ignore</a>
             <a ng-click="addClass()" id="onboardingClasses-button60" class=" button button-assertive  button-block">Add Class</a>

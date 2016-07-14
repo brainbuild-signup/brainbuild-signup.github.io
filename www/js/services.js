@@ -17,6 +17,22 @@ angular.module('brainbuild.services', [])
 
   var title = athlete.fullName+" - "+athlete.school+" "+athlete.sport+" (Brainbuild)";
 
+  // Workouts
+  if(localStorage.wos){
+    var wos = JSON.parse(localStorage.wos);
+  }
+  else{
+    var wos = [];
+  }
+
+  // Classes
+  if(localStorage.cls){
+    var cls = JSON.parse(localStorage.cls);
+  }
+  else{
+    var cls = [];
+  }
+
   // Events
   if(localStorage.events){
     var events = JSON.parse(localStorage.events);
@@ -264,8 +280,8 @@ angular.module('brainbuild.services', [])
     athlete: function(){
       return athlete;
     },
-    classes: function(){
-      return classes;
+    cls: function(){
+      return cls;
     },
     defaultClass: function(){
       return classDefault;
@@ -278,6 +294,9 @@ angular.module('brainbuild.services', [])
     },
     events: function(){
       return events;
+    },
+    wos: function(){
+      return wos;
     }
   }
 

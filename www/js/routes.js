@@ -38,6 +38,12 @@ angular.module('brainbuild.routes', [])
 		controller: "ListCtrl"
 	})
 
+	.state('generate', {
+		url: "/generate",
+		templateUrl: "templates/generate.html",
+		controller: "GenerateCtrl"
+	})
+
 	.state('done', {
 		url: "/done",
 		templateUrl: "templates/done.html",
