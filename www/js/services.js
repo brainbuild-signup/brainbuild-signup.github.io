@@ -1,20 +1,25 @@
 angular.module('brainbuild.services', [])
 
 .factory('GoogleEvents', function(){
-  var athlete = {
-    fullName: "Bo Jackson",
-    school: "San Jose State University",
-    sport: "Baseball",
-    timeZone: "Pacific Time Zone",
-    email: "exercisetime2016@gmail.com",
-    tzOffset: 7*hourUTC
-  };
+  if(localStorage.athlete){
+    var athlete = JSON.parse(localStorage.athlete);
+  }
+  else {
+    var athlete = {
+      fullName: "Bo Jackson",
+      school: "San Jose State University",
+      sport: "Baseball",
+      timeZone: "Pacific Time Zone",
+      email: "exercisetime2016@gmail.com",
+      tzOffset: 7*hourUTC
+    };
+  }
 
   var title = athlete.fullName+" - "+athlete.school+" "+athlete.sport+" (Brainbuild)";
 
   // Events
   if(localStorage.events){
-    var events = localStorage.events;
+    var events = JSON.parse(localStorage.events);
   }
   else {
     var events = [];

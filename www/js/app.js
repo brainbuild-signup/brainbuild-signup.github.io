@@ -47,7 +47,7 @@ angular.module('brainbuild', ['ionic',
   $httpProvider.interceptors.push('jwtInterceptor');
 })
 
-.run(function($rootScope, auth, store) {
+.run(function($rootScope, auth, store, $anchorScroll) {
   $rootScope.$on('$locationChangeStart', function() {
     if (!auth.isAuthenticated) {
       var token = store.get('token');
@@ -56,5 +56,9 @@ angular.module('brainbuild', ['ionic',
       }
     }
 
+  });
+
+  $rootScope.$on("$locationChangeSuccess", function(){
+      window.scrollTo(0,0);
   });
 });         

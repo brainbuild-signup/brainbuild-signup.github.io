@@ -1,4 +1,4 @@
-<ion-view title="Workouts" hide-nav-bar="true" id="page8" class=" ">
+    <ion-view title="Workouts" hide-nav-bar="true" id="page8" class=" ">
     <ion-content padding="true" class="manual-ios-statusbar-padding">
         <div class="spacer" style="width: 300px; height: 4px;"></div>
         <div class="item item-body " id="onboardingWorkouts-list-item-container4">
@@ -31,13 +31,13 @@
             <h3 style="color:#FF3800;text-align:center;" class=" ">Repeats</h3>
         </form>
         <form class="list ">
-            <ion-toggle ng-checked="workout.description[0]" toggle-class="toggle-assertive">SUN</ion-toggle>
-            <ion-toggle ng-checked="workout.description[1]" toggle-class="toggle-assertive">MON</ion-toggle>
-            <ion-toggle ng-checked="workout.description[2]" toggle-class="toggle-assertive">TUE</ion-toggle>
-            <ion-toggle ng-checked="workout.description[3]" toggle-class="toggle-assertive">WED</ion-toggle>
-            <ion-toggle ng-checked="workout.description[4]" toggle-class="toggle-assertive">THU</ion-toggle>
-            <ion-toggle ng-checked="workout.description[0]" toggle-class="toggle-assertive">FRI</ion-toggle>
-            <ion-toggle ng-checked="workout.description[0]" toggle-class="toggle-assertive">SAT</ion-toggle>
+            <ion-toggle ng-model="workout.description[0]" toggle-class="toggle-assertive">SUN</ion-toggle>
+            <ion-toggle ng-model="workout.description[1]" toggle-class="toggle-assertive">MON</ion-toggle>
+            <ion-toggle ng-model="workout.description[2]" toggle-class="toggle-assertive">TUE</ion-toggle>
+            <ion-toggle ng-model="workout.description[3]" toggle-class="toggle-assertive">WED</ion-toggle>
+            <ion-toggle ng-model="workout.description[4]" toggle-class="toggle-assertive">THU</ion-toggle>
+            <ion-toggle ng-model="workout.description[5]" toggle-class="toggle-assertive">FRI</ion-toggle>
+            <ion-toggle ng-model="workout.description[6]" toggle-class="toggle-assertive">SAT</ion-toggle>
         </form>
 
         <div class="button-bar">

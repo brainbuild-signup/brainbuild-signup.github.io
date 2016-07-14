@@ -9,6 +9,16 @@
 	text-align: right;
 }
 
+#day-of-week{
+	padding: 0 0px !important;
+	min-width: 30px !important;
+    min-height: 30px !important;
+    border-color: #fff !important;
+    border-width: 1px 1px 1px 1px;
+    margin-top: 0 !important;
+    border-radius: 15px 15px 15px 15px !important;
+}
+
 /*
 
 Ionic Spinner

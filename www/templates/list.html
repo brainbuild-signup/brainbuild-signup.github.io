@@ -23,13 +23,20 @@
                                 <i class="icon ion-android-time" style="margin-right: 4px"></i>{{event.start.dateTime | date: 'shortTime'}} - {{event.end.dateTime | date: 'shortTime'}}
                             </div>
                             <div class="center">
-                                <i class="icon ion-refresh" style="margin-right: 3px"></i>Repeats weekly: MON,TUE,WED,THU,FRI
+                                <i class="icon ion-refresh" style="margin-right: 3px"></i>Repeats weekly: 
+                                <div ng-show="event.description[0]" id="repeat-day">SUN </div>
+                                <div ng-show="event.description[1]" id="repeat-day">MON </div>
+                                <div ng-show="event.description[2]" id="repeat-day">TUE </div>
+                                <div ng-show="event.description[3]" id="repeat-day">WED </div>
+                                <div ng-show="event.description[4]" id="repeat-day">THU </div>
+                                <div ng-show="event.description[5]" id="repeat-day">FRI </div>
+                                <div ng-show="event.description[6]" id="repeat-day">SAT </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id="editEvents-button-bar9" class=" button-bar ">
-                    <button id="editEvents-button16" class=" button button-dark  button-block button-outline icon ion-android-delete "></button>
+                <div class="button-bar">
+                    <button ng-click="deleteEvent(event.summary)" class="button button-dark  button-block button-outline icon ion-android-delete"></button>
                 </div>
             </div>
         </div>
@@ -58,7 +65,7 @@
         <!-- <div class="list card " id="editEvents-card10">
         </div> -->
         <a ui-sref="workout" id="editEvents-button10" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Workout</a>
-        <a ui-sref="class" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Class</a>
+        <a ng-click="addNewClass()" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Class</a>
         <a ui-sref="welcome" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Edit Profile</a>
         <a ng-click="generateSchedule()" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block ">Generate Schedule</a>
         <div class="spacer" style="width: 300px; height: 40px;"></div>
