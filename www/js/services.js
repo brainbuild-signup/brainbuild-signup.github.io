@@ -6,7 +6,7 @@ angular.module('brainbuild.services', [])
   }
   else {
     var athlete = {
-      fullName: "Bo Jackson",
+      fullName: "",
       school: "San Jose State University",
       sport: "Baseball",
       timeZone: "Pacific Time Zone",

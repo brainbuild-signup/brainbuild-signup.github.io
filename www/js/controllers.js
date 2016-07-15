@@ -35,6 +35,7 @@ angular.module('brainbuild.controllers', [])
 
 .controller('WelcomeCtrl', function($scope, auth, store, $state, GoogleEvents){
   $scope.athlete = GoogleEvents.athlete();
+
   // auth0 Profile
   var person = JSON.parse(localStorage.getItem('profile'));
   // GAPI
