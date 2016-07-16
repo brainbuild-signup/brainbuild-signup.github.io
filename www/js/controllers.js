@@ -281,9 +281,8 @@ angular.module('brainbuild.controllers', [])
   $scope.athlete = GoogleEvents.athlete();
   $scope.wos = GoogleEvents.wos();
   $scope.cls = GoogleEvents.cls();
-  $scope.events = GoogleEvents.events();
-
-  console.log($scope.events);
+  $scope.meals = GoogleEvents.defaultMeals();
+  $scope.events = [];
 
   // other variables
   var responses = 0;
@@ -319,7 +318,7 @@ angular.module('brainbuild.controllers', [])
   };
 
   function openTheFloodGates(){
-    $ionicLoading.show()
+    // $ionicLoading.show()
 
     // update meals (all based on Z)
     allGoRhythm();
@@ -341,19 +340,19 @@ angular.module('brainbuild.controllers', [])
     // insertCalendar();
 
     // close spinner
-    closeTheFloodGates();
+    // closeTheFloodGates();
 
-    for(i = 0; i < $scope.events.length; i++){
-      $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+$scope.athlete.tzOffset);
-      $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+$scope.athlete.tzOffset);
-      var tzOffsetCurrent = ($scope.events[0].start.dateTime.getTimezoneOffset()/60)*hourUTC;
-      if(tzOffsetCurrent < 0){
-        $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()-(24*hourUTC));
-        $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()-(24*hourUTC));
-      }
-      $scope.events[i].description = $scope.events[i].description.toString();
-      // postGAPI($scope.events[i]);
-    }
+    // for(i = 0; i < $scope.events.length; i++){
+    //   $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+$scope.athlete.tzOffset);
+    //   $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+$scope.athlete.tzOffset);
+    //   var tzOffsetCurrent = ($scope.events[0].start.dateTime.getTimezoneOffset()/60)*hourUTC;
+    //   if(tzOffsetCurrent < 0){
+    //     $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()-(24*hourUTC));
+    //     $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()-(24*hourUTC));
+    //   }
+    //   $scope.events[i].description = $scope.events[i].description.toString();
+    //   // postGAPI($scope.events[i]);
+    // }
   }
 
   function closeTheFloodGates(){
@@ -369,7 +368,15 @@ angular.module('brainbuild.controllers', [])
     // update the repeat of the default meals
 
     // concat all these into $scope.events
-    $scope.events = angular.copy($scope.meals);
+    // $scope.events = angular.copy($scope.meals);
+    $scope.events = [];
+    $scope.events = $scope.events.concat($scope.meals);
+    if($scope.wos.length > 0)    
+      $scope.events = $scope.events.concat($scope.wos);
+    if($scope.cls.length > 0)
+      $scope.events = $scope.events.concat($scope.cls);
+
+    console.log($scope.events);
 
     // setTimeZone
     // setTimeZone();
