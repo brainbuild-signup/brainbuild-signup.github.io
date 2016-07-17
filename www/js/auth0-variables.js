@@ -10,8 +10,7 @@ var repeatAllTrue = "RRULE:FREQ=WEEKLY;BYDAY=SU,MO,TU,WE,TH,FR,SA";
 
 var allFalse = [false,false,false,false,false,false,false];
 var allTrue = [true,true,true,true,true,true,true];
-// var allFalseObj = [ { text: 'SUN', checked: false }, { text: 'MON', checked: false }, { text: 'TUE', checked: false }, { text: 'WED', checked: false }, { text: 'THU', checked: false }, { text: 'FRI', checked: false }, { text: 'SAT', checked: false } ];
-// var allTrueObj = [ { text: 'SUN', checked: true }, { text: 'MON', checked: true }, { text: 'TUE', checked: true }, { text: 'WED', checked: true }, { text: 'THU', checked: true }, { text: 'FRI', checked: true }, { text: 'SAT', checked: true } ];
+var dayNames = ["SU","MO","TU","WE","TH","FR","SA"];
 
 // date parsing
 today.setUTCMinutes(0,0,0);

@@ -217,7 +217,6 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('WorkoutCtrl', function($scope, $state, GoogleEvents){
-  $scope.athlete = GoogleEvents.athlete();
   $scope.wos = GoogleEvents.wos();
   var template = GoogleEvents.defaultWorkout();
   $scope.workout = angular.copy(template);
@@ -247,7 +246,6 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('ClassCtrl', function($scope, $state, GoogleEvents){
-  $scope.athlete = GoogleEvents.athlete();
   $scope.cls = GoogleEvents.cls();
   var template = GoogleEvents.defaultClass();
   $scope.class = angular.copy(template);
@@ -276,12 +274,42 @@ angular.module('brainbuild.controllers', [])
   }
 })
 
+.controller('MealCtrl', function($scope, $state, GoogleEvents){
+  $scope.meals = GoogleEvents.meals();
+  var template = GoogleEvents.defaultMeals();
+  $scope.meal = angular.copy(template[0]);
+
+  // add offset
+  var offset = (today.getTimezoneOffset()/60)*hourUTC;
+  $scope.meal.start.dateTime.setTime($scope.meal.start.dateTime.getTime()+offset);
+  $scope.meal.end.dateTime.setTime($scope.meal.end.dateTime.getTime()+offset);
+
+  $scope.addMeal = function(){
+    // remove offset
+    $scope.meal.start.dateTime.setTime($scope.meal.start.dateTime.getTime()-offset);
+    $scope.meal.end.dateTime.setTime($scope.meal.end.dateTime.getTime()-offset);
+    $scope.meal.timeOfDay = $scope.meal.start.dateTime.getTime();
+
+    // add UTC version to stack & save
+    $scope.meals.push(angular.copy($scope.meal)); 
+    localStorage.meals = JSON.stringify($scope.meals);
+
+    // reset template & offset
+    $scope.meal = angular.copy(template[0]);
+    $scope.meal.start.dateTime.setTime($scope.meal.start.dateTime.getTime()+offset);
+    $scope.meal.end.dateTime.setTime($scope.meal.end.dateTime.getTime()+offset);
+
+    // go back
+    $state.go('list');
+  }
+})
+
 .controller('ListCtrl', function($scope, $state, GoogleEvents, $ionicLoading){
   // scope variables
   $scope.athlete = GoogleEvents.athlete();
   $scope.wos = GoogleEvents.wos();
   $scope.cls = GoogleEvents.cls();
-  $scope.meals = GoogleEvents.defaultMeals();
+  $scope.meals = GoogleEvents.meals();
   $scope.events = [];
 
   // other variables
@@ -313,6 +341,28 @@ angular.module('brainbuild.controllers', [])
     $state.go('class')
   }
 
+  $scope.addNewMeal = function(){
+    $state.go('meal')
+  }
+
+  $scope.restoreDefaultMeals = function(){
+    localStorage.meals = [];
+    $scope.meals = GoogleEvents.defaultMeals();
+    localStorage.meals = JSON.stringify($scope.meals);
+    // $state.go('list')
+  }
+
+  $scope.clearLocalStorage = function(){
+    localStorage.removeItem("athlete");
+    localStorage.removeItem("calendarId");
+    localStorage.removeItem("cls");
+    localStorage.removeItem("events");
+    localStorage.removeItem("meals");
+    localStorage.removeItem("wos");
+    $state.go('welcome');
+
+  }
+
   $scope.generateSchedule = function() {
     openTheFloodGates();
   };
@@ -337,21 +387,28 @@ angular.module('brainbuild.controllers', [])
       summary: $scope.athlete.fullName+" - "+$scope.athlete.school+" "+$scope.athlete.sport+" (Brainbuild)"
     };
     console.log(brainbuild);
-    // insertCalendar();
+    insertCalendar();
 
     // close spinner
     // closeTheFloodGates();
 
     // for(i = 0; i < $scope.events.length; i++){
+    //   $scope.events[i].start.dateTime = new Date($scope.events[i].start.dateTime);
+    //   $scope.events[i].end.dateTime = new Date($scope.events[i].end.dateTime);
+
+
     //   $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+$scope.athlete.tzOffset);
     //   $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+$scope.athlete.tzOffset);
+      
     //   var tzOffsetCurrent = ($scope.events[0].start.dateTime.getTimezoneOffset()/60)*hourUTC;
     //   if(tzOffsetCurrent < 0){
     //     $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()-(24*hourUTC));
     //     $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()-(24*hourUTC));
     //   }
-    //   $scope.events[i].description = $scope.events[i].description.toString();
-    //   // postGAPI($scope.events[i]);
+      
+    //   // $scope.events[i].description = $scope.events[i].description.toString();
+      
+    //   postGAPI($scope.events[i]);
     // }
   }
 
@@ -363,7 +420,7 @@ angular.module('brainbuild.controllers', [])
     }, 3000);
   }
 
-  function allGoRhythm(){
+  function allGoRhythm(wos, calendarId){
     // create meals from workouts based on the days they occur
     // update the repeat of the default meals
 
@@ -375,9 +432,35 @@ angular.module('brainbuild.controllers', [])
       $scope.events = $scope.events.concat($scope.wos);
     if($scope.cls.length > 0)
       $scope.events = $scope.events.concat($scope.cls);
+    
+    // convert description into a string
+    var repeat = "RRULE:FREQ=WEEKLY;BYDAY=";
+    var dayNames = ["SU,","MO,","TU,","WE,","TH,","FR,","SA"];
+    $scope.events.map((x)=>{    
+      x.recurrence[0] = repeat;
+      for(var i = 0; i < 7; i++){
+        if(x.description[i]){
+          x.recurrence[0]+=dayNames[i];
+        }
+      }
+      if(x.recurrence[0].substring(x.recurrence[0].length-1)===","){
+        x.recurrence[0] = x.recurrence[0].substring(0,x.recurrence[0].length-1);
+      }
+      if(x.summary.search(/snack/i)>-1){
+        x.colorId = 6;
+      }
+      if(x.summary.search(/sleep/i)>-1){
+        x.colorId = 8;
+      }
+      if(x.summary.search(/recovery/i)>-1){
+        x.colorId = 6;
+      }
+      if(x.summary.search(/hydrate/i)>-1){
+        x.colorId = 6;
+      }
+    })
 
     console.log($scope.events);
-
     // setTimeZone
     // setTimeZone();
   }
@@ -429,6 +512,52 @@ angular.module('brainbuild.controllers', [])
                     calendarId = data.id;
                     localStorage.calendarId = calendarId;
                     console.log(calendarId);
+                    updateCalendar();
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        } 
+        else {
+            console.error(res); // comes back but not HTTP 200
+            res.json()
+                .then(function(data) {
+                    console.log('not 200', data);
+                    if (data.error.code === 401){
+                      auth.signout();
+                      store.remove('token');
+                      store.remove('profile');
+                      store.remove('refreshToken');
+                      $state.go('login', {}, {reload: true});
+                    }
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        }
+      })
+    .catch(function(err) {
+        console.error('network error');
+    })
+  }
+
+  function updateCalendar(){
+    var load = {
+      "foregroundColor": "#ffffff",
+      "backgroundColor": "#4986e7",
+      "selected":true
+    }
+
+    fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList/'+calendarId+'?colorRgbFormat=true&access_token='+token, {
+      method: "PUT",
+      headers: header,
+      body: JSON.stringify(load),
+    })
+    .then(function(res) {
+        if (res.status === 200) {
+            res.json()
+                .then(function(data) {
+                    console.log("Update Data Response: ", data);
                     postEvents();
                 })
                 .catch(function(parseErr) {
@@ -469,14 +598,20 @@ angular.module('brainbuild.controllers', [])
     // closeTheFloodGates();
 
     for(i = 0; i < $scope.events.length; i++){
+      $scope.events[i].start.dateTime = new Date($scope.events[i].start.dateTime);
+      $scope.events[i].end.dateTime = new Date($scope.events[i].end.dateTime);
+
       $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+$scope.athlete.tzOffset);
       $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+$scope.athlete.tzOffset);
+      
       var tzOffsetCurrent = ($scope.events[0].start.dateTime.getTimezoneOffset()/60)*hourUTC;
       if(tzOffsetCurrent < 0){
         $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()-(24*hourUTC));
         $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()-(24*hourUTC));
       }
-      $scope.events[i].description = $scope.events[i].description.toString();
+      
+      // $scope.events[i].description = $scope.events[i].description.toString();
+      
       postGAPI($scope.events[i]);
     }
 

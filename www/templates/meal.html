@@ -1,0 +1,62 @@
+<ion-view title="Meals" hide-nav-bar="true" id="page8" class=" ">
+    <ion-content padding="true" class="manual-ios-statusbar-padding">
+        <div class="spacer" style="width: 300px; height: 4px;"></div>
+        <div class="item item-body " id="onboardingWorkouts-list-item-container4">
+            <div>
+                <div>
+                    <div class="bold center title  title-margin">Add a recurring meal</div>
+                </div>
+                <div>
+                    <div class="center">Keywords: hydrate; recover; snack; breakfast; lunch; dinner; sleep;<br>(New Title for clarity)</div>
+                </div>
+            </div>
+        </div>
+        <!-- <form id="onboardingIntro-form9" class="list ">
+            <label class="item item-select " id="onboardingIntro-select5">
+                <span class="input-label">Meal</span>
+                <select ng-model="meal.summary">
+                    <option>Have a great breakfast </option>
+                    <option>Best time to grab lunch </option>
+                    <option>Snack if you feel hungry </option>
+                    <option>Time to eat dinner </option>
+                    <option>Sleep soon, you deserve it </option>
+                    <option>Grab a snack &amp; hydrate </option>
+                    <option>Eat properly to recover </option>
+                </select>
+            </label>
+        </form> -->
+        <form class="list ">
+            <div class="spacer" style="width: 300px; height: 17px;"></div>
+            <label class="item item-input ">
+                <span class="input-label">Title</span>
+                <input type="text" ng-model="meal.summary" placeholder="i.e. Light Dinner">
+            </label>
+        </form>
+        <form id="onboardingWorkouts-form17" class="list ">
+            <label class="item item-input">
+                <span class="input-label">Start time</span>
+                <input type="time" ng-model="meal.start.dateTime" placeholder="">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">End time</span>
+                <input type="time" ng-model="meal.end.dateTime" placeholder="">
+            </label>
+        </form>
+        <h3 id="onboardingClasses-heading6" class="bold center title">Repeats</h3>
+        <div class="button-bar" id="no-top-margin">
+            <a id="day-of-week" class="button button-primary button-block" ng-model="meal.description[0]" ng-click="meal.description[0]=!meal.description[0]" ng-class="meal.description[0]?'button-assertive':'button-light'">S</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="meal.description[1]" ng-click="meal.description[1]=!meal.description[1]" ng-class="meal.description[1]?'button-assertive':'button-light'">M</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="meal.description[2]" ng-click="meal.description[2]=!meal.description[2]" ng-class="meal.description[2]?'button-assertive':'button-light'">T</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="meal.description[3]" ng-click="meal.description[3]=!meal.description[3]" ng-class="meal.description[3]?'button-assertive':'button-light'">W</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="meal.description[4]" ng-click="meal.description[4]=!meal.description[4]" ng-class="meal.description[4]?'button-assertive':'button-light'">T</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="meal.description[5]" ng-click="meal.description[5]=!meal.description[5]" ng-class="meal.description[5]?'button-assertive':'button-light'">F</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="meal.description[6]" ng-click="meal.description[6]=!meal.description[6]" ng-class="meal.description[6]?'button-assertive':'button-light'">S</a>
+        </div>
+
+        <div class="button-bar">
+            <a ui-sref="list" class="button button-assertive button-block">Ignore</a>
+            <a ng-click="addMeal()" class="button button-assertive button-block">Add Meal</a>
+        </div>
+        <div class="spacer" style="width: 300px; height: 40px;"></div>
+    </ion-content>
+</ion-view>

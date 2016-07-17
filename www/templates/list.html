@@ -67,6 +67,36 @@
 
         <a ng-click="addNewClass()" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Class</a>
 
+        <div class="list card" ng-repeat="meal in meals track by $index| orderBy:'timeOfDay'">
+            <div class="item item-body">
+                <div>
+                    <div>
+                        <div>
+                            </div>
+                            <div class="bold center title title-margin">{{meal.summary}}</div>
+                            <div class="center">
+                                <i class="icon ion-android-time" style="margin-right: 4px"></i>{{meal.start.dateTime | date: 'shortTime' : 'utc'}} - {{meal.end.dateTime | date: 'shortTime' : 'utc'}}
+                            </div>
+                        <div class="button-bar" id="no-top-margin">
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="meal.description[0]" ng-click="meal.description[0]=!meal.description[0]" ng-class="meal.description[0]?'button-assertive':'button-light'">S</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="meal.description[1]" ng-click="meal.description[1]=!meal.description[1]" ng-class="meal.description[1]?'button-assertive':'button-light'">M</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="meal.description[2]" ng-click="meal.description[2]=!meal.description[2]" ng-class="meal.description[2]?'button-assertive':'button-light'">T</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="meal.description[3]" ng-click="meal.description[3]=!meal.description[3]" ng-class="meal.description[3]?'button-assertive':'button-light'">W</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="meal.description[4]" ng-click="meal.description[4]=!meal.description[4]" ng-class="meal.description[4]?'button-assertive':'button-light'">T</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="meal.description[5]" ng-click="meal.description[5]=!meal.description[5]" ng-class="meal.description[5]?'button-assertive':'button-light'">F</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="meal.description[6]" ng-click="meal.description[6]=!meal.description[6]" ng-class="meal.description[6]?'button-assertive':'button-light'">S</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="button-bar">
+                    <button ng-click="deleteEvent('meals', meal.summary)" class="button button-dark  button-block button-outline icon ion-android-delete"></button>
+                </div>
+            </div>
+        </div>
+
+        <a ng-click="addNewMeal()" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Meal</a>
+        <a ng-click="restoreDefaultMeals()" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Restore Default Meals</a>
+        <a ng-click="clearLocalStorage()" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Clear all Storage</a>
         <a ng-click="generateSchedule()" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block ">Generate Schedule</a>
 
         <div class="spacer" style="width: 300px; height: 40px;"></div>

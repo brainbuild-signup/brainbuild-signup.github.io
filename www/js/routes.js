@@ -32,6 +32,12 @@ angular.module('brainbuild.routes', [])
 		controller: "ClassCtrl"
 	})
 
+	.state('meal', {
+		url: "/meal",
+		templateUrl: "templates/meal.html",
+		controller: "MealCtrl"
+	})
+
 	.state('list', {
 		url: "/list",
 		templateUrl: "templates/list.html",

@@ -33,84 +33,6 @@ angular.module('brainbuild.services', [])
     var cls = [];
   }
 
-  // Events
-  if(localStorage.events){
-    var events = JSON.parse(localStorage.events);
-  }
-  else {
-    var events = [];
-  }
-
-  var workoutDefault = {
-
-   "kind": "calendar#event",
-   "status": "confirmed",
-   "created": today,
-   "updated": today,
-   "summary": "",
-   "colorId": "9",
-   "creator": {
-    "email": ourEmail
-   },
-   "organizer": {
-    "email": athlete.email,
-    "displayName": title,
-    "self": true
-   },
-   "start": {
-    "dateTime": today,
-    "timeZone": timeZone
-   },
-   "end": {
-    "dateTime": hourLater,
-    "timeZone": timeZone
-   },
-   "recurrence": [
-    repeatAllFalse
-   ],
-   "sequence": 1,
-   "reminders": {
-    "useDefault": true
-   },
-   "description": allFalse,
-
-  };
-
-  var classDefault = {
-
-   "kind": "calendar#event",
-   "status": "confirmed",
-   "created": today,
-   "updated": today,
-   "summary": "",
-   "colorId": "2",
-   "creator": {
-    "email": ourEmail
-   },
-   "organizer": {
-    "email": athlete.email,
-    "displayName": title,
-    "self": true
-   },
-   "start": {
-    "dateTime": today,
-    "timeZone": timeZone
-   },
-   "end": {
-    "dateTime": hourLater,
-    "timeZone": timeZone
-   },
-   "recurrence": [
-    repeatAllFalse
-   ],
-   "sequence": 1,
-   "reminders": {
-    "useDefault": true
-   },
-   "description": allFalse,
-
-  };
-
   var breakfast = {
 
    "kind": "calendar#event",
@@ -149,7 +71,8 @@ angular.module('brainbuild.services', [])
     ]
    },
    // "description": allTrue,
-   "description": allTrue,
+   "description": [true,true,true,true,true,true,true],
+   "timeOfDay": breakfastStart.getTime(),
 
   };
 
@@ -190,7 +113,8 @@ angular.module('brainbuild.services', [])
      }
     ]
    },
-   "description": allTrue,
+   "description": [true,true,true,true,true,true,true],
+   "timeOfDay": lunchStart.getTime(),
 
   };
 
@@ -231,7 +155,8 @@ angular.module('brainbuild.services', [])
      }
     ]
    },
-   "description": allTrue,
+   "description": [true,true,true,true,true,true,true],
+   "timeOfDay": snackStart.getTime(),
 
   };
 
@@ -272,9 +197,93 @@ angular.module('brainbuild.services', [])
      }
     ]
    },
-   "description": allTrue,
-
+   "description": [true,true,true,true,true,true,true],
+   "timeOfDay": dinnerStart.getTime(),
   }
+
+  // Meals
+  if(localStorage.meals){
+    var meals = JSON.parse(localStorage.meals);
+  }
+  else{
+    var meals = [breakfast,lunch,snack,dinner];
+  }
+
+  // Events
+  if(localStorage.events){
+    var events = JSON.parse(localStorage.events);
+  }
+  else {
+    var events = [];
+  }
+
+  var workoutDefault = {
+
+   "kind": "calendar#event",
+   "status": "confirmed",
+   "created": today,
+   "updated": today,
+   "summary": "",
+   "colorId": "9",
+   "creator": {
+    "email": ourEmail
+   },
+   "organizer": {
+    "email": athlete.email,
+    "displayName": title,
+    "self": true
+   },
+   "start": {
+    "dateTime": today,
+    "timeZone": timeZone
+   },
+   "end": {
+    "dateTime": hourLater,
+    "timeZone": timeZone
+   },
+   "recurrence": [
+    repeatAllFalse
+   ],
+   "sequence": 1,
+   "reminders": {
+    "useDefault": true
+   },
+   "description": allFalse,
+  };
+
+  var classDefault = {
+
+   "kind": "calendar#event",
+   "status": "confirmed",
+   "created": today,
+   "updated": today,
+   "summary": "",
+   "colorId": "2",
+   "creator": {
+    "email": ourEmail
+   },
+   "organizer": {
+    "email": athlete.email,
+    "displayName": title,
+    "self": true
+   },
+   "start": {
+    "dateTime": today,
+    "timeZone": timeZone
+   },
+   "end": {
+    "dateTime": hourLater,
+    "timeZone": timeZone
+   },
+   "recurrence": [
+    repeatAllFalse
+   ],
+   "sequence": 1,
+   "reminders": {
+    "useDefault": true
+   },
+   "description": allFalse,
+  };
 
   return {
     athlete: function(){
@@ -294,6 +303,9 @@ angular.module('brainbuild.services', [])
     },
     events: function(){
       return events;
+    },
+    meals: function(){
+      return meals;
     },
     wos: function(){
       return wos;
