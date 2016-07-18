@@ -73,6 +73,7 @@ angular.module('brainbuild.services', [])
    // "description": allTrue,
    "description": [true,true,true,true,true,true,true],
    "timeOfDay": breakfastStart.getTime(),
+   "visible": true,
 
   };
 
@@ -115,6 +116,7 @@ angular.module('brainbuild.services', [])
    },
    "description": [true,true,true,true,true,true,true],
    "timeOfDay": lunchStart.getTime(),
+   "visible": true,
 
   };
 
@@ -157,6 +159,7 @@ angular.module('brainbuild.services', [])
    },
    "description": [true,true,true,true,true,true,true],
    "timeOfDay": snackStart.getTime(),
+   "visible": true,
 
   };
 
@@ -199,6 +202,8 @@ angular.module('brainbuild.services', [])
    },
    "description": [true,true,true,true,true,true,true],
    "timeOfDay": dinnerStart.getTime(),
+   "visible": true,
+
   }
 
   // Meals
@@ -249,6 +254,8 @@ angular.module('brainbuild.services', [])
     "useDefault": true
    },
    "description": allFalse,
+   "visible": true,
+
   };
 
   var classDefault = {
@@ -283,6 +290,8 @@ angular.module('brainbuild.services', [])
     "useDefault": true
    },
    "description": allFalse,
+   "visible": true,
+   
   };
 
   return {

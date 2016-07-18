@@ -312,6 +312,24 @@ angular.module('brainbuild.controllers', [])
   $scope.meals = GoogleEvents.meals();
   $scope.events = [];
 
+  console.log($scope.meals[0].visible);
+
+  $scope.dayFilter = [true,true,true,true,true,true,true];
+
+  $scope.dayClick = function(i){
+    $scope.dayFilter[i]=!$scope.dayFilter[i];
+  }
+
+  $scope.filterDay = function(event){
+    for(var i = 0; i < 7; i++){
+      if(event.description[i] == true && $scope.dayFilter[i] == true){
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   // other variables
   var responses = 0;
   var person = JSON.parse(localStorage.getItem('profile'));

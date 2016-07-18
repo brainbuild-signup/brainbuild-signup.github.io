@@ -10,7 +10,21 @@
         </div>
         <a ui-sref="welcome" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Edit Profile</a>
         
-        <div class="list card" ng-repeat="wo in wos track by $index| orderBy: 'start.dateTime'">
+        <div class="bold center title  title-margin">
+            Filter Events:
+        </div>
+
+        <div class="button-bar" id="no-top-margin">
+            <a id="day-of-week" class="button button-primary button-block" ng-model="dayFilter[0]" ng-click="dayClick(0)" ng-class="dayFilter[0]?'button-dark':'button-light'">S</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="dayFilter[1]" ng-click="dayClick(1)" ng-class="dayFilter[1]?'button-dark':'button-light'">M</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="dayFilter[2]" ng-click="dayClick(2)" ng-class="dayFilter[2]?'button-dark':'button-light'">T</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="dayFilter[3]" ng-click="dayClick(3)" ng-class="dayFilter[3]?'button-dark':'button-light'">W</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="dayFilter[4]" ng-click="dayClick(4)" ng-class="dayFilter[4]?'button-dark':'button-light'">T</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="dayFilter[5]" ng-click="dayClick(5)" ng-class="dayFilter[5]?'button-dark':'button-light'">F</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="dayFilter[6]" ng-click="dayClick(6)" ng-class="dayFilter[6]?'button-dark':'button-light'">S</a>
+        </div>
+
+        <div class="list card" ng-repeat="wo in wos | orderBy: 'start.dateTime'| filter:filterDay track by $index">
             <div class="item item-body">
                 <div>
                     <div>
@@ -38,7 +52,7 @@
         </div>
         <a ng-click="addNewWorkout()" id="editEvents-button10" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Workout</a>
 
-        <div class="list card" ng-repeat="cl in cls track by $index| orderBy: 'start.dateTime'">
+        <div class="list card" ng-repeat="cl in cls | orderBy: 'start.dateTime'| filter:filterDay track by $index">
             <div class="item item-body">
                 <div>
                     <div>
@@ -67,7 +81,7 @@
 
         <a ng-click="addNewClass()" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Class</a>
 
-        <div class="list card" ng-repeat="meal in meals track by $index| orderBy:'timeOfDay'">
+        <div class="list card" ng-repeat="meal in meals | orderBy:'timeOfDay'| filter:filterDay track by $index">
             <div class="item item-body">
                 <div>
                     <div>
