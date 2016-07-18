@@ -648,6 +648,8 @@ angular.module('brainbuild.controllers', [])
         $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()-(24*hourUTC));
       }
       
+      // $scope.events[i].start.timeZone = $scope.athlete.tzGAPI;
+      // $scope.events[i].end.timeZone = $scope.athlete.tzGAPI;
       // $scope.events[i].description = $scope.events[i].description.toString();
       
       postGAPI($scope.events[i]);
