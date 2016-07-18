@@ -24,6 +24,10 @@ var breakfastTime = new Date("1993-12-19T09:00:00Z");
 var lunchTime = new Date("1993-12-19T12:00:00Z");
 var snackTime = new Date("1993-12-19T15:30:00Z");
 var dinnerTime = new Date("1993-12-19T18:30:00Z");
+// workout default
+var workoutTime = new Date("1993-12-19T06:00:00Z")
+// class default
+var classTime = new Date("1993-12-19T11:00:00Z")
 
 // And their date objects
 var breakfastStart = new Date(today.toISOString().substring(0,11)+breakfastTime.toISOString().substring(11));
@@ -38,5 +42,8 @@ var snackEnd = new Date(snackStart.getTime()+hourUTC);
 var dinnerStart = new Date(today.toISOString().substring(0,11)+dinnerTime.toISOString().substring(11));
 var dinnerEnd = new Date(dinnerStart.getTime()+(1.5*hourUTC));
 
-// workout defaults
-var workoutTime = new Date("1993-12-19T06:00:00Z")
+var workoutStart = new Date(today.toISOString().substring(0,11)+workoutTime.toISOString().substring(11));
+var workoutEnd = new Date(workoutStart.getTime()+hourUTC);
+
+var classStart = new Date(today.toISOString().substring(0,11)+classTime.toISOString().substring(11));
+var classEnd = new Date(classStart.getTime()+hourUTC);

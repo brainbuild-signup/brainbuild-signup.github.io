@@ -17,22 +17,6 @@ angular.module('brainbuild.services', [])
 
   var title = athlete.fullName+" - "+athlete.school+" "+athlete.sport+" (Brainbuild)";
 
-  // Workouts
-  if(localStorage.wos){
-    var wos = JSON.parse(localStorage.wos);
-  }
-  else{
-    var wos = [];
-  }
-
-  // Classes
-  if(localStorage.cls){
-    var cls = JSON.parse(localStorage.cls);
-  }
-  else{
-    var cls = [];
-  }
-
   var breakfast = {
 
    "kind": "calendar#event",
@@ -72,8 +56,6 @@ angular.module('brainbuild.services', [])
    },
    // "description": allTrue,
    "description": [true,true,true,true,true,true,true],
-   "timeOfDay": breakfastStart.getTime(),
-   "visible": true,
 
   };
 
@@ -115,8 +97,6 @@ angular.module('brainbuild.services', [])
     ]
    },
    "description": [true,true,true,true,true,true,true],
-   "timeOfDay": lunchStart.getTime(),
-   "visible": true,
 
   };
 
@@ -158,8 +138,6 @@ angular.module('brainbuild.services', [])
     ]
    },
    "description": [true,true,true,true,true,true,true],
-   "timeOfDay": snackStart.getTime(),
-   "visible": true,
 
   };
 
@@ -201,27 +179,18 @@ angular.module('brainbuild.services', [])
     ]
    },
    "description": [true,true,true,true,true,true,true],
-   "timeOfDay": dinnerStart.getTime(),
-   "visible": true,
 
   }
 
-  // Meals
-  if(localStorage.meals){
-    var meals = JSON.parse(localStorage.meals);
+  // WCM: Workouts/Classes/Meals
+  if(localStorage.wcms){
+    var wcms = JSON.parse(localStorage.wcms);
   }
   else{
-    var meals = [breakfast,lunch,snack,dinner];
+    var wcms = angular.copy([breakfast,lunch,snack,dinner]);
   }
 
-  // Events
-  if(localStorage.events){
-    var events = JSON.parse(localStorage.events);
-  }
-  else {
-    var events = [];
-  }
-
+  // colorId = 9
   var workoutDefault = {
 
    "kind": "calendar#event",
@@ -239,11 +208,11 @@ angular.module('brainbuild.services', [])
     "self": true
    },
    "start": {
-    "dateTime": today,
+    "dateTime": workoutStart,
     "timeZone": timeZone
    },
    "end": {
-    "dateTime": hourLater,
+    "dateTime": workoutEnd,
     "timeZone": timeZone
    },
    "recurrence": [
@@ -254,10 +223,10 @@ angular.module('brainbuild.services', [])
     "useDefault": true
    },
    "description": allFalse,
-   "visible": true,
 
   };
 
+  // colorId = 2
   var classDefault = {
 
    "kind": "calendar#event",
@@ -275,11 +244,11 @@ angular.module('brainbuild.services', [])
     "self": true
    },
    "start": {
-    "dateTime": today,
+    "dateTime": classStart,
     "timeZone": timeZone
    },
    "end": {
-    "dateTime": hourLater,
+    "dateTime": classEnd,
     "timeZone": timeZone
    },
    "recurrence": [
@@ -290,16 +259,12 @@ angular.module('brainbuild.services', [])
     "useDefault": true
    },
    "description": allFalse,
-   "visible": true,
    
   };
 
   return {
     athlete: function(){
       return athlete;
-    },
-    cls: function(){
-      return cls;
     },
     defaultClass: function(){
       return classDefault;
@@ -310,15 +275,9 @@ angular.module('brainbuild.services', [])
     defaultWorkout: function(){
       return workoutDefault;
     },
-    events: function(){
-      return events;
+    wcms: function(){
+      return wcms;
     },
-    meals: function(){
-      return meals;
-    },
-    wos: function(){
-      return wos;
-    }
   }
 
   var preEvent = {

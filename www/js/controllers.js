@@ -218,6 +218,9 @@ angular.module('brainbuild.controllers', [])
 
 .controller('WorkoutCtrl', function($scope, $state, GoogleEvents){
   $scope.wos = GoogleEvents.wos();
+  $scope.cls = GoogleEvents.cls();
+  $scope.meals = GoogleEvents.meals();
+  $scope.wcms = GoogleEvents.wcms();
   var template = GoogleEvents.defaultWorkout();
   $scope.workout = angular.copy(template);
 
@@ -234,6 +237,7 @@ angular.module('brainbuild.controllers', [])
     // add UTC version to stack & save
     $scope.wos.push(angular.copy($scope.workout)); 
     localStorage.wos = JSON.stringify($scope.wos);
+    $scope.wcms = $scope.meals.concat($scope.wos).concat($scope.cls);
 
     // reset template & offset
     $scope.workout = angular.copy(template);
@@ -246,7 +250,10 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('ClassCtrl', function($scope, $state, GoogleEvents){
+  $scope.wos = GoogleEvents.wos();
   $scope.cls = GoogleEvents.cls();
+  $scope.meals = GoogleEvents.meals();
+  $scope.wcms = $scope.meals.concat($scope.wos).concat($scope.cls);
   var template = GoogleEvents.defaultClass();
   $scope.class = angular.copy(template);
 
@@ -275,7 +282,10 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('MealCtrl', function($scope, $state, GoogleEvents){
+  $scope.wos = GoogleEvents.wos();
+  $scope.cls = GoogleEvents.cls();
   $scope.meals = GoogleEvents.meals();
+  $scope.wcms = $scope.meals.concat($scope.wos).concat($scope.cls);
   var template = GoogleEvents.defaultMeals();
   $scope.meal = angular.copy(template[0]);
 
@@ -310,9 +320,7 @@ angular.module('brainbuild.controllers', [])
   $scope.wos = GoogleEvents.wos();
   $scope.cls = GoogleEvents.cls();
   $scope.meals = GoogleEvents.meals();
-  $scope.events = [];
-
-  console.log($scope.meals[0].visible);
+  $scope.wcms = $scope.meals.concat($scope.wos).concat($scope.cls);
 
   $scope.dayFilter = [true,true,true,true,true,true,true];
 
@@ -382,6 +390,7 @@ angular.module('brainbuild.controllers', [])
     localStorage.removeItem("cls");
     localStorage.removeItem("events");
     localStorage.removeItem("meals");
+    localStorage.removeItem("wcms");
     localStorage.removeItem("wos");
     $state.go('welcome');
 
@@ -449,6 +458,7 @@ angular.module('brainbuild.controllers', [])
     // update the repeat of the default meals
 
     // concat all these into $scope.events
+    $scope.events = [];
     $scope.events = angular.copy($scope.meals);
     var wos = angular.copy($scope.wos);
     $scope.events = $scope.events.concat(wos);
