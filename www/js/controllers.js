@@ -321,7 +321,13 @@ angular.module('brainbuild.controllers', [])
   var brainbuild = {
     summary: $scope.athlete.fullName+" - "+$scope.athlete.school+" "+$scope.athlete.sport+" (Brainbuild)"
   };
-  var calendarId = $scope.athlete.email;
+  if(localStorage.calendarId){
+    var calendarId = localStorage.calendarId;
+  }
+  else{ 
+    var calendarId = "No calendar ID right now";
+  }
+  $scope.calendarId = calendarId;
 
   $scope.deleteEvent = function(type, summary){
     for(var i = 0; i < $scope[type].length; i++){
@@ -425,13 +431,18 @@ angular.module('brainbuild.controllers', [])
     // update the repeat of the default meals
 
     // concat all these into $scope.events
-    // $scope.events = angular.copy($scope.meals);
-    $scope.events = [];
-    $scope.events = $scope.events.concat($scope.meals);
-    if($scope.wos.length > 0)    
-      $scope.events = $scope.events.concat($scope.wos);
-    if($scope.cls.length > 0)
-      $scope.events = $scope.events.concat($scope.cls);
+    $scope.events = angular.copy($scope.meals);
+    var wos = angular.copy($scope.wos);
+    $scope.events = $scope.events.concat(wos);
+    var cls = angular.copy($scope.cls);
+    $scope.events = $scope.events.concat(cls);
+    
+    // $scope.events = [];
+    // $scope.events = $scope.events.concat(angular.copy($scope.meals));
+    // if($scope.wos.length > 0)    
+    //   $scope.events = $scope.events.concat(angular.copy($scope.wos));
+    // if($scope.cls.length > 0)
+    //   $scope.events = $scope.events.concat(angular.copy($scope.cls));
     
     // convert description into a string
     var repeat = "RRULE:FREQ=WEEKLY;BYDAY=";
@@ -465,6 +476,11 @@ angular.module('brainbuild.controllers', [])
     // setTimeZone();
   }
   
+  // TOREMOVE: for testing
+  $scope.deleteCalendar = function(){
+    deleteCalendar();
+  }
+
   function deleteCalendar(){
     fetch('https://www.googleapis.com/calendar/v3/calendars/'+localStorage.getItem('calendarId')+'?access_token='+token, {
       method: "DELETE",
@@ -475,7 +491,8 @@ angular.module('brainbuild.controllers', [])
         if (res.status === 204) {
           console.log(res);
           localStorage.removeItem("calendarId");
-        } else {
+        } 
+        else {
             console.error(res); // comes back but not HTTP 200
             res.json()
                 .then(function(data) {
@@ -511,6 +528,7 @@ angular.module('brainbuild.controllers', [])
                     console.log(data);
                     calendarId = data.id;
                     localStorage.calendarId = calendarId;
+                    $scope.calendarId = calendarId
                     console.log(calendarId);
                     updateCalendar();
                 })
@@ -597,6 +615,8 @@ angular.module('brainbuild.controllers', [])
 
     // closeTheFloodGates();
 
+    console.log($scope.meals);
+
     for(i = 0; i < $scope.events.length; i++){
       $scope.events[i].start.dateTime = new Date($scope.events[i].start.dateTime);
       $scope.events[i].end.dateTime = new Date($scope.events[i].end.dateTime);
@@ -614,6 +634,8 @@ angular.module('brainbuild.controllers', [])
       
       postGAPI($scope.events[i]);
     }
+
+    console.log($scope.meals);
 
     // closeTheFloodGates();
   }
