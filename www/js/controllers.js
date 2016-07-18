@@ -652,12 +652,17 @@ angular.module('brainbuild.controllers', [])
       $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+$scope.athlete.tzOffset);
       $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+$scope.athlete.tzOffset);
       
+
+      // TODO: Is this what is causing the all events on one day problem?
       var tzOffsetCurrent = ($scope.events[0].start.dateTime.getTimezoneOffset()/60)*hourUTC;
       if(tzOffsetCurrent < 0){
         $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()-(24*hourUTC));
         $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()-(24*hourUTC));
       }
       
+      $scope.events[i].start.timeZone = $scope.athlete.tzGAPI;
+      $scope.events[i].end.timeZone = $scope.athlete.tzGAPI;
+
       // $scope.events[i].description = $scope.events[i].description.toString();
       
       postGAPI($scope.events[i]);
