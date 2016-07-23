@@ -57,8 +57,4 @@ angular.module('brainbuild', ['ionic',
     }
 
   });
-
-  $rootScope.$on("$locationChangeSuccess", function(){
-      window.scrollTo(0,0);
-  });
 });         

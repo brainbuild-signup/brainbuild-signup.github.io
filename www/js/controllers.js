@@ -217,9 +217,6 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('WorkoutCtrl', function($scope, $state, GoogleEvents){
-  $scope.wos = GoogleEvents.wos();
-  $scope.cls = GoogleEvents.cls();
-  $scope.meals = GoogleEvents.meals();
   $scope.wcms = GoogleEvents.wcms();
   var template = GoogleEvents.defaultWorkout();
   $scope.workout = angular.copy(template);
@@ -235,9 +232,8 @@ angular.module('brainbuild.controllers', [])
     $scope.workout.end.dateTime.setTime($scope.workout.end.dateTime.getTime()-offset);
 
     // add UTC version to stack & save
-    $scope.wos.push(angular.copy($scope.workout)); 
-    localStorage.wos = JSON.stringify($scope.wos);
-    $scope.wcms = $scope.meals.concat($scope.wos).concat($scope.cls);
+    $scope.wcms.push(angular.copy($scope.workout)); 
+    localStorage.wcms = JSON.stringify($scope.wcms);
 
     // reset template & offset
     $scope.workout = angular.copy(template);
@@ -250,10 +246,7 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('ClassCtrl', function($scope, $state, GoogleEvents){
-  $scope.wos = GoogleEvents.wos();
-  $scope.cls = GoogleEvents.cls();
-  $scope.meals = GoogleEvents.meals();
-  $scope.wcms = $scope.meals.concat($scope.wos).concat($scope.cls);
+  $scope.wcms = GoogleEvents.wcms();
   var template = GoogleEvents.defaultClass();
   $scope.class = angular.copy(template);
 
@@ -268,8 +261,10 @@ angular.module('brainbuild.controllers', [])
     $scope.class.end.dateTime.setTime($scope.class.end.dateTime.getTime()-offset);
 
     // add UTC version to stack & save
-    $scope.cls.push(angular.copy($scope.class)); 
-    localStorage.cls = JSON.stringify($scope.cls);
+    console.log($scope.wcms);
+    $scope.wcms.push(angular.copy($scope.class));
+    console.log($scope.wcms);
+    localStorage.wcms = JSON.stringify($scope.wcms);
 
     // reset template & offset
     $scope.class = angular.copy(template);
@@ -282,10 +277,7 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('MealCtrl', function($scope, $state, GoogleEvents){
-  $scope.wos = GoogleEvents.wos();
-  $scope.cls = GoogleEvents.cls();
-  $scope.meals = GoogleEvents.meals();
-  $scope.wcms = $scope.meals.concat($scope.wos).concat($scope.cls);
+  $scope.wcms = GoogleEvents.wcms();
   var template = GoogleEvents.defaultMeals();
   $scope.meal = angular.copy(template[0]);
 
@@ -301,8 +293,8 @@ angular.module('brainbuild.controllers', [])
     $scope.meal.timeOfDay = $scope.meal.start.dateTime.getTime();
 
     // add UTC version to stack & save
-    $scope.meals.push(angular.copy($scope.meal)); 
-    localStorage.meals = JSON.stringify($scope.meals);
+    $scope.wcms.push(angular.copy($scope.meal)); 
+    localStorage.wcms = JSON.stringify($scope.wcms);
 
     // reset template & offset
     $scope.meal = angular.copy(template[0]);
@@ -310,6 +302,7 @@ angular.module('brainbuild.controllers', [])
     $scope.meal.end.dateTime.setTime($scope.meal.end.dateTime.getTime()+offset);
 
     // go back
+    $scope.$evalAsync();
     $state.go('list');
   }
 })
@@ -317,11 +310,8 @@ angular.module('brainbuild.controllers', [])
 .controller('ListCtrl', function($scope, $state, GoogleEvents, $ionicLoading){
   // scope variables
   $scope.athlete = GoogleEvents.athlete();
-  $scope.wos = GoogleEvents.wos();
-  $scope.cls = GoogleEvents.cls();
-  $scope.meals = GoogleEvents.meals();
-  $scope.wcms = $scope.meals.concat($scope.wos).concat($scope.cls);
-
+  $scope.wcms = GoogleEvents.wcms();
+  
   $scope.dayFilter = [true,true,true,true,true,true,true];
 
   $scope.dayClick = function(i){
@@ -334,7 +324,6 @@ angular.module('brainbuild.controllers', [])
         return true;
       }
     }
-
     return false;
   }
 
@@ -378,9 +367,9 @@ angular.module('brainbuild.controllers', [])
   }
 
   $scope.restoreDefaultMeals = function(){
-    localStorage.meals = [];
-    $scope.meals = GoogleEvents.defaultMeals();
-    localStorage.meals = JSON.stringify($scope.meals);
+    localStorage.wcms = [];
+    $scope.wcms = GoogleEvents.defaultMeals();
+    localStorage.wcms = JSON.stringify($scope.wcms);
     // $state.go('list')
   }
 
@@ -393,7 +382,6 @@ angular.module('brainbuild.controllers', [])
     localStorage.removeItem("wcms");
     localStorage.removeItem("wos");
     $state.go('welcome');
-
   }
 
   $scope.generateSchedule = function() {
@@ -459,11 +447,7 @@ angular.module('brainbuild.controllers', [])
 
     // concat all these into $scope.events
     $scope.events = [];
-    $scope.events = angular.copy($scope.meals);
-    var wos = angular.copy($scope.wos);
-    $scope.events = $scope.events.concat(wos);
-    var cls = angular.copy($scope.cls);
-    $scope.events = $scope.events.concat(cls);
+    $scope.events = angular.copy($scope.wcms);
     
     // $scope.events = [];
     // $scope.events = $scope.events.concat(angular.copy($scope.meals));
