@@ -330,6 +330,11 @@ angular.module('brainbuild.controllers', [])
     return false;
   }
 
+  // TODO: Filter by type: W C M - with a button bar?
+  $scope.filterType = function(event){
+
+  }
+
   // other variables
   var responses = 0;
   var person = JSON.parse(localStorage.getItem('profile'));
@@ -622,7 +627,6 @@ angular.module('brainbuild.controllers', [])
 
     // closeTheFloodGates();
 
-    //TODO: Find this week's sunday
     var findSunday = new Date();
     findSunday.setUTCHours(0,0,0,0);
     var daySinceSun = findSunday.getDay();
@@ -633,7 +637,7 @@ angular.module('brainbuild.controllers', [])
 
     // These come in as dates on December 19, 1993
     // TODO: Change all these for loops to maps 
-    for(i = 0; i < $scope.events.length; i++){
+    for(let i = 0; i < $scope.events.length; i++){
       $scope.events[i].start.dateTime = new Date($scope.events[i].start.dateTime);
       $scope.events[i].end.dateTime = new Date($scope.events[i].end.dateTime);
 
@@ -654,7 +658,11 @@ angular.module('brainbuild.controllers', [])
       $scope.events[i].start.timeZone = $scope.athlete.tzGAPI;
       $scope.events[i].end.timeZone = $scope.athlete.tzGAPI;
       
-      postGAPI($scope.events[i]);
+      // TODO: add a timeout here
+      setTimeout( function timer(){
+        postGAPI($scope.events[i]);
+      }, i*200 );
+      // postGAPI($scope.events[i]);
     }
     // closeTheFloodGates();
   }
