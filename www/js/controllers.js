@@ -687,12 +687,14 @@ angular.module('brainbuild.controllers', [])
                     // }
                 })
                 .catch(function(parseErr) {
+                    console.log(event);
                     console.error(parseErr);
                 });
         } else {
             console.error(res); // comes back but not HTTP 200
             res.json()
                 .then(function(data) {
+                    console.log(event);
                     console.log('not 200', data);
                     if (data.error.code === 401){
                       auth.signout();
