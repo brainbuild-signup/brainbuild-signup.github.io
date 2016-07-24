@@ -313,6 +313,7 @@ angular.module('brainbuild.controllers', [])
 .controller('ListCtrl', function($scope, $state, GoogleEvents, $ionicLoading){
   // scope variables
   $scope.athlete = GoogleEvents.athlete();
+<<<<<<< HEAD
   $scope.wcms = GoogleEvents.wcms();
   $scope.dayFilter = [true,true,true,true,true,true,true];
   console.log($scope.wcms);
@@ -330,6 +331,13 @@ angular.module('brainbuild.controllers', [])
     return false;
   }
 
+=======
+  $scope.wos = GoogleEvents.wos();
+  $scope.cls = GoogleEvents.cls();
+  $scope.meals = GoogleEvents.meals();
+  $scope.events = [];
+  $scope.dayFilter = [true,true,true,true,true,true,true];
+>>>>>>> master
   // other variables
   var responses = 0;
   var person = JSON.parse(localStorage.getItem('profile'));
@@ -346,6 +354,19 @@ angular.module('brainbuild.controllers', [])
     var calendarId = "No calendar ID right now";
   }
   $scope.calendarId = calendarId;
+
+  $scope.dayClick = function(i){
+    $scope.dayFilter[i]=!$scope.dayFilter[i];
+  }
+
+  $scope.filterDay = function(event){
+    for(var i = 0; i < 7; i++){
+      if(event.description[i] == true && $scope.dayFilter[i] == true){
+        return true;
+      }
+    }
+    return false;
+  }
 
   $scope.deleteEvent = function(type, summary){
     for(var i = 0; i < $scope[type].length; i++){
@@ -383,7 +404,7 @@ angular.module('brainbuild.controllers', [])
 
   $scope.generateSchedule = function() {
     openTheFloodGates();
-  };
+  }
 
   function openTheFloodGates(){
     // $ionicLoading.show()
@@ -456,6 +477,8 @@ angular.module('brainbuild.controllers', [])
     // convert description into a string
     var repeat = "RRULE:FREQ=WEEKLY;BYDAY=";
     var dayNames = ["SU,","MO,","TU,","WE,","TH,","FR,","SA"];
+
+    // TODO: test with $scope.events = $scope.events.map
     $scope.events.map((x)=>{    
       x.recurrence[0] = repeat;
       for(var i = 0; i < 7; i++){
@@ -479,8 +502,11 @@ angular.module('brainbuild.controllers', [])
         x.colorId = 6;
       }
     })
+<<<<<<< HEAD
 
     console.log($scope.events);
+=======
+>>>>>>> master
   }
   
   // TOREMOVE: for testing
@@ -634,7 +660,7 @@ angular.module('brainbuild.controllers', [])
     for(i = 0; i < $scope.events.length; i++){
       $scope.events[i].start.dateTime = new Date($scope.events[i].start.dateTime);
       $scope.events[i].end.dateTime = new Date($scope.events[i].end.dateTime);
-
+      
       // Day of the Week Offset
       // When does the day start repeating
       var sundayOffset = 0;
@@ -656,7 +682,6 @@ angular.module('brainbuild.controllers', [])
     }
     // closeTheFloodGates();
   }
-
 
   function postGAPI(event) {
     fetch('https://www.googleapis.com/calendar/v3/calendars/'+calendarId+'/events?access_token='+token, {
@@ -701,6 +726,7 @@ angular.module('brainbuild.controllers', [])
         console.error("network error", err);
     });
   }
+
 })
 
 .controller('DoneCtrl', function($scope, $state){
