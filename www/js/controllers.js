@@ -217,7 +217,7 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('WorkoutCtrl', function($scope, $state, GoogleEvents){
-  $scope.wos = GoogleEvents.wos();
+  $scope.wcms = GoogleEvents.wcms();
   var template = GoogleEvents.defaultWorkout();
   $scope.workout = angular.copy(template);
 
@@ -232,8 +232,10 @@ angular.module('brainbuild.controllers', [])
     $scope.workout.end.dateTime.setTime($scope.workout.end.dateTime.getTime()-offset);
 
     // add UTC version to stack & save
-    $scope.wos.push(angular.copy($scope.workout)); 
-    localStorage.wos = JSON.stringify($scope.wos);
+    console.log($scope.wcms);
+    $scope.wcms.push(angular.copy($scope.workout)); 
+    console.log($scope.wcms);
+    localStorage.wcms = JSON.stringify($scope.wcms);
 
     // reset template & offset
     $scope.workout = angular.copy(template);
@@ -246,7 +248,7 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('ClassCtrl', function($scope, $state, GoogleEvents){
-  $scope.cls = GoogleEvents.cls();
+  $scope.wcms = GoogleEvents.wcms();
   var template = GoogleEvents.defaultClass();
   $scope.class = angular.copy(template);
 
@@ -261,8 +263,10 @@ angular.module('brainbuild.controllers', [])
     $scope.class.end.dateTime.setTime($scope.class.end.dateTime.getTime()-offset);
 
     // add UTC version to stack & save
-    $scope.cls.push(angular.copy($scope.class)); 
-    localStorage.cls = JSON.stringify($scope.cls);
+    console.log($scope.wcms);
+    $scope.wcms.push(angular.copy($scope.class));
+    console.log($scope.wcms);
+    localStorage.wcms = JSON.stringify($scope.wcms);
 
     // reset template & offset
     $scope.class = angular.copy(template);
@@ -275,7 +279,7 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('MealCtrl', function($scope, $state, GoogleEvents){
-  $scope.meals = GoogleEvents.meals();
+  $scope.wcms = GoogleEvents.wcms();
   var template = GoogleEvents.defaultMeals();
   $scope.meal = angular.copy(template[0]);
 
@@ -291,8 +295,10 @@ angular.module('brainbuild.controllers', [])
     $scope.meal.timeOfDay = $scope.meal.start.dateTime.getTime();
 
     // add UTC version to stack & save
-    $scope.meals.push(angular.copy($scope.meal)); 
-    localStorage.meals = JSON.stringify($scope.meals);
+    console.log($scope.wcms);
+    $scope.wcms.push(angular.copy($scope.meal)); 
+    console.log($scope.wcms);
+    localStorage.wcms = JSON.stringify($scope.wcms);
 
     // reset template & offset
     $scope.meal = angular.copy(template[0]);
@@ -307,11 +313,23 @@ angular.module('brainbuild.controllers', [])
 .controller('ListCtrl', function($scope, $state, GoogleEvents, $ionicLoading){
   // scope variables
   $scope.athlete = GoogleEvents.athlete();
-  $scope.wos = GoogleEvents.wos();
-  $scope.cls = GoogleEvents.cls();
-  $scope.meals = GoogleEvents.meals();
-  $scope.events = [];
+  $scope.wcms = GoogleEvents.wcms();
   $scope.dayFilter = [true,true,true,true,true,true,true];
+  console.log($scope.wcms);
+
+  $scope.dayClick = function(i){
+    $scope.dayFilter[i]=!$scope.dayFilter[i];
+  }
+
+  $scope.filterDay = function(event){
+    for(var i = 0; i < 7; i++){
+      if(event.description[i] == true && $scope.dayFilter[i] == true){
+        return true;
+      }
+    }
+    return false;
+  }
+
   // other variables
   var responses = 0;
   var person = JSON.parse(localStorage.getItem('profile'));
@@ -328,19 +346,6 @@ angular.module('brainbuild.controllers', [])
     var calendarId = "No calendar ID right now";
   }
   $scope.calendarId = calendarId;
-
-  $scope.dayClick = function(i){
-    $scope.dayFilter[i]=!$scope.dayFilter[i];
-  }
-
-  $scope.filterDay = function(event){
-    for(var i = 0; i < 7; i++){
-      if(event.description[i] == true && $scope.dayFilter[i] == true){
-        return true;
-      }
-    }
-    return false;
-  }
 
   $scope.deleteEvent = function(type, summary){
     for(var i = 0; i < $scope[type].length; i++){
@@ -364,26 +369,21 @@ angular.module('brainbuild.controllers', [])
     $state.go('meal')
   }
 
-  $scope.restoreDefaultMeals = function(){
-    localStorage.meals = [];
-    $scope.meals = GoogleEvents.defaultMeals();
-    localStorage.meals = JSON.stringify($scope.meals);
-    // $state.go('list')
-  }
-
   $scope.clearLocalStorage = function(){
     localStorage.removeItem("athlete");
     localStorage.removeItem("calendarId");
     localStorage.removeItem("cls");
     localStorage.removeItem("events");
     localStorage.removeItem("meals");
+    localStorage.removeItem("wcms");
     localStorage.removeItem("wos");
+    location.reload();
     $state.go('welcome');
   }
 
   $scope.generateSchedule = function() {
     openTheFloodGates();
-  }
+  };
 
   function openTheFloodGates(){
     // $ionicLoading.show()
@@ -443,11 +443,8 @@ angular.module('brainbuild.controllers', [])
     // update the repeat of the default meals
 
     // concat all these into $scope.events
-    $scope.events = angular.copy($scope.meals);
-    var wos = angular.copy($scope.wos);
-    $scope.events = $scope.events.concat(wos);
-    var cls = angular.copy($scope.cls);
-    $scope.events = $scope.events.concat(cls);
+    $scope.events = [];
+    $scope.events = angular.copy($scope.wcms);
     
     // $scope.events = [];
     // $scope.events = $scope.events.concat(angular.copy($scope.meals));
@@ -459,8 +456,6 @@ angular.module('brainbuild.controllers', [])
     // convert description into a string
     var repeat = "RRULE:FREQ=WEEKLY;BYDAY=";
     var dayNames = ["SU,","MO,","TU,","WE,","TH,","FR,","SA"];
-
-    // TODO: test with $scope.events = $scope.events.map
     $scope.events.map((x)=>{    
       x.recurrence[0] = repeat;
       for(var i = 0; i < 7; i++){
@@ -484,6 +479,8 @@ angular.module('brainbuild.controllers', [])
         x.colorId = 6;
       }
     })
+
+    console.log($scope.events);
   }
   
   // TOREMOVE: for testing
@@ -625,69 +622,40 @@ angular.module('brainbuild.controllers', [])
 
     // closeTheFloodGates();
 
-    console.log($scope.meals);
+    //TODO: Find this week's sunday
+    var findSunday = new Date();
+    findSunday.setUTCHours(0,0,0,0);
+    var daySinceSun = findSunday.getDay();
+    findSunday.setTime(findSunday.getTime()-(daySinceSun*24*60*60*1000)); 
 
+    // These come in as dates on December 19, 1993
+    // TODO: Change all these for loops to maps 
     for(i = 0; i < $scope.events.length; i++){
       $scope.events[i].start.dateTime = new Date($scope.events[i].start.dateTime);
       $scope.events[i].end.dateTime = new Date($scope.events[i].end.dateTime);
 
-      // TODO: get rid of first day overflow
-      // figure out which days were chosen
-      var firstDayChosen;
-      for(var j = 0; j < 7; j++){
+      // Day of the Week Offset
+      // When does the day start repeating
+      var sundayOffset = 0;
+      for(let j = 0; j < 7; j++){
         if($scope.events[i].description[j]){
-          firstDayChosen = j;
+          sundayOffset = (j*24*60*60*1000);
+          console.log($scope.events[i].summary + " has an offset of: " + j);
           break;
         }
       }
-      
-      // TODO: Get rid of unchecked days
-      // // if no days were checked, remove that event
-      // if(firstDayChosen === undefined){
-      //   $scope.events.splice(i,1);
-      //   console.log("You've been splice: "+$scope.events[i].summary)
-      // }
-      // how many days should be added to today?
 
-      var dayOffset = 0;
-      var thisDay = $scope.events[i].start.dateTime.getDay()
-      // console.log($scope.events[i].start.dateTime.getDay());
-      console.log(thisDay);
-
-      if(firstDayChosen >= thisDay){
-        dayOffset = firstDayChosen-thisDay;
-      }
-      else {
-        dayOffset = 7-(thisDay-firstDayChosen);
-      }
-
-      // TORE: day is stupid
-      console.log($scope.events[i].summary + ": " +dayOffset);
-      //
-
-      $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+(dayOffset * 24 * 60 * 60 * 1000));
-      $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+(dayOffset * 24 * 60 * 60 * 1000));
-
-      $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+$scope.athlete.tzOffset);
-      $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+$scope.athlete.tzOffset);
-      
-      var tzOffsetCurrent = ($scope.events[0].start.dateTime.getTimezoneOffset()/60)*hourUTC;
-      if(tzOffsetCurrent < 0){
-        $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()-(24*hourUTC));
-        $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()-(24*hourUTC));
-      }
-      
-      // $scope.events[i].start.timeZone = $scope.athlete.tzGAPI;
-      // $scope.events[i].end.timeZone = $scope.athlete.tzGAPI;
-      // $scope.events[i].description = $scope.events[i].description.toString();
+      // TimeZone Offset + Sunday Offset (Days after Sunday)
+      $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+$scope.athlete.tzOffset+sundayOffset);
+      $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+$scope.athlete.tzOffset+sundayOffset);
+      $scope.events[i].start.timeZone = $scope.athlete.tzGAPI;
+      $scope.events[i].end.timeZone = $scope.athlete.tzGAPI;
       
       // postGAPI($scope.events[i]);
     }
-
-    console.log($scope.meals);
-
     // closeTheFloodGates();
   }
+
 
   function postGAPI(event) {
     fetch('https://www.googleapis.com/calendar/v3/calendars/'+calendarId+'/events?access_token='+token, {
@@ -732,7 +700,6 @@ angular.module('brainbuild.controllers', [])
         console.error("network error", err);
     });
   }
-
 })
 
 .controller('DoneCtrl', function($scope, $state){

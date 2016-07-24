@@ -24,19 +24,33 @@ var breakfastTime = new Date("1993-12-19T09:00:00Z");
 var lunchTime = new Date("1993-12-19T12:00:00Z");
 var snackTime = new Date("1993-12-19T15:30:00Z");
 var dinnerTime = new Date("1993-12-19T18:30:00Z");
+// workout default
+var workoutTime = new Date("1993-12-19T06:00:00Z")
+// class default
+var classTime = new Date("1993-12-19T11:00:00Z")
 
 // And their date objects
-var breakfastStart = new Date(today.toISOString().substring(0,11)+breakfastTime.toISOString().substring(11));
+// Changed to not today
+// var breakfastStart = new Date(today.toISOString().substring(0,11)+breakfastTime.toISOString().substring(11));
+var breakfastStart = breakfastTime;
 var breakfastEnd = new Date(breakfastStart.getTime()+hourUTC);
 
-var lunchStart = new Date(today.toISOString().substring(0,11)+lunchTime.toISOString().substring(11));
+// var lunchStart = new Date(today.toISOString().substring(0,11)+lunchTime.toISOString().substring(11));
+var lunchStart = lunchTime;
 var lunchEnd = new Date(lunchStart.getTime()+hourUTC);
 
-var snackStart = new Date(today.toISOString().substring(0,11)+snackTime.toISOString().substring(11));
+// var snackStart = new Date(today.toISOString().substring(0,11)+snackTime.toISOString().substring(11));
+var snackStart = snackTime;
 var snackEnd = new Date(snackStart.getTime()+hourUTC);
 
-var dinnerStart = new Date(today.toISOString().substring(0,11)+dinnerTime.toISOString().substring(11));
+// var dinnerStart = new Date(today.toISOString().substring(0,11)+dinnerTime.toISOString().substring(11));
+var dinnerStart = dinnerTime;
 var dinnerEnd = new Date(dinnerStart.getTime()+(1.5*hourUTC));
 
-// workout defaults
-var workoutTime = new Date("1993-12-19T06:00:00Z")
+// var workoutStart = new Date(today.toISOString().substring(0,11)+workoutTime.toISOString().substring(11));
+var workoutStart = workoutTime;
+var workoutEnd = new Date(workoutStart.getTime()+hourUTC);
+
+// var classStart = new Date(today.toISOString().substring(0,11)+classTime.toISOString().substring(11));
+var classStart = classTime;
+var classEnd = new Date(classStart.getTime()+hourUTC);
