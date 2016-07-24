@@ -232,7 +232,9 @@ angular.module('brainbuild.controllers', [])
     $scope.workout.end.dateTime.setTime($scope.workout.end.dateTime.getTime()-offset);
 
     // add UTC version to stack & save
+    console.log($scope.wcms);
     $scope.wcms.push(angular.copy($scope.workout)); 
+    console.log($scope.wcms);
     localStorage.wcms = JSON.stringify($scope.wcms);
 
     // reset template & offset
@@ -293,7 +295,9 @@ angular.module('brainbuild.controllers', [])
     $scope.meal.timeOfDay = $scope.meal.start.dateTime.getTime();
 
     // add UTC version to stack & save
+    console.log($scope.wcms);
     $scope.wcms.push(angular.copy($scope.meal)); 
+    console.log($scope.wcms);
     localStorage.wcms = JSON.stringify($scope.wcms);
 
     // reset template & offset
@@ -302,7 +306,6 @@ angular.module('brainbuild.controllers', [])
     $scope.meal.end.dateTime.setTime($scope.meal.end.dateTime.getTime()+offset);
 
     // go back
-    $scope.$evalAsync();
     $state.go('list');
   }
 })
@@ -311,8 +314,8 @@ angular.module('brainbuild.controllers', [])
   // scope variables
   $scope.athlete = GoogleEvents.athlete();
   $scope.wcms = GoogleEvents.wcms();
-  
   $scope.dayFilter = [true,true,true,true,true,true,true];
+  console.log($scope.wcms);
 
   $scope.dayClick = function(i){
     $scope.dayFilter[i]=!$scope.dayFilter[i];
@@ -366,13 +369,6 @@ angular.module('brainbuild.controllers', [])
     $state.go('meal')
   }
 
-  $scope.restoreDefaultMeals = function(){
-    localStorage.wcms = [];
-    $scope.wcms = GoogleEvents.defaultMeals();
-    localStorage.wcms = JSON.stringify($scope.wcms);
-    // $state.go('list')
-  }
-
   $scope.clearLocalStorage = function(){
     localStorage.removeItem("athlete");
     localStorage.removeItem("calendarId");
@@ -381,6 +377,7 @@ angular.module('brainbuild.controllers', [])
     localStorage.removeItem("meals");
     localStorage.removeItem("wcms");
     localStorage.removeItem("wos");
+    location.reload();
     $state.go('welcome');
   }
 
@@ -484,8 +481,6 @@ angular.module('brainbuild.controllers', [])
     })
 
     console.log($scope.events);
-    // setTimeZone
-    // setTimeZone();
   }
   
   // TOREMOVE: for testing
@@ -627,33 +622,38 @@ angular.module('brainbuild.controllers', [])
 
     // closeTheFloodGates();
 
-    console.log($scope.meals);
+    //TODO: Find this week's sunday
+    var findSunday = new Date();
+    findSunday.setHours(0);
+    findSunday.setUTCHours(0,0,0,0);
+    var daySinceSun = findSunday.getDay();
+    findSunday.setTime(findSunday.getTime()-(daySinceSun*24*60*60*1000)); 
 
+    // These come in as dates on December 19, 1993
+    // TODO: Change all these for loops to maps 
     for(i = 0; i < $scope.events.length; i++){
       $scope.events[i].start.dateTime = new Date($scope.events[i].start.dateTime);
       $scope.events[i].end.dateTime = new Date($scope.events[i].end.dateTime);
 
+      // Day of the Week Offset
+      // When does the day start repeating
+      var sundayOffset = 0;
+      for(let j = 0; j < 7; j++){
+        if($scope.events[i].description[j]){
+          sundayOffset = (j*24*60*60*1000);
+          console.log($scope.events[i].summary + " has a offset of" + j);
+          break;
+        }
+      }
+
+      // TimeZone Offset
       $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+$scope.athlete.tzOffset);
       $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+$scope.athlete.tzOffset);
-      
-
-      // TODO: Is this what is causing the all events on one day problem?
-      var tzOffsetCurrent = ($scope.events[0].start.dateTime.getTimezoneOffset()/60)*hourUTC;
-      if(tzOffsetCurrent < 0){
-        $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()-(24*hourUTC));
-        $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()-(24*hourUTC));
-      }
-      
       $scope.events[i].start.timeZone = $scope.athlete.tzGAPI;
       $scope.events[i].end.timeZone = $scope.athlete.tzGAPI;
-
-      // $scope.events[i].description = $scope.events[i].description.toString();
       
       postGAPI($scope.events[i]);
     }
-
-    console.log($scope.meals);
-
     // closeTheFloodGates();
   }
 
