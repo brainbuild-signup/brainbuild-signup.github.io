@@ -627,6 +627,9 @@ angular.module('brainbuild.controllers', [])
     findSunday.setUTCHours(0,0,0,0);
     var daySinceSun = findSunday.getDay();
     findSunday.setTime(findSunday.getTime()-(daySinceSun*24*60*60*1000)); 
+    var baseSunday = new Date("1993-12-19T00:00:00Z");
+    var sundayDiff = findSunday.getTime() - baseSunday.getTime();
+    console.log(sundayDiff);
 
     // These come in as dates on December 19, 1993
     // TODO: Change all these for loops to maps 
@@ -645,13 +648,13 @@ angular.module('brainbuild.controllers', [])
         }
       }
 
-      // TimeZone Offset + Sunday Offset (Days after Sunday)
-      $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+$scope.athlete.tzOffset+sundayOffset);
-      $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+$scope.athlete.tzOffset+sundayOffset);
+      // TimeZone Offset + Sunday Offset (Days after this Sunday) + Sunday Difference (Days between this Sunday(2016) and base Sunday (1993))
+      $scope.events[i].start.dateTime.setTime($scope.events[i].start.dateTime.getTime()+$scope.athlete.tzOffset+sundayOffset+sundayDiff);
+      $scope.events[i].end.dateTime.setTime($scope.events[i].end.dateTime.getTime()+$scope.athlete.tzOffset+sundayOffset+sundayDiff);
       $scope.events[i].start.timeZone = $scope.athlete.tzGAPI;
       $scope.events[i].end.timeZone = $scope.athlete.tzGAPI;
       
-      // postGAPI($scope.events[i]);
+      postGAPI($scope.events[i]);
     }
     // closeTheFloodGates();
   }
