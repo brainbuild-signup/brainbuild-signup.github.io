@@ -1,0 +1,63 @@
+<ion-view title="Edit" hide-nav-bar="true" hide-back-button="true">
+    <ion-content padding="true" class="manual-ios-statusbar-padding">
+
+        <div class="list card " id="editEvents-card7">
+            <div class="item item-body">
+                <div class="bold center title  title-margin">
+                    {{athlete.fullName}} - {{athlete.school}} {{athlete.sport}} (Brainbuild)
+                </div>
+            </div>
+        </div>
+        <a ui-sref="welcome" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Edit Profile</a>
+        
+        <div class="bold center title  title-margin">
+            Filter Events:
+        </div>
+
+        <div class="button-bar" id="no-top-margin">
+            <a id="day-of-week" class="button button-primary button-block" ng-model="dayFilter[0]" ng-click="dayClick(0)" ng-class="dayFilter[0]?'button-dark':'button-light'">S</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="dayFilter[1]" ng-click="dayClick(1)" ng-class="dayFilter[1]?'button-dark':'button-light'">M</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="dayFilter[2]" ng-click="dayClick(2)" ng-class="dayFilter[2]?'button-dark':'button-light'">T</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="dayFilter[3]" ng-click="dayClick(3)" ng-class="dayFilter[3]?'button-dark':'button-light'">W</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="dayFilter[4]" ng-click="dayClick(4)" ng-class="dayFilter[4]?'button-dark':'button-light'">T</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="dayFilter[5]" ng-click="dayClick(5)" ng-class="dayFilter[5]?'button-dark':'button-light'">F</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="dayFilter[6]" ng-click="dayClick(6)" ng-class="dayFilter[6]?'button-dark':'button-light'">S</a>
+        </div>
+
+        <a ng-click="addNewWorkout()" id="editEvents-button10" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Workout</a>
+        <a ng-click="addNewClass()" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Class</a>
+        <a ng-click="addNewMeal()" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create a Meal</a>
+
+        <div class="list card" ng-repeat="wcm in wcms | filter:filterDay | orderBy: 'start.dateTime' track by $index">
+            <div class="item item-body">
+                <div>
+                    <div>
+                        <div>
+                            </div>
+                            <div id="list-title" class="bold center title title-margin">{{wcm.summary}}</div>
+                            <div class="center">
+                                <i class="icon ion-android-time" style="margin-right: 4px"></i>{{wcm.start.dateTime | date: 'shortTime' : 'utc'}} - {{wcm.end.dateTime | date: 'shortTime' : 'utc'}}
+                            </div>
+                        <div class="button-bar" id="no-top-margin">
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="wcm.description[0]" ng-click="wcm.description[0]=!wcm.description[0]" ng-class="wcm.description[0]?'button-assertive':'button-light'">S</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="wcm.description[1]" ng-click="wcm.description[1]=!wcm.description[1]" ng-class="wcm.description[1]?'button-assertive':'button-light'">M</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="wcm.description[2]" ng-click="wcm.description[2]=!wcm.description[2]" ng-class="wcm.description[2]?'button-assertive':'button-light'">T</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="wcm.description[3]" ng-click="wcm.description[3]=!wcm.description[3]" ng-class="wcm.description[3]?'button-assertive':'button-light'">W</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="wcm.description[4]" ng-click="wcm.description[4]=!wcm.description[4]" ng-class="wcm.description[4]?'button-assertive':'button-light'">T</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="wcm.description[5]" ng-click="wcm.description[5]=!wcm.description[5]" ng-class="wcm.description[5]?'button-assertive':'button-light'">F</a>
+                            <a id="day-of-week" class="button button-primary button-block" ng-model="wcm.description[6]" ng-click="wcm.description[6]=!wcm.description[6]" ng-class="wcm.description[6]?'button-assertive':'button-light'">S</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="button-bar">
+                    <button ng-click="deleteEvent('wcms', wcm.summary)" class="button button-dark  button-block button-outline icon ion-android-delete"></button>
+                </div>
+            </div>
+        </div>
+        <a ng-click="clearLocalStorage()" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Clear all Storage &amp; Refresh</a>
+        <a ng-click="deleteCalendar()" id="editEvents-button20" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Delete Calendar</a>
+        <a ng-click="generateSchedule()" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block ">Generate Schedule</a>
+
+        <div class="spacer" style="width: 300px; height: 40px;"></div>
+    </ion-content>
+</ion-view>

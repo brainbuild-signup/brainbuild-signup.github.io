@@ -1,0 +1,49 @@
+    <ion-view title="Workouts" hide-nav-bar="true" id="page8" class=" ">
+    <ion-content padding="true" class="manual-ios-statusbar-padding">
+        <div class="spacer" style="width: 300px; height: 4px;"></div>
+        <div class="item item-body " id="onboardingWorkouts-list-item-container4">
+            <div>
+                <div>
+                    <div class="bold center title  title-margin">Add a recurring workout</div>
+
+                    <div class="center">
+                        Tell us when you practice so we can schedule your reminders at the most optimal times
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form id="onboardingWorkouts-form16" class="list ">
+            <div class="spacer" style="width: 300px; height: 17px;"></div>
+            <label class="item item-input ">
+                <span class="input-label">Title</span>
+                <input type="text" ng-model="workout.summary" placeholder="i.e. Practice, Workout">
+            </label>
+        </form>
+        <form id="onboardingWorkouts-form17" class="list ">
+            <label class="item item-input">
+                <span class="input-label">Start time</span>
+                <input type="time" ng-model="workout.start.dateTime" placeholder="">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">End time</span>
+                <input type="time" ng-model="workout.end.dateTime" placeholder="">
+            </label>
+        </form>
+        <h3 id="onboardingClasses-heading6" class="bold center title">Repeats</h3>
+        <div class="button-bar" id="no-top-margin">
+            <a id="day-of-week" class="button button-primary button-block" ng-model="workout.description[0]" ng-click="workout.description[0]=!workout.description[0]" ng-class="workout.description[0]?'button-assertive':'button-light'">S</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="workout.description[1]" ng-click="workout.description[1]=!workout.description[1]" ng-class="workout.description[1]?'button-assertive':'button-light'">M</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="workout.description[2]" ng-click="workout.description[2]=!workout.description[2]" ng-class="workout.description[2]?'button-assertive':'button-light'">T</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="workout.description[3]" ng-click="workout.description[3]=!workout.description[3]" ng-class="workout.description[3]?'button-assertive':'button-light'">W</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="workout.description[4]" ng-click="workout.description[4]=!workout.description[4]" ng-class="workout.description[4]?'button-assertive':'button-light'">T</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="workout.description[5]" ng-click="workout.description[5]=!workout.description[5]" ng-class="workout.description[5]?'button-assertive':'button-light'">F</a>
+            <a id="day-of-week" class="button button-primary button-block" ng-model="workout.description[6]" ng-click="workout.description[6]=!workout.description[6]" ng-class="workout.description[6]?'button-assertive':'button-light'">S</a>
+        </div>
+
+        <div class="button-bar">
+            <a ui-sref="list" class="button button-assertive button-block">Ignore</a>
+            <a ng-click="addWorkout()" class="button button-assertive button-block">Add Workout</a>
+        </div>
+        <div class="spacer" style="width: 300px; height: 40px;"></div>
+    </ion-content>
+</ion-view>

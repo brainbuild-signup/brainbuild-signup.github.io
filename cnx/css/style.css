@@ -1,0 +1,159 @@
+/* Empty. Add your own CSS if you like */
+#repeat-day {
+	display: inline;
+}
+.center-text{
+	text-align: center;
+}
+#full-name{
+	text-align: right;
+}
+
+#day-of-week{
+	padding: 0 0px !important;
+	min-width: 30px !important;
+    min-height: 30px !important;
+    border-color: #fff !important;
+    border-width: 1px 1px 1px 1px;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-radius: 15px 15px 15px 15px !important;
+}
+#list-title{
+	margin-top: 0 !important;
+}
+
+/*
+
+Ionic Spinner
+
+*/
+
+.item-icon-left ion-spinner {
+  float: left;
+  margin-left: -3.2em;
+  margin-right: 1em;
+  margin-top: -0.2em;
+ }
+
+.spinner svg {
+  width: 28px;
+  height: 28px;
+  stroke: #f00;
+  fill: #fff;
+}
+
+/*
+
+Auth0 Login
+#FF3800 = Primary Color
+
+https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png
+
+*/
+
+
+.a0-avatar-guest {
+	height: 220px !important;
+	content: url('./img/brainbuild_name.png') !important;
+}
+
+.a0-next {
+	background-color: #FF3800 !important;
+}
+
+
+.a0-db-actions, 
+.a0-separator, 
+.a0-emailPassword,
+.a0-forgot-pass,
+.bottom-content
+{
+	display: none !important;
+}
+
+.a0-icon-container {
+	padding-bottom: 20px;
+	text-align: center;
+}
+
+#a0-lock.a0-theme-default .a0-panel .a0-top-header h1:after{
+	content:' with Google:';
+};
+
+.a0-zocial {
+    content: "yes";
+}
+
+/*Calendar Color: #4986E7  (white text)
+Practices: #4986E7  (same as default calendar)
+Snacks: #FFB878 
+Meals: #DC2127 
+Classes: #7AE7BF 
+Sleep: #E1E1E1 */
+
+/*
+
+SCSS from Ionic Creator
+
+*/
+
+.bold {
+	font-weight: 800;
+}
+
+.center {
+	text-align: center;
+}
+
+.title-margin {
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.title {
+	font-size: 18px;
+}
+
+.smaller {
+	font-size: 15px;
+}
+
+.card-body {
+	margin-left: 12px;
+	margin-right: 12px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.card-bold {
+	font-weight: 600;
+}
+
+.card-shadow {
+	box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+}
+
+.cardschedule {
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+body.platform-ios {
+	font-family: Raleway, sans-serif;
+}
+
+.ionic-body.platform-ios {
+	font-family: Raleway, sans-serif;
+}
+
+body.platform-android {
+	font-family: Raleway, sans-serif;
+}
+
+.ionic-body.platform-android {
+	font-family: Raleway, sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6,.tab-item,input,button,select,textarea {
+	font-family: inherit;
+}
