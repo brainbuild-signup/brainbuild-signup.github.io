@@ -14,12 +14,6 @@ angular.module('brainbuild.routes', [])
 		controller: 'WelcomeCtrl'
 	})
 
-	.state('wait',{
-		url: "/wait",
-		templateUrl: "templates/wait.html",
-		controller: "WaitCtrl"
-	})
-
 	.state('workout', {
 		url: "/workout",
 		templateUrl: "templates/workout.html",
@@ -42,12 +36,6 @@ angular.module('brainbuild.routes', [])
 		url: "/list",
 		templateUrl: "templates/list.html",
 		controller: "ListCtrl"
-	})
-
-	.state('generate', {
-		url: "/generate",
-		templateUrl: "templates/generate.html",
-		controller: "GenerateCtrl"
 	})
 
 	.state('done', {
