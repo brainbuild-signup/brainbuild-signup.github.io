@@ -39,7 +39,6 @@
                     <option>Baseball</option>
                     <option>Field Hockey</option>
                     <option>Football</option>
-                    <option>Women's Basketball</option>
                 </select>
             </label>
         </form>
