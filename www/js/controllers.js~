@@ -239,7 +239,7 @@ angular.module('brainbuild.controllers', [])
   var header = new Headers();
   header.append("Content-Type", "application/json");
   var brainbuild = {
-    summary: $scope.athlete.fullName+" - "+$scope.athlete.school+" - "+$scope.athlete.sport+" (Brainbuild)"
+    summary: $scope.athlete.fullName+" - "+$scope.athlete.school+" "+$scope.athlete.sport+" (Brainbuild)"
   };
   if(localStorage.calendarId){
     var calendarId = localStorage.calendarId;
